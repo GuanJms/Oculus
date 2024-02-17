@@ -30,6 +30,8 @@ class QuoteBoard:
             self.min_maturity = None
             self.max_maturity = None
 
-    
+    def get_root(self) -> str:
+        return self.root
+
 
 

@@ -6,9 +6,9 @@ from Backtest.QuoteBoard import QuoteBoard
 from Backtest.QuoteManager import QuoteManager
 class MyTestCase(unittest.TestCase):
     def test_quote_manager_process(self):
-        config_path = 'some_path'
+        config_path = 'config.json'
         ROOT = 'SPY'
-        datamanager = TradedQuoteDataManager(config_path=config_path)
+        datamanager = TradedQuoteDataManager(config_file_path=config_path)
         spy_quote_board_params = {
             'root': ROOT,
             'quote_date_range': {
@@ -29,7 +29,8 @@ class MyTestCase(unittest.TestCase):
         }
 
         spy_quote_board = QuoteBoard(**spy_quote_board_params)
-        quote_manager = QuoteManager(data_manager = datamanager)
+        quote_manager = QuoteManager()
+        quote_manager.connect_data_manager(data_manager=datamanager)
         quote_manager.add_quote_board(spy_quote_board) # subscirbe the quote board to the quote manager
         quote_manager.set_frequency(60000) # update every 60 seconds
         quote_manager.test_once() # default runs at set frequency
