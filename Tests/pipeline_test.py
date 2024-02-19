@@ -7,10 +7,9 @@ from Backtest.QuoteManager import QuoteManager
 class MyTestCase(unittest.TestCase):
     def test_quote_manager_process(self):
         config_path = 'config.json'
-        ROOT = 'SPY'
         datamanager = TradedQuoteDataManager(config_file_path=config_path)
         spy_quote_board_params = {
-            'root': ROOT,
+            'root': 'SPY',
             'quote_date_range': {
                 'start_date': 20240201,
                 'end_date': 20240216,
@@ -26,14 +25,21 @@ class MyTestCase(unittest.TestCase):
                 'min': 7,
                 'max': 365
             },
+            'ms_of_day_range': {
+                'start': 34200000,
+                'end': 57600000
+            }
         }
 
         spy_quote_board = QuoteBoard(**spy_quote_board_params)
-        quote_manager = QuoteManager()
+        self.assertEqual(spy_quote_board.get_root(), 'SPY')
+        quote_manager = QuoteManager(time_line_order = 'ms_of_day', frequency = 60000) # 60 seconds
         quote_manager.connect_data_manager(data_manager=datamanager)
         quote_manager.add_quote_board(spy_quote_board) # subscirbe the quote board to the quote manager
-        quote_manager.set_frequency(60000) # update every 60 seconds
-        quote_manager.test_once() # default runs at set frequency
+        self.assertEqual(quote_manager.get_subscribed_quote_boards(), [spy_quote_board])
+        self.assertEqual(quote_manager.frequency, 60000) # default frequency is 60 secondss
+
+        quote_manager.run_once() # default runs at set frequency
         transaction_quoue = quote_manager._get_transaction_queue() # get the transaction waits
 
         test_quote = transaction_quoue

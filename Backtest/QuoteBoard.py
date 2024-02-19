@@ -29,9 +29,24 @@ class QuoteBoard:
         else:
             self.min_maturity = None
             self.max_maturity = None
+        self.ms_of_day_range = kwargs.get('ms_of_day_range', None)
+        if self.ms_of_day_range is not None:
+            self.start_msd = self.ms_of_day_range.get('start', None)
+            self.end_msd = self.ms_of_day_range.get('end', None)
+        else:
+            self.start_msd = 34200000
+            self.end_msd = 57600000
 
     def get_root(self) -> str:
         return self.root
+
+    def get_start_date(self) -> int:
+        return self.start_date
+
+    def get_min_ms_of_day(self) -> int:
+        return self.start_msd
+
+
 
 
 

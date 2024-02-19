@@ -1,5 +1,5 @@
 from collections import deque
-from typing import List, Iterable
+from typing import List, Iterable, Optional
 
 from utils.process import CSVReader
 
@@ -37,9 +37,10 @@ class TradedQuoteReader:
         self.last_msd: int = 0
         self.next_msd: int = 0
         self.data_cache: deque = deque()
-        self.stream: CSVReader = CSVReader(self.path)
-        self.header:List[str] = next(self.stream)
-        self.MSD_COL_NAME_IX = self.header.index(self.MSD_COL_NAME)
+        self.stream: Optional[CSVReader] = None
+        self.header:Optional[List[str]] = None
+        self.MSD_COL_NAME_IX: Optional = None
+        self.open_stream()
 
     def get_header(self):
         return self.header
@@ -90,6 +91,10 @@ class TradedQuoteReader:
                 self.data_cache.append(next(self.stream))
 
     def reset_stream(self):
+        self.open_stream()
+
+    def open_stream(self):
         self.data_cache = deque()
         self.stream = CSVReader(self.path)
         self.header = next(self.stream)
+        self.MSD_COL_NAME_IX = self.header.index(self.MSD_COL_NAME)

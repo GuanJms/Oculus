@@ -2,7 +2,8 @@ from Backtest.QuoteBoard import QuoteBoard
 from DataProcess.Transaction import Transaction
 from DataProcess.TransactionQueue import TransactionQueue
 from DataProcess.TradedQuoteDataManager import TradedQuoteDataManager
-from typing import List
+from typing import List, Optional
+
 """
 Queue manager is the class that manages the quote boards and the transaction queue
 It takes in a data manager and a frequency to update the quote boards.
@@ -11,15 +12,20 @@ subscribed quote boards with corresponding roots.
 """
 
 class QuoteManager:
-    def __init__(self, ):
-        self.data_manager = None
-        self.quote_boards = []
-        self.frequency = 60000
-        self.transaction_queue = TransactionQueue()
-        self.subscribed_quote_boards = []
-        self.subscribed_quote_board_by_root = {}
-        self.last_msd = None
-        self.quote_date = None
+    def __init__(self, MSD_COL_NAME: str = 'ms_of_day',frequency: int = 60000):
+        self.data_manager: Optional[TradedQuoteDataManager] = None
+        self.quote_boards: List[QuoteBoard] = []
+        self.frequency: int = frequency
+        self.MSD_COL_NAME = MSD_COL_NAME
+        self.transaction_queue: TransactionQueue = TransactionQueue(sort_key=MSD_COL_NAME)
+        self.subscribed_quote_boards: List[QuoteBoard] = []
+        self.subscribed_quote_board_by_root: dict = {}
+        self.last_msd: Optional[int] = None
+        self.quote_date: Optional[int] = None
+        self._ready_to_run: bool = False
+        self.expiration_params: Optional[dict] = None
+        self.subscribed_roots: Optional[List[str]] = None
+
 
     def is_connected(self) -> bool:
         if self.data_manager is None:
@@ -60,19 +66,50 @@ class QuoteManager:
     def set_frequency(self, frequency: int):
         self.frequency = frequency
 
-    def test_once(self, total: int = None):
-        if total is None:
-            total = self.frequency
+    def configure_subscribed_quote_boards(self):
+        if self.last_msd is None:
+            self.last_msd = self.get_min_msd_in_quote_boards()
+        if self.quote_date is None:
+            self.quote_date = self.get_min_date_in_quote_boards()
+        if self.subscribed_roots is None:
+            self.subscribed_roots = list(self.subscribed_quote_board_by_root.keys())
+        if self.expiration_params is None:
+            self.expiration_params = {}
+            for quote_board in self.subscribed_quote_boards:
+
+
+
+        self._ready_to_run = True
+
+
+
+    def run_once(self, delta_time_ms: int = None):
+        if not self._ready_to_run:
+            self.configure_subscribed_quote_boards()
+
+        if delta_time_ms is None:
+            delta_time_ms = self.frequency
         start_msd = self.last_msd
-        transactions = self._request_data(start_msd=start_msd,
-                                          end_msd=start_msd + total,
-                                          roots=self.subscribed_quote_board_by_root.keys(),
-                                          date=self.quote_date)
+        end_msd = start_msd + delta_time_ms
+
+        transactions = []
+        for root in self.subscribed_roots:
+            root_expiration_params = self.expiration_params.get(root, None)
+            transactions += self._request_data(start_msd=start_msd,
+                                                end_msd=end_msd,
+                                                root=root,
+                                                date=self.quote_date, expiration_params = root_expiration_params)
         self.transaction_queue.add_transactions(transactions)
 
-    def _request_data(self, start_msd: int, end_msd: int, roots: List[str], date: int) -> List[Transaction]:
+    def _request_data(self, start_msd: int, end_msd: int, root: str, date: int, expiration_params: Optional[dict]) \
+            -> List[Transaction]:
         # TODO: request data from the data manager
-        transactions = self.data_manager.request_data(start_msd, end_msd, roots, date)
+        transactions_raw = self.data_manager.request_data(start_msd = start_msd,
+                                                          end_msd = end_msd,
+                                                          root = root,
+                                                          date = date,
+                                                          expiration_params = expiration_params)
+        transactions = Transaction.process_raw_transactions(transactions_raw)
         return transactions
 
     def _get_transaction_queue(self) -> TransactionQueue:
@@ -101,6 +138,8 @@ class QuoteManager:
             root_quote_board.append(quote_board)
             self.subscribed_quote_board_by_root[root] = root_quote_board
 
+    def get_subscribed_quote_boards(self):
+        return self.subscribed_quote_boards
     def remove_quote_board(self, quote_board: QuoteBoard):
         # TODO: remove the quote board from the subscribed quote boards and quote boards list
         pass
@@ -111,3 +150,21 @@ class QuoteManager:
             if board == quote_board:
                 return True
         return False
+
+    def get_min_msd_in_quote_boards(self):
+        # TODO: get the minimum ms_of_day in the ms_of_day_range of the quote boards
+        min_msd = None
+        for quote_board in self.quote_boards:
+            start_msd = quote_board.get_min_ms_of_day()
+            if min_msd is None or start_msd < min_msd:
+                min_msd = start_msd
+        return min_msd
+
+    def get_min_date_in_quote_boards(self):
+        min_date = None
+        for quote_board in self.quote_boards:
+            start_date = quote_board.get_start_date()
+            if min_date is None or start_date < min_date:
+                min_date = start_date
+        return min_date
+
