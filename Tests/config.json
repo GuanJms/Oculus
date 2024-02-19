@@ -1,3 +1,4 @@
 {
-    "root_system": "/Users/jamesguan/Project/TemptDataHouse"
+    "root_system": "/Users/jamesguan/Project/TemptDataHouse",
+    "quote_folder_name": "raw_traded_quote"
 }

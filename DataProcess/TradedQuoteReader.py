@@ -38,12 +38,15 @@ class TradedQuoteReader:
         self.next_msd: int = 0
         self.data_cache: deque = deque()
         self.stream: Optional[CSVReader] = None
-        self.header:Optional[List[str]] = None
+        self.header: Optional[List[str]] = None
         self.MSD_COL_NAME_IX: Optional = None
-        self.open_stream()
+        self.open_status = False
 
     def get_header(self):
-        return self.header
+        if self.open_status:
+            return self.header
+        else:
+            raise ValueError('Stream is not open')
 
     def read_until_msd(self, msd: int):
         record_to_return = []
@@ -56,10 +59,16 @@ class TradedQuoteReader:
         if len(record_to_return) > 0:
             self.last_msd = int(record_to_return[-1][self.MSD_COL_NAME_IX])
             self.next_msd = self.peek_msd()
+
+        # TODO: write a function to check if the stream is empty and close the stream if it is empty
+        if self.stream.is_empty():
+            self.open_status = False
+        else:
+            self.open_status = True
+
         return record_to_return
 
     def peek_msd(self):
-
         if len(self.data_cache) == 0:
             self._read_batch()
         if len(self.data_cache) == 0:
@@ -90,11 +99,15 @@ class TradedQuoteReader:
             else:
                 self.data_cache.append(next(self.stream))
 
-    def reset_stream(self):
-        self.open_stream()
+    # def reset_stream(self):
+    #     self.open_stream()
 
-    def open_stream(self):
+    def open_stream(self, start_msd: int):
         self.data_cache = deque()
         self.stream = CSVReader(self.path)
         self.header = next(self.stream)
         self.MSD_COL_NAME_IX = self.header.index(self.MSD_COL_NAME)
+        self.read_until_msd(start_msd)
+
+    # TODO: modify the functions such at the end of the file, the stream will be closed automatically and marked as
+    #  closed. So it wont allow to read the data again.

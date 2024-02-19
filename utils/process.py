@@ -33,3 +33,6 @@ class CSVReader:
             self.peek = None
             self.empty = True
         return to_return
+
+    def is_empty(self):
+        return self.empty

@@ -7,6 +7,7 @@ import json
 import os
 from typing import List, Optional
 
+
 class TradedQuoteDataManager:
     def __init__(self, config_file_path: str):
         self.subscribed_quote_managers = []
@@ -14,10 +15,11 @@ class TradedQuoteDataManager:
             raise ValueError('config file does not exist')
         self.config = self.load_config(config_file_path)
         self.root_system = self.config.get('root_system', None)
+        self.quote_folder_name = self.config.get('quote_folder_name', None)
         if self.root_system is None:
             raise ValueError('root_system must be specified in the config file')
-        self.quote_readers = {} # key: root, date, expiration
-        self.expirations = {} # key: root, date
+        self.quote_reader_dict = {}  # key: root, date, expiration
+        self.expiration_dict = {}  # key: root, date
 
     def load_config(self, config_file: str) -> dict:
         with open(config_file, 'r') as file:
@@ -48,9 +50,8 @@ class TradedQuoteDataManager:
         else:
             raise ValueError('quote_manager is not subscribed')
 
-
     def request_data(self, start_msd: int, end_msd: int,
-                     root: str, date : int, expiration_params: Optional[dict]) -> dict:
+                     root: str, date: int, expiration_params: Optional[dict]) -> dict:
         """
         TradedQuoteDataManager will return the data to the quote manager in dictionary format.
         It will first check if there is corresponding DataReader based on the root, date, and expiration_params
@@ -60,6 +61,8 @@ class TradedQuoteDataManager:
          in the background running.
         """
 
+        record_data_to_return = []
+
         # TODO: Based on the root, date, expiration_params, generate (root, date, expiration) key for next step.
         #   For expiration, we have condition of expiration_params, which contains the min_day and max_day as boundaries
         #   for the expiration date. Check the _update_expiration to first see if the expirations has been updated.
@@ -68,17 +71,34 @@ class TradedQuoteDataManager:
 
 
 
-        # TODO: check if the needed raeding stream has been started in quote_readers; if not start the reading stream
-        #  and store that reading stream into the quote_readers dictionary with key (root, date, expiration)
+        # TODO: check if the needed raeding stream (i.e. if (root, date, expiration) exists in the quote_reader_dict)
+        #  has been started in quote_readers; if not start the reading stream
+        #  and store that reading stream into the quote_readers dictionary with key (root, date, expiration).
+        #  Be careful here, if the reading stream doesnt exist, it means that the reading stream hasnt been started yet.
+        #   Thne start_msd is important to pass in as a starting parameter for the reading stream.
+        #  Now, we have all reading stream ready.
 
-        # TODO:
+        # TODO: For each needed reading stream, get the data from the reading stream based on start_msd and end_msd.
+        #   During which, check if the start_msd is equal to the last_msd in the reading stream. If not, there is an
+        #   inconsistency. If there is an inconsistency, raise an error.
+        #  If there is no inconsistency, then read the data from the reading stream up to the end_msd.
 
-
-
+        # TODO: process the list return with its header and return the data in dictionary format. If the header is
+        #  None ignore that data (that is prob just index, which is not needed). If the data is None, ignore the data
+        #  as well. append the data in dictionary format to the record_data_to_return list.
 
         pass
 
-    def _update_expiration(self, root: str, date: int):
+    def _check_expiration(self, roots: List[str], date: int):
+        """
+        Check if the expiration dates for the roots and date are available in the expirations dictionary. If not
+        available, update the expiration dates for the roots and date.
+        """
+        for root in roots:
+            if (root, date) not in self.expiration_dict:
+                self._update_expiration(root, date)
+
+    def _update_expiration(self, root: str, date: int, quote_folder_name: str):
         """
         Update the dictionary of expirations with the root and date; Given the pair of root and date, there should be
         available expiration dates in the dictionary through checking up the data source.
@@ -88,10 +108,9 @@ class TradedQuoteDataManager:
              expirations dates: xxxxxxxx_20140101.csv. All xxxxxxxx should be put into a list that will be returned and stored
              into the self.expirations dictionary with key (root, date).
         """
+
+
+
+
+
         pass
-
-
-
-
-
-
