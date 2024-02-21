@@ -1,0 +1,43 @@
+
+    # def reset_reading_stream(self, rest_request_list: list, quote_manager_id) -> list:
+    #     """
+    #     :param rest_request_list: list of dictionary {root, date, expiration, sync_time}
+    #     :return: list of pairs (root, date, expiration, bool) where bool is True if the reading stream is reset
+    #     """
+    #     reset_result_list = []
+    #     for request in rest_request_list:
+    #         root = request.get('root')
+    #         date = request.get('date')
+    #         expiration = request.get('expiration')
+    #         sync_time = request.get('sync_time')
+    #         if (root, date, expiration, quote_manager_id) in self.quote_reader_dict:
+    #             quote_reader = self.quote_reader_dict.get((root, date, expiration, quote_manager_id))
+    #             if quote_reader.get_last_msd() != sync_time:
+    #                 quote_reader.reset_msd(sync_time)
+    #                 reset_result_list.append((root, date, expiration, True, 'reading stream is reset'))
+    #         else:
+    #             reset_result_list.append((root, date, expiration, False, 'reading stream does not exist'))
+    #     return reset_result_list
+
+
+
+
+         # DONE: sync the quote board with reading stream in the data manager;
+        #  generate the params for the data manager to reset the reading stream based on sync_request_params
+        sync_request_list: List[dict] = [] # list of sync request params
+        sync_root_date_expiration_dict = {} # (root, date) as key, list of expirations as value
+        for quote_board in quote_board_to_sync:
+            root = quote_board.get_root()
+            date = quote_board.get_date()
+            expirations = quote_board.get_expirations()
+            for expiration in expirations:
+                expiration_list = sync_root_date_expiration_dict.get((root, date), [])
+                expiration_list.append(expiration)
+                sync_root_date_expiration_dict[(root, date)] = expiration_list
+            # TODO: change for double verification of the sync
+            quote_board.set_time(new_time=sync_time)
+        for (root, date), expiration_list in sync_root_date_expiration_dict.items():
+            for expiration in expiration_list:
+                _aggregate_sync_request_params_to_list(sync_request_list, root, date, sync_time, expiration)
+        sync_reset_result_list = self.data_manager.reset_reading_stream(sync_request_list, self.id)
+        # TODO: add double check to see if the sync is successful (for now assume it is successful)

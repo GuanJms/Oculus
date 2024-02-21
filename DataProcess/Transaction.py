@@ -103,3 +103,7 @@ class Transaction:
 
     def get_expirtion(self):
         return self.expiration
+
+    @classmethod
+    def process_raw_transactions(cls, transactions_raw):
+        pass

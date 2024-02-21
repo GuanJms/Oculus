@@ -1,6 +1,8 @@
 import os
 import glob
 
+from DataProcess.TradedQuoteDataManager import TradedQuoteDataManager
+
 
 def update_expiration_dict(file_path: str, func_params: dict):
     root, _, _, _, file_name = split_path(file_path)
@@ -81,4 +83,6 @@ func_params = dict(date=date, root_expirations=root_expirations, expiration_dict
 condition_params = {quote_folder_name: roots}
 walk_in_process(root_system, [quote_folder_name, year, month], func, func_params, condition_params)
 
-print(expiration_dict)
+traded_quote_data_manager = TradedQuoteDataManager(config_file_path='config.json')
+traded_quote_data_manager2 = TradedQuoteDataManager(config_file_path='config.json')
+print(id(traded_quote_data_manager), id(traded_quote_data_manager2))

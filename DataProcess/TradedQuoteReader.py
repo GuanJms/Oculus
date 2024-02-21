@@ -42,6 +42,13 @@ class TradedQuoteReader:
         self.MSD_COL_NAME_IX: Optional = None
         self.open_status = False
 
+    def get_last_msd(self):
+        return self.last_msd
+
+    def reset_msd(self, msd: int):
+        # TODO: reset the msd to the given msd (i.e. reopen the stream and read until the given msd)
+        self.open_stream(msd)
+
     def get_header(self):
         if self.open_status:
             return self.header
@@ -57,7 +64,8 @@ class TradedQuoteReader:
             if self.peek_msd() is None:
                 break
         if len(record_to_return) > 0:
-            self.last_msd = int(record_to_return[-1][self.MSD_COL_NAME_IX])
+            # self.last_msd = int(record_to_return[-1][self.MSD_COL_NAME_IX])
+            self.last_msd = msd
             self.next_msd = self.peek_msd()
 
         # TODO: write a function to check if the stream is empty and close the stream if it is empty
