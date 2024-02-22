@@ -54,7 +54,7 @@ class MyTestCase(unittest.TestCase):
         # test test_quote_price is QuotePrice class
         self.assertIsInstance(test_quote_price, QuotePrice)
 
-        quote_manager.process_queue() # process the transaction queue
+        quote_manager._process_queue() # process the transaction queue # TODO: need to make this automated
         current_quote_price = spy_quote_board.get_quote_price(root, strike, maturity, type, right)
 
         quote_manager.run_once(total = 60000) # 60 seconds later

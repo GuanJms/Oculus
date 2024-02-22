@@ -39,10 +39,10 @@ class TradedQuoteReader:
         self.data_cache: deque = deque()
         self.stream: Optional[CSVReader] = None
         self.header: Optional[List[str]] = None
-        self.MSD_COL_NAME_IX: Optional = None
-        self.open_status = False
+        self.MSD_COL_NAME_IX: Optional[int] = None
+        self.open_status: bool = False
 
-    def get_last_msd(self):
+    def get_last_msd(self) -> int:
         return self.last_msd
 
     def reset_msd(self, msd: int):
@@ -55,7 +55,7 @@ class TradedQuoteReader:
         else:
             raise ValueError('Stream is not open')
 
-    def read_until_msd(self, msd: int):
+    def read_until_msd(self, msd: int) -> List[List[str]]:
         record_to_return = []
         if self.peek_msd() is None:
             return record_to_return
@@ -68,7 +68,7 @@ class TradedQuoteReader:
             self.last_msd = msd
             self.next_msd = self.peek_msd()
 
-        # TODO: write a function to check if the stream is empty and close the stream if it is empty
+        # DONE: write a function to check if the stream is empty and close the stream if it is empty
         if self.stream.is_empty():
             self.open_status = False
         else:
@@ -76,14 +76,14 @@ class TradedQuoteReader:
 
         return record_to_return
 
-    def peek_msd(self):
+    def peek_msd(self) -> Optional[int]:
         if len(self.data_cache) == 0:
             self._read_batch()
         if len(self.data_cache) == 0:
             return None
         return int(self.data_cache[0][self.MSD_COL_NAME_IX])
 
-    def next(self):
+    def next(self) -> Optional[List[str]]:
         if len(self.data_cache) == 0:
             self._read_batch()
         if len(self.data_cache) == 0:
@@ -114,7 +114,7 @@ class TradedQuoteReader:
         self.data_cache = deque()
         self.stream = CSVReader(self.path)
         self.header = next(self.stream)
-        self.MSD_COL_NAME_IX = self.header.index(self.MSD_COL_NAME)
+        self.MSD_COL_NAME_IX: int = self.header.index(self.MSD_COL_NAME)
         self.read_until_msd(start_msd)
 
     # TODO: modify the functions such at the end of the file, the stream will be closed automatically and marked as

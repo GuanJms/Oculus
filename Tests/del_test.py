@@ -86,3 +86,4 @@ walk_in_process(root_system, [quote_folder_name, year, month], func, func_params
 traded_quote_data_manager = TradedQuoteDataManager(config_file_path='config.json')
 traded_quote_data_manager2 = TradedQuoteDataManager(config_file_path='config.json')
 print(id(traded_quote_data_manager), id(traded_quote_data_manager2))
+

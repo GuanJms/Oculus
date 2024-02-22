@@ -15,17 +15,22 @@ class MyTestCase(unittest.TestCase):
 
         quote_reader = TradedQuoteReader(path = '20240216_20240206_sorted.csv', root = 'SPX',
                                          date = 20240206 , expiration = 20240216,
-                                         asset_type = 'option', max_row_reading_batch = 1000,)
+                                         asset_type = 'option', max_row_reading_batch = 1000)
+        quote_reader.open_stream(start_msd=0)
         header = quote_reader.get_header()
         records = quote_reader.read_until_msd(60*60*1000*15)
-        print(len(records))
+        # print(header)
+        # print(records[0:1])
+        print(dict(zip(header, records[0])))
+        # print(len(records))
         next_records = quote_reader.read_until_msd(60*60*1000*16)
-        print(len(next_records))
+        # print(len(next_records))
         zero_records = quote_reader.read_until_msd(60*60*1000*16)
 
-        quote_reader.reset_stream()
+        quote_reader.open_stream(start_msd=0)
+        # print(quote_reader.get_header())
         full_records = quote_reader.read_until_msd(60*60*1000*16)
-        print(len(full_records))
+        # print(len(full_records))
         self.assertEqual(len(full_records), len(records) + len(next_records))
         self.assertEqual(len(zero_records), 0)
 

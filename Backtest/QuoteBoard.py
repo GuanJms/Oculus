@@ -5,31 +5,31 @@ from typing import List, Optional
 class QuoteBoard:
 
     def __init__(self, **kwargs):
-        self.root = kwargs.get('root', None)
-        self.quote_date = kwargs.get('quote_date_range', None)
-        self.last_msd = None # last msd of the quote board is kinda like current in a way but our quote board is
+        self.root = kwargs.get('root')
+        self.quote_date: Optional[int] = kwargs.get('quote_date_range', None)
+        self.last_msd: Optional[int] = None  # last msd of the quote board is kinda like current in a way but our
+        # quote board is
         # discrete not real time
-        self.expirations = None
-        self.current_date = None # current date - which date the quoteboard's number is displaying with
-        self.strike_range = kwargs.get('strike_range', None)
+        self.expirations: Optional[List[int]] = None
+        self.current_date: Optional[int] = None  # current date - which date the quoteboard's number is displaying with
+        self.strike_range: Optional[dict] = kwargs.get('strike_range', None)
+        self.min_strike: Optional[int] = None
+        self.max_strike: Optional[int] = None
+        self.min_moneyness: Optional[float] = None
+        self.max_moneyness: Optional[float] = None
+        self.min_maturity: Optional[int] = None  # This should be a number like 4,5,6 for 4 days, 5 days, 6 days
+        self.max_maturity: Optional[int] = None
+
         if self.strike_range is not None:
             self.min_strike = self.strike_range.get('min', None)
             self.max_strike = self.strike_range.get('max', None)
             self.min_moneyness = self.strike_range.get('minMoneyness', None)
             self.max_moneyness = self.strike_range.get('maxMoneyness', None)
-        else:
-            self.min_strike = None
-            self.max_strike = None
-            self.min_moneyness = None
-            self.max_moneyness = None
-        self.maturity_range = kwargs.get('maturity_range', None)
+
+        self.maturity_range: Optional[dict] = kwargs.get('maturity_range', None)
         if self.maturity_range is not None:
             self.min_maturity = self.maturity_range.get('min', None)
             self.max_maturity = self.maturity_range.get('max', None)
-        else:
-            self.min_maturity = None
-            self.max_maturity = None
-        self.ms_of_day_range = kwargs.get('ms_of_day_range', None)
 
     def get_root(self) -> str:
         return self.root
@@ -46,7 +46,7 @@ class QuoteBoard:
         if not new_date:
             self.current_date = new_date
 
-    def get_expiration_params(self)-> dict:
+    def get_expiration_params(self) -> dict:
         if self.current_date is None:
             raise ValueError('current date has not been set - cannot get expiration params (at least for now)')
 
@@ -88,11 +88,3 @@ class QuoteBoard:
     def is_initailized(self):
         if self.root is None or self.expirations is None or self.current_date is None or self.last_msd is None:
             raise ValueError('QuoteBoard has not been initialized')
-
-
-
-
-
-
-
-

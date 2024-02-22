@@ -41,3 +41,35 @@
                 _aggregate_sync_request_params_to_list(sync_request_list, root, date, sync_time, expiration)
         sync_reset_result_list = self.data_manager.reset_reading_stream(sync_request_list, self.id)
         # TODO: add double check to see if the sync is successful (for now assume it is successful)
+
+
+
+
+    def _check_expiration(self, roots: List[str], date: int):
+        """
+        Check if the expiration dates for the roots and date are available in the expirations dictionary. If not
+        available, update the expiration dates for the roots and date.
+        """
+        for root in roots:
+            if (root, date) not in self.expiration_dict:
+                self._update_expiration(root, date)
+
+    # def _update_expiration(self, roots: List[str], date: int, quote_folder_name: str):
+    #     """
+    #     Update the dictionary of expirations with the root and date; Given the pair of root and date, there should be
+    #     available expiration dates in the dictionary through checking up the data source.
+    #
+    #     TODO: write a function based on root and date. And check what is the available expiration dates. Basically
+    #          just got to that SPX/raw_traeded_quote/2014/01/ folder and check based on the date, what is the available
+    #          expirations dates: xxxxxxxx_20140101.csv. All xxxxxxxx should be put into a list that will be returned and stored
+    #          into the self.expirations dictionary with key (root, date).
+    #     """
+    #     roots_expiration_dict = self.roots_expiration_dict
+    #     expiration_dict = self.expiration_dict #expiration_dict = dict(zip(roots, [] * len(roots)))
+    #     root_system = self.root_system
+    #     year = str(date)[:4]
+    #     month = str(date)[4:6]
+    #     func = _update_expiration_dict
+    #     func_params = dict(date=date, roots_expiration_dict=roots_expiration_dict, expiration_dict=expiration_dict)
+    #     condition_params = {quote_folder_name: roots}
+    #     walk_in_process(root_system, [quote_folder_name, year, month], func, func_params, condition_params)
