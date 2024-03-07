@@ -28,7 +28,7 @@ def split_path(path: str):
 
 def _update_expiration_dict(file_path: str, func_params: dict):
     root, _, _, _, file_name = split_path(file_path)
-    date = func_params.get('date', None)
+    date = func_params.get('quote_date', None)
     roots_expiration_dict = func_params.get('roots_expiration_dict')
     expiration_date_params = roots_expiration_dict.get(root, {})
     expiration_dict = func_params.get('expiration_dict')
@@ -59,17 +59,17 @@ def _pathing_expirations(file_path: str, func_params: dict):
     This function is used for quote board to get the expiration dates through pathing the data source.
     The expiration dates should be stored in the quote board during the initialization process.
 
-    func_params = {root, date, expirations: Optional[list], expiration_date_params: dict}
+    func_params = {root, quote_date, expirations: Optional[list], expiration_date_params: dict}
     expiration_date_params = {min_expiration_date: Optional[int], max_expiration_date: Optional[int]}
     """
     root, _, _, _, file_name = split_path(file_path)
     root = func_params.get('root', None)
-    date = func_params.get('date', None)
+    date = func_params.get('quote_date', None)
     expiration_date_params = func_params.get('expiration_date_params', {})
     if root is None:
         raise ValueError('root must be specified in func_params')
     if date is None:
-        raise ValueError('date must be specified in func_params')
+        raise ValueError('quote_date must be specified in func_params')
     expirations = func_params.get('expirations', [])
     try:
         extension = file_name.split('.')[-1]

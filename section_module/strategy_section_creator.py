@@ -1,0 +1,2 @@
+class StrategySectionCreator:
+    pass
