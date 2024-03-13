@@ -4,6 +4,7 @@ from typing import ClassVar, Optional, TextIO
 
 
 class ConfigurationManager:
+    START_DATE = 20100101
     _configure_folder_path: ClassVar[str] = os.path.join(os.path.dirname(__file__), 'configuration_files')
     _path_config: ClassVar[dict] = {}
     _raw_traded_quote_config: ClassVar[dict] = {}
@@ -12,6 +13,8 @@ class ConfigurationManager:
     _root_system: Optional[str] = None
     _quote_folder_name: Optional[str] = None
     _initialized_num: int = 0
+    _max_reading_batch: int = 1000
+    _max_transaction_queue_size: int = 1000
 
     @classmethod
     def get_initialized_num(cls) -> int:
@@ -107,3 +110,11 @@ class ConfigurationManager:
         if cls._root_system is None:
             raise ValueError('Missing root_system in path_config')
         return cls._root_system
+
+    @classmethod
+    def get_max_reading_batch(cls):
+        return cls._max_reading_batch
+
+    @classmethod
+    def get_max_transaction_queue_size(cls):
+        return cls._max_transaction_queue_size

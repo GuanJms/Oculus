@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple
 
 from configuration_module.configuration_manager import ConfigurationManager
 from data_process_module.traded_quote_reader import TradedQuoteReader
-from utils.pathing import walk_in_process, _pathing_expirations, generate_path
+from utils.pathing import walk_in_process, pathing_expirations, generate_path
 
 
 class TradedQuoteDataManager:
@@ -22,7 +22,7 @@ class TradedQuoteDataManager:
         self.quote_folder_name: str = ConfigurationManager.get_quote_folder_name()
         self.quote_reader_dict: dict[
             (str, int, int,
-             int), TradedQuoteReader] = {}  # key: root, quote_date, expiration, quote_manager_id; value: TradedQuoteReader
+             str), TradedQuoteReader] = {}  # key: root, quote_date, expiration, quote_manager_id; value: TradedQuoteReader
         # self.roots_expiration_dict = {}  # key: root, quote_date
 
     def load_config(self, config_file: str) -> dict:
@@ -57,7 +57,8 @@ class TradedQuoteDataManager:
         # TODO: remove all the reading streams that are associated with the quote_manager
 
     def request_data(self, start_msd: int, end_msd: int,
-                     root: str, date: int, expiration: int, quote_manager_id: int) -> Tuple[List[str], List[List[str]]]:
+                     root: str, date: int, expiration: int, quote_manager_id: str, status: str) \
+            -> Tuple[List[str], List[List[str]], str]:
         """
         TradedQuoteDataManager will return the data to the quote manager in dictionary format.
         It will first check if there is corresponding DataReader based on the root, quote_date, and expiration_params
@@ -65,8 +66,8 @@ class TradedQuoteDataManager:
 
          Notice: start_msd should equal to last_msd in TradedQuoteReader. If it is not, there will be an inconsistency
          in the background running.
+         status = "DONE" (should not been passed in) , "ONGOING", "FIRST-RUN"
         """
-
         if (root, date, expiration, quote_manager_id) not in self.quote_reader_dict:
             raise ValueError('reading stream does not exist')
         quote_reader = self.quote_reader_dict.get((root, date, expiration, quote_manager_id))
@@ -74,10 +75,12 @@ class TradedQuoteDataManager:
             raise ValueError('start_msd should equal to last_msd in TradedQuoteReader, unless you are jumping ahead '
                              'in time - if so do read_until_msd function in the future')
         header = quote_reader.get_header()
-        if quote_reader.get_next_msd() > end_msd:
-            return header, []
-        raw_data = quote_reader.read_until_msd(end_msd)
-        return header, raw_data
+        # TODO: refactor and make a method for checking
+        if quote_reader.get_next_msd() is None or quote_reader.get_next_msd() > end_msd:
+            quote_reader.last_msd = end_msd # set the last_msd to the end_msd
+            return header, [], "DONE"
+        raw_data, status = quote_reader.read_until_msd(end_msd)
+        return header, raw_data, status
 
     def update_expirations(self, root: str, date: int, expiration_date_params: dict):
         """
@@ -87,16 +90,16 @@ class TradedQuoteDataManager:
         quote_folder_name = self.quote_folder_name
         year = str(date)[:4]
         month = str(date)[4:6]
-        func = _pathing_expirations
+        func = pathing_expirations
         func_params = dict(root=root, date=date, expiration_date_params=expiration_date_params)
         condition_params = {quote_folder_name: [root]}
         walk_in_process(root_system, [quote_folder_name, year, month], func, func_params, condition_params)
 
-    def open_stream(self, root: str, date: int, expiration: int, quote_manager_id: int, last_mds: Optional[int] = None):
+    def _open_stream(self, root: str, date: int, expiration: int, quote_manager_id: str, last_mds: Optional[int] = None):
         """
         self.quote_reader_dict should have key (root, quote_date, expiration, quote_manager_id) and value TradedQuoteReader
         """
-        if (root, date, expiration, quote_manager_id) in self.quote_reader_dict:
+        if self._check_stream_exist(root, date, expiration, quote_manager_id, soft_check=True):
             raise ValueError('reading stream already exists - use reset_reading_stream to reset the reading stream '
                              '- possible error in initialization of the reading stream')
 
@@ -108,19 +111,33 @@ class TradedQuoteDataManager:
         quote_reader.reset_msd(last_mds)  # set the quote_reader reading history to the last_mds
         self.quote_reader_dict[(root, date, expiration, quote_manager_id)] = quote_reader
 
-    def close_stream(self, root: str, date: int, expiration: int, quote_manager_id: int):
+    def _close_stream(self, root: str, date: int, expiration: int, quote_manager_id: str):
         """
         Close the reading stream based on the key (root, quote_date, expiration, quote_manager_id) in the quote_reader_dict.
         """
-        if (root, date, expiration, quote_manager_id) not in self.quote_reader_dict:
-            raise ValueError('reading stream does not exist')
+        self._check_stream_exist(root, date, expiration, quote_manager_id)
         self.quote_reader_dict.pop((root, date, expiration, quote_manager_id))  # TODO: test the quote_reader is removed
 
-    def reset_stream(self, root: str, date: int, expiration: int, quote_manager_id: int, sync_time: int):
+    def request_close_stream(self, root: str, date: int, expiration: int, quote_manager_id: str):
+        self._close_stream(root, date, expiration, quote_manager_id)
+
+    def request_open_stream(self, root: str, date: int, expiration: int, quote_manager_id: str,
+                            last_mds: Optional[int] = None):
+        self._open_stream(root=root, date=date, expiration=expiration, quote_manager_id=quote_manager_id,
+                          last_mds=last_mds)
+
+    def reset_stream(self, root: str, date: int, expiration: int, quote_manager_id: str, sync_time: int):
         """
         Reset the reading stream based on the key (root, quote_date, expiration, quote_manager_id) in the quote_reader_dict.
         """
-        if (root, date, expiration, quote_manager_id) not in self.quote_reader_dict:
-            raise ValueError('reading stream does not exist')
+        self._check_stream_exist(root, date, expiration, quote_manager_id)
         quote_reader = self.quote_reader_dict.get((root, date, expiration, quote_manager_id))
         quote_reader.reset_msd(sync_time)
+
+    def _check_stream_exist(self, root: str, date: int, expiration: int,
+                            quote_manager_id: str, soft_check: bool = False) -> bool:
+        if soft_check:
+            return (root, date, expiration, quote_manager_id) in self.quote_reader_dict
+        else:
+            if (root, date, expiration, quote_manager_id) not in self.quote_reader_dict:
+                raise ValueError('reading stream does not exist')

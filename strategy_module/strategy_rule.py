@@ -60,3 +60,6 @@ class StrategyRule(Rule):
 
     def get_combo_list(self):
         return self._strategy_param['combo_list']
+
+    def export_expiration_params(self):
+        return {}

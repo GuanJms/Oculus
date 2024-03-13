@@ -16,23 +16,30 @@ class _TransactionQueueIterator:
 
 
 class TransactionQueue:
-    def __init__(self, default_sort: bool = True, sort_key: Optional[str] = None):
+    def __init__(self, default_sort: bool, sort_key: Optional[str] = None):
         self.queue = deque()
         self.default_sort = default_sort
         self.sort_key = sort_key
+        self.max_size = ConfigurationManager.get_max_transaction_queue_size()
 
     def __iter__(self):
         return _TransactionQueueIterator(self.queue)
+
     # TODO: verify if the iteration process clears the queue; or its just a copy of the queue
 
-    def add_transactions(self, transactions: List[Transaction]):
+    def add_transactions(self, transactions: List[Transaction], message_request: Optional[bool] = False):
         for transaction in transactions:
             self.queue.append(transaction)
         if self.default_sort:
             self._sort_queue(sort_key=self.sort_key)
-
+        if message_request:
+            if len(self.queue) > self.max_size:
+                return "PROCESS-QUEUE-REQUEST"
     def __len__(self):
         return len(self.queue)
+
+    def sort(self):
+        self._sort_queue(sort_key=self.sort_key)
 
     def _sort_queue(self, sort_key: str):
         if sort_key == ConfigurationManager.get_MSD_COL_NAME():

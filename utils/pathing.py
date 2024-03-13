@@ -1,6 +1,7 @@
 import os
 import glob
 
+
 def walk_in_process(path, folders, func, func_params, condition_params):
     if len(folders) == 0:
         for file_path in glob.glob(os.path.join(path, '*.csv')):
@@ -10,10 +11,11 @@ def walk_in_process(path, folders, func, func_params, condition_params):
             if folders[0] in dirs:
                 if folders[0] in condition_params:
                     prev_dir = root_path.split('/')[-1]
-                    if prev_dir not in condition_params[folders[0]]: # folder[0] is the next target folder
+                    if prev_dir not in condition_params[folders[0]]:  # folder[0] is the next target folder
                         continue
                 walk_in_process(os.path.join(root_path, folders[0]), folders[1:], func, func_params, condition_params)
                 # folder[1:] is the rest of the folders
+
 
 def split_path(path: str):
     # path would be like /Users/jamesguan/Project/TemptDataHouse/SPX/raw_traded_quote/2024/01/20240719_20240126.csv
@@ -54,7 +56,8 @@ def _update_expiration_dict(file_path: str, func_params: dict):
     except Exception as e:
         return
 
-def _pathing_expirations(file_path: str, func_params: dict):
+
+def pathing_expirations(file_path: str, func_params: dict):
     """
     This function is used for quote board to get the expiration dates through pathing the data source.
     The expiration dates should be stored in the quote board during the initialization process.
@@ -64,13 +67,14 @@ def _pathing_expirations(file_path: str, func_params: dict):
     """
     root, _, _, _, file_name = split_path(file_path)
     root = func_params.get('root', None)
-    date = func_params.get('quote_date', None)
+    date = func_params.get('date', None)
     expiration_date_params = func_params.get('expiration_date_params', {})
     if root is None:
         raise ValueError('root must be specified in func_params')
     if date is None:
         raise ValueError('quote_date must be specified in func_params')
-    expirations = func_params.get('expirations', [])
+    expirations = expiration_date_params.get('expirations', [])
+    expiration_date_params['expirations'] = expirations
     try:
         extension = file_name.split('.')[-1]
         if extension == 'csv':
@@ -88,11 +92,12 @@ def _pathing_expirations(file_path: str, func_params: dict):
                 if max_expiration_date is not None and max_expiration_date < exp_date:
                     return
                 expirations.append(exp_date)
-                func_params['expirations'] = expirations
+                expiration_date_params['expirations'] = expirations
     except Exception as e:
         return
 
-def generate_path(root_system: str, root:str, date:int, expiration:int, quote_type_folder: str, extension: str):
+
+def generate_path(root_system: str, root: str, date: int, expiration: int, quote_type_folder: str, extension: str):
     year = str(date)[:4]
     month = str(date)[4:6]
     expiration_date = str(expiration)

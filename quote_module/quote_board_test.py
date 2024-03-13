@@ -25,7 +25,7 @@ class SimpleQuoteBoardTestCase(unittest.TestCase):
 
     def test_quote_board_process_transaction(self):
         import pandas as pd
-        #open the csv file and read the data
+        # open the csv file and read the data
         csv_test_path = '../tests/20240216_20240206_sorted.csv'
         csvReader = CSVReader(csv_test_path)
         header = next(csvReader)
@@ -36,11 +36,6 @@ class SimpleQuoteBoardTestCase(unittest.TestCase):
             self.transaction_queue.add_transactions(transaction_list[i: i + self.batch_size])
             for transaction in self.transaction_queue:
                 spy_quote_board.process_transaction(transaction)
-
-
-
-
-
 
 
 

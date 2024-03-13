@@ -33,10 +33,10 @@ class MyTestCase(unittest.TestCase):
         }
         quote_manager.set_backtest_params(backtest_setting_params = backtest_setting_params)
         quote_manager.add_quote_board(spy_quote_board) # subscirbe the quote board to the quote manager
-        self.assertEqual(quote_manager.get_subscribed_quote_boards(), [spy_quote_board])
+        self.assertEqual(quote_manager.get_quote_board_list(), [spy_quote_board])
         self.assertEqual(quote_manager.frequency, 60000) # default frequency is 60 secondss
 
-        quote_manager.run_once() # default runs at set frequency
+        quote_manager._advance_time() # default runs at set frequency
         transaction_quoue = quote_manager._get_transaction_queue() # get the transaction waits
 
         test_quote = transaction_quoue
@@ -57,7 +57,7 @@ class MyTestCase(unittest.TestCase):
         quote_manager._process_queue() # process the transaction queue # TODO: need to make this automated
         current_quote_price = spy_quote_board.get_quote_price(root, strike, maturity, type, right)
 
-        quote_manager.run_once(total = 60000) # 60 seconds later
+        quote_manager._advance_time(total = 60000) # 60 seconds later
 
 
 

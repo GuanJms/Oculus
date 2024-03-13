@@ -22,8 +22,7 @@ class TransactionFactory:
             return TransactionFactory.header_indices[header]
 
     @classmethod
-    def process_transaction(cls, header: List[str], raw_transaction: List[str], header_index: dict) -> List[
-        Transaction]:
+    def process_transaction(cls, header: List[str], raw_transaction: List[str], header_index: dict) -> List[Transaction]:
         root = raw_transaction[header_index['root']]
         strike = int(raw_transaction[header_index['strike']])
         right = raw_transaction[header_index['right']]
@@ -71,8 +70,7 @@ class TransactionFactory:
         return transaction_list
 
     @classmethod
-    def process_raw_transaction_list(cls, header: List[str], raw_transaction_list: List[List[str]]) -> List[
-        Transaction]:
+    def process_raw_transaction_list(cls, header: List[str], raw_transaction_list: List[List[str]]) -> List[Transaction]:
         """TODO: definity need to be make it more genric in the future. Now it is hard coded for the transaction"""
         header_index = cls.find_header_index(header)
         transaction_list = []

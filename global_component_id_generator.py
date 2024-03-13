@@ -10,3 +10,4 @@ class GlobalComponentIDGenerator:
     @classmethod
     def get_last_id(cls):
         return cls._last_id
+

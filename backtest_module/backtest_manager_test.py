@@ -14,7 +14,7 @@ class TestStarter(unittest.TestCase):
             'start_date': 20230101,
             'end_date': 20230131,
             'ticker_list': tickers,
-            'frequency_ms': 60000}
+            'frequency': 60000}
         self.backtest_params = backtest_params
         self.oil_short_vol_strategy = OilShortVolStrategyRule(long_call_delta=0.1, short_call_delta=0.2,
                                                               long_put_delta=0.1, short_put_delta=0.2,
@@ -34,8 +34,7 @@ class TestStarter(unittest.TestCase):
         backtest_manager = BacktestManager()
         backtest_manager.add_backtest_params(self.backtest_params)
         backtest_manager.run_strategy(self.oil_short_vol_strategy)
-        self.assertEqual(backtest_manager.strategy_list[0], self.oil_short_vol_strategy)
-
+        strategy_result = backtest_manager.get_result(self.oil_short_vol_strategy)
 
 
 

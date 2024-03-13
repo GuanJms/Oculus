@@ -4,6 +4,7 @@ from strategy_module.rule import Rule
 from strategy_module.rule_class_checker import RuleClassChecker
 
 
+
 class DeltaRule(RuleDecorator):
     """
     DeltaRule is a concrete decorator that adds a delta rule to the the put/call option rule for selection.
@@ -36,6 +37,8 @@ class DeltaRule(RuleDecorator):
     def execute(self):
         # In a real implementation, this method would filter options based on the target delta value.
         # This could involve selecting options whose delta values are close to the specified target_delta.
+        #TODO:
+        # DeltaRuleHandler.execute(self.rule, self.delta)
         return self.rule.execute()
 
     def _update_rule_param(self):

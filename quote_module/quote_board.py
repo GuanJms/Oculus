@@ -1,3 +1,4 @@
+import weakref
 from datetime import datetime, timedelta
 from typing import List, Optional
 
@@ -6,7 +7,22 @@ from global_component_id_generator import GlobalComponentIDGenerator
 from sortedcontainers import SortedDict
 
 
+def _update_strike_data(expiration_data: dict, strike: int, transaction: Transaction):
+    if strike not in expiration_data:
+        expiration_data[strike] = {}
+    expiration_data[transaction.strike].update({transaction.type: (transaction.price, transaction.size,
+                                                                   transaction.ms_of_day)})
+
+
 class QuoteBoard:
+
+    # _instnace_tracker = weakref.WeakSet()
+    #
+    # def __new__(cls, *args, **kwargs):
+    #     instance = super(QuoteBoard, cls).__new__(cls)
+    #     cls._instnace_tracker.add(instance)
+    #     print(f"QuoteBoard init {len(cls._instnace_tracker)}")
+    #     return instance
 
     def __init__(self, **kwargs):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
@@ -24,7 +40,7 @@ class QuoteBoard:
         self.max_moneyness: Optional[float] = None
         self.min_maturity: Optional[int] = None  # This should be a number like 4,5,6 for 4 days, 5 days, 6 days
         self.max_maturity: Optional[int] = None
-        self._quote_expiration: dict[int, SortedDict] = {}
+        self._quote_expiration: dict[int, dict[str, SortedDict]] = {}
         self._quote_data: SortedDict = SortedDict()
 
         if self.strike_range is not None:
@@ -55,9 +71,9 @@ class QuoteBoard:
         return self._last_msd
 
     def set_time(self, new_time: Optional[int] = None, new_date: Optional[int] = None):
-        if not new_time:
+        if new_time is not None:
             self._last_msd = new_time
-        if not new_date:
+        if new_date is not None:
             self._quote_date = new_date
 
     def get_expiration_params(self) -> dict:
@@ -84,8 +100,9 @@ class QuoteBoard:
         }
         return expiration_date_params
 
-    def get_expirations(self):
-        # DONE: quote board should know what expirations (quote_date, int) are available after initialization and pathing
+    def get_expirations(self) -> List[int]:
+        # DONE: quote board should know what expirations (quote_date, int) are available after initialization and
+        # pathing
         if self.expirations is None:
             raise ValueError('Expirations have not been initialized')
         return self.expirations
@@ -104,17 +121,19 @@ class QuoteBoard:
             raise ValueError('QuoteBoard has not been initialized')
 
     def process_transaction(self, transaction: Transaction):
+        right = transaction.right
         expiration = transaction.expiration
-        expiration_data = self._get_expiration_data(expiration)
-        self._update_strike_data(expiration_data, transaction.strike, transaction)
+        expiration_data = self._get_expiration_data(expiration, right)
+        _update_strike_data(expiration_data, transaction.strike, transaction)
 
-    def _get_expiration_data(self, expiration: int) -> dict:
-        if expiration not in self._quote_expiration:
-            self._quote_expiration[expiration] = SortedDict()
-        return self._quote_expiration[expiration]
-
-    def _update_strike_data(self, expiration_data: dict, strike: int, transaction: Transaction):
+    def get_quote(self, expiration: int, strike: int, transaction_type: str, right: str):
+        expiration_data = self._get_expiration_data(expiration=expiration, right=right)
         if strike not in expiration_data:
-            expiration_data[strike] = {}
-        expiration_data[transaction.strike].update({transaction.type: (transaction.price, transaction.size,
-                                                                       transaction.ms_of_day)})
+            return None
+        strike_data = expiration_data[strike]
+        return strike_data.get(transaction_type, None)
+
+    def _get_expiration_data(self, expiration: int, right: str) -> dict:
+        if expiration not in self._quote_expiration:
+            self._quote_expiration[expiration] = {'C': SortedDict(), 'P': SortedDict()}
+        return self._quote_expiration[expiration].get(right)

@@ -1,10 +1,22 @@
+import weakref
 from collections import deque
-from typing import List, Iterable, Optional
-
+from typing import List, Iterable, Optional, Tuple
+from configuration_module.configuration_manager import ConfigurationManager
 from utils.process import CSVReader
 
 
 class TradedQuoteReader:
+
+    #
+    # _instnace_tracker = weakref.WeakSet()
+    #
+    # def __new__(cls, *args, **kwargs):
+    #     instance = super(TradedQuoteReader, cls).__new__(cls)
+    #     cls._instnace_tracker.add(instance)
+    #     print(f"TradedQuoteReader init {len(cls._instnace_tracker)}")
+    #     return instance
+
+
     def __init__(self, path: str, root: str, date: int, asset_type: str,
                  MSD_COL_NAME: str, expiration: int = None, max_row_reading_batch: int = 1000, ):
         """
@@ -41,6 +53,7 @@ class TradedQuoteReader:
         self.header: Optional[List[str]] = None
         self.MSD_COL_NAME_IX: Optional[int] = None
         self.open_status: bool = False
+        self._max_reading_batch = ConfigurationManager.get_max_reading_batch()
 
     def get_last_msd(self) -> int:
         return self.last_msd
@@ -50,31 +63,35 @@ class TradedQuoteReader:
         self.open_stream(msd)
 
     def get_header(self):
-        if self.open_status:
+        if self.header is not None:
             return self.header
         else:
             raise ValueError('Stream is not open')
 
-    def read_until_msd(self, msd: int) -> List[List[str]]:
+    def read_until_msd(self, msd: int) -> Tuple[List[List[str]], str]:
         record_to_return = []
+        status = "DONE"
         if self.peek_msd() is None:
-            return record_to_return
+            self.last_msd = msd
+            return record_to_return, status
         while self.peek_msd() <= msd:
             record_to_return.append(self.next())
             if self.peek_msd() is None:
                 break
+            if len(record_to_return) >= self._max_reading_batch:
+                status = "ONGOING"
+                break
         if len(record_to_return) > 0:
             # self.last_msd = int(record_to_return[-1][self.MSD_COL_NAME_IX])
-            self.last_msd = msd
             self.next_msd = self.peek_msd()
-
+        if status == "DONE":
+            self.last_msd = msd
         # DONE: write a function to check if the stream is empty and close the stream if it is empty
-        if self.stream.is_empty():
+        if self.stream.is_empty() and len(self.data_cache) == 0:
             self.open_status = False
         else:
             self.open_status = True
-
-        return record_to_return
+        return record_to_return, status
 
     def peek_msd(self) -> Optional[int]:
         if len(self.data_cache) == 0:
@@ -108,14 +125,18 @@ class TradedQuoteReader:
                 self.data_cache.append(next(self.stream))
 
     # def reset_stream(self):
-    #     self.open_stream()
+    #     self._open_stream()
 
     def open_stream(self, start_msd: int):
         self.data_cache = deque()
         self.stream = CSVReader(self.path)
         self.header = next(self.stream)
         self.MSD_COL_NAME_IX: int = self.header.index(self.MSD_COL_NAME)
-        self.read_until_msd(start_msd)
+
+        _, reading_status = self.read_until_msd(start_msd)
+        while reading_status == "ONGOING":
+            _, reading_status = self.read_until_msd(start_msd)
+
 
     # TODO: modify the functions such at the end of the file, the stream will be closed automatically and marked as
     #  closed. So it wont allow to read the data again.

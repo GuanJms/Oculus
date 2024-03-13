@@ -1,3 +1,4 @@
+import weakref
 from datetime import datetime
 from typing import Optional, List, TypeVar
 
@@ -5,6 +6,16 @@ from configuration_module.configuration_manager import ConfigurationManager
 
 
 class Transaction:
+
+    # _instnace_tracker = weakref.WeakSet()
+    #
+    # def __new__(cls, *args, **kwargs):
+    #     instance = super(Transaction, cls).__new__(cls)
+    #     cls._instnace_tracker.add(instance)
+    #     if len(cls._instnace_tracker) % 2000 == 0:
+    #         print(f"Transaction init {len(cls._instnace_tracker)}")
+    #     return instance
+
     MSD_COL_NAME = ConfigurationManager.get_MSD_COL_NAME()
     MSD_COL_NAME_SECONDARY = ConfigurationManager.get_MSD_COL_NAME_SECONDARY()
 
