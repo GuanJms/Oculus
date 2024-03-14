@@ -2,7 +2,7 @@
 InitializationManager is used to initialize the backtest module, execution module: BacktestManager, ExecutionManager,
 BacktestDataManager.
 """
-from typing import Optional, List, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 from data_process_module.traded_quote_data_manager import TradedQuoteDataManager
 from configuration_module.configuration_manager import ConfigurationManager
 from global_time_generator import GlobalTimeGenerator
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from backtest_module.backtest_data_section import BacktestDataSection
     from backtest_module.backtest_manager import BacktestManager
     from execution_module.execution_manager import ExecutionManager
-    from execution_module.execution_section import ExecutionSection
+    from execution_module.execution_module_section.execution_section import ExecutionSection
     from quote_module.quote_board import QuoteBoard
     from quote_module.quote_manager import QuoteManager
 

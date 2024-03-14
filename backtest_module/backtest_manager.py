@@ -3,7 +3,6 @@ from typing import Optional, List
 from backtest_module.backtest_data_manager import BacktestDataManager
 from backtest_module.backtest_data_section import BacktestDataSection
 from execution_module.execution_manager import ExecutionManager
-from execution_module.execution_section import ExecutionSection
 from global_component_id_generator import GlobalComponentIDGenerator
 from global_time_generator import GlobalTimeGenerator
 from strategy_module.strategy_rule import StrategyRule

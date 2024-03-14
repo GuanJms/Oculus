@@ -1,10 +1,11 @@
-from typing import Optional
+from typing import Optional, Tuple, List
 
+from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
+from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
 from strategy_module.rule import Rule
 
 
 class RuleDecorator(Rule):
-    _rule: Rule = None
 
     def __init__(self, rule: Optional[Rule]) -> None:
         self._rule = rule
@@ -13,13 +14,13 @@ class RuleDecorator(Rule):
     def rule(self) -> Rule:
         return self._rule
 
-    def execute(self):
-        pass
+    def execute(self) -> Tuple[List[ExecutionSignal], List[ExecutionAction]]:
+        raise NotImplementedError("Parent class RuleDecorator does not implement execute method.")
 
     def get_param(self):
         return self._rule.get_param()
 
-    def add_param(self, rule_name: str,  rule_param: dict):
+    def add_param(self, rule_name: str, rule_param: dict):
         self._rule.add_param(rule_name, rule_param)
 
     def _update_rule_param(self):
@@ -35,12 +36,3 @@ class RuleDecorator(Rule):
             return self._rule.get_var(var_name)
         else:
             return None
-
-
-
-
-
-
-
-
-

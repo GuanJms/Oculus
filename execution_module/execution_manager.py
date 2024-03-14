@@ -2,7 +2,7 @@ from typing import Optional
 
 from backtest_module.backtest_data_section import BacktestDataSection
 from execution_module.execution_module_factory.execution_section_factory import ExecutionSectionFactory
-from execution_module.execution_section import ExecutionSection
+from execution_module.execution_module_section.execution_section import ExecutionSection
 from global_component_id_generator import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
 from strategy_module.strategy_rule import StrategyRule

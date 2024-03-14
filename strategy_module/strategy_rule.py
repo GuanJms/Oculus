@@ -1,3 +1,7 @@
+from typing import Tuple, List
+
+from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
+from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
 from global_component_id_generator import GlobalComponentIDGenerator
 from strategy_module.combo_module.combo_rule import ComboRule
 from strategy_module.rule import Rule
@@ -11,6 +15,7 @@ class StrategyRule(Rule):
         self._strategy_param = {'id': self._id, 'combo_list': {}}
         self._strategy_name = None
         self._strategy_type = None
+        self._combo_rule_dict: dict[Rule, float] = dict()
 
     @property
     def id(self):
@@ -34,7 +39,7 @@ class StrategyRule(Rule):
         self._strategy_type = strategy_type
         self._update_rule_param()
 
-    def execute(self):
+    def execute(self) -> Tuple[List[ExecutionSignal], List[ExecutionAction]]:
         raise NotImplementedError("Execute method must be implemented by subclasses.")
 
     def get_param(self):
@@ -45,6 +50,8 @@ class StrategyRule(Rule):
         combo_param = combo_rule.get_param()
         combo_list = self._strategy_param.get('combo_list')
         combo_list[combo_rule.get_id()] = {'combo_param': combo_param, 'position': position}
+        self._combo_rule_dict[combo_rule] = position
+
 
     def get_id(self):
         return self._id

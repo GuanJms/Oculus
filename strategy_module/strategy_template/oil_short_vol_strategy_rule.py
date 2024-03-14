@@ -1,3 +1,7 @@
+from typing import Tuple, List
+
+from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
+from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
 from strategy_module.combo_module.iron_condor_rule import IronCondorRule
 from strategy_module.decorator_module.selection_module.universal_decorator.expiration_DTE_rule import ExpirationDTERule
 from strategy_module.decorator_module.selection_module.universal_decorator.synchronize_rule import SynchronizeStrikeRule
@@ -44,5 +48,16 @@ class OilShortVolStrategyRule(StrategyRule):
     def long_term_IC(self):
         return self._long_term_IC
 
-    def execute(self):
-        raise NotImplementedError("TODO: implement execution part")
+    def execute(self) -> Tuple[List[ExecutionSignal], List[ExecutionAction]]:
+        execution_signal_list = []
+        execution_action_list = []
+        for combo_rule in self._combo_rule_dict.keys():
+            combo_signal_list, base_combo_action_list = combo_rule.execute()
+
+            for base_combo_action in base_combo_action_list:
+                base_combo_action.set_position(self._combo_rule_dict[combo_rule])
+
+            execution_signal_list.extend(combo_signal_list)
+            execution_action_list.extend(base_combo_action_list)
+
+        return execution_signal_list, execution_action_list

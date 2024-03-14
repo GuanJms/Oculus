@@ -1,5 +1,7 @@
-from typing import Optional
+from typing import Optional, Tuple, List
 
+from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
+from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
 from strategy_module.decorator_module.rule_decorator import RuleDecorator
 
 
@@ -31,11 +33,13 @@ class ExpirationDTERule(RuleDecorator):
     def expiration_rule(self):
         return self._expiration_rule
 
-    def execute(self):
-        raise NotImplementedError("TODO: implement execution part")
+    def execute(self) -> Tuple[List[ExecutionSignal], List[ExecutionAction]]:
+        execution_signal_list, execution_action_list = self.rule.execute()
+
+
+
 
     def _update_rule_param(self):
-        expiration_rule= {'rule_type': self.rule_type, 'rule_name': self.rule_name,
-                          'method': self._method, 'DTE': self._dte, 'DTE_min': self._dte_min, 'DTE_max': self._dte_max}
+        expiration_rule = {'rule_type': self.rule_type, 'rule_name': self.rule_name,
+                           'method': self._method, 'DTE': self._dte, 'DTE_min': self._dte_min, 'DTE_max': self._dte_max}
         self._expiration_rule.update(expiration_rule)
-
