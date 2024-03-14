@@ -2,7 +2,6 @@ from typing import Optional
 
 from backtest_module.backtest_data_section import BacktestDataSection
 from execution_module.execution_module_factory.execution_section_factory import ExecutionSectionFactory
-from execution_module.execution_module_factory.execution_time_controller_factory import ExecutionTimeControllerFactory
 from execution_module.execution_section import ExecutionSection
 from global_component_id_generator import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
@@ -46,10 +45,8 @@ class ExecutionManager:
         backtest_data_section.set_ticker_params(tickers)
         expiration_params = strategy_rule_instance.export_expiration_params()
         InitializationManager.initialize_backtest_data_section(backtest_data_section, time_params, expiration_params)
-
-        execution_time_controller = ExecutionTimeControllerFactory.create_execution_time_controller(time_params)
         execution_section = ExecutionSectionFactory.create_section(strategy_rule_instance,
-                                                                   execution_time_controller,
+                                                                   time_params,
                                                                    backtest_data_section)
         InitializationManager.initialize_execute_section(execution_section)
 

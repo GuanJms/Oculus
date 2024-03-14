@@ -1,4 +1,5 @@
 from backtest_module.backtest_data_section import BacktestDataSection
+from execution_module.execution_portfolio import ExecutionPortfolio
 from execution_module.execution_time_controller import ExecutionTimeController
 from initialization_module.initialization_manager import InitializationManager
 from strategy_module.strategy_rule import StrategyRule
@@ -9,15 +10,20 @@ from utils.system_optimize import track_memory_usage
 class ExecutionSection:
 
     def __init__(self, strategy_rule_instance: StrategyRule, execution_time_controller: ExecutionTimeController,
-                 backtest_data_section: BacktestDataSection):
+                 backtest_data_section: BacktestDataSection, execution_portfolio: ExecutionPortfolio):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         self._strategy_rule = strategy_rule_instance
         self._execution_time_controller = execution_time_controller
         self._backtest_data_section = backtest_data_section
+        self._execution_portfolio = execution_portfolio
 
     @property
     def id(self):
         return self._id
+
+    @property
+    def execution_portfolio(self):
+        return self._execution_portfolio
 
     @property
     def execution_time_controller(self):
@@ -51,6 +57,7 @@ class ExecutionSection:
 
     def initialize(self):
         InitializationManager.initialize_time_controller(self._execution_time_controller)
+        InitializationManager.initialize_execution_portfolio
 
     def _run_execution(self):
         TYPE_MESSAGE, quote_date, next_msd = self._request_next_time_message()
