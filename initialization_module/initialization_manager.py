@@ -2,23 +2,30 @@
 InitializationManager is used to initialize the backtest module, execution module: BacktestManager, ExecutionManager,
 BacktestDataManager.
 """
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 from data_process_module.traded_quote_data_manager import TradedQuoteDataManager
 from configuration_module.configuration_manager import ConfigurationManager
+from execution_module.execution_session_module.coordinator_registry import CoordinatorRegistry
+from execution_module.execution_session_module.signal_manager import \
+    ExecutionSessionSignalManager
+from execution_module.execution_session_module.execution_signal import ExecutionSignal
 from global_time_generator import GlobalTimeGenerator
 from quote_module.quote_module_factory.quote_manager_factory import QuoteManagerFactory
+from strategy_module.execution_coordinator_module.single_dte import SingleDTESignal, SingleDTESignalCoordinator
 
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
-    from backtest_module.backtest_data_section import BacktestDataSection
+    from backtest_module.backtest_data_session import BacktestDataSession
     from backtest_module.backtest_manager import BacktestManager
     from execution_module.execution_manager import ExecutionManager
-    from execution_module.execution_module_section.execution_section import ExecutionSection
+    from execution_module.execution_session_module.execution_session import ExecutionSession
     from quote_module.quote_board import QuoteBoard
     from quote_module.quote_manager import QuoteManager
 
 
 class InitializationManager:
+    _action_coordinator_dict = {}
+    _signal_coordinator_dict = {SingleDTESignal: SingleDTESignalCoordinator}
     _data_manager: Optional[TradedQuoteDataManager] = None
     _backtest_manager_list = []
     _initialized = False
@@ -56,7 +63,7 @@ class InitializationManager:
         return backtest_data_manager
 
     @classmethod
-    def create_backtest_section(cls, backtest_params: dict):
+    def create_backtest_session(cls, backtest_params: dict):
         cls._initialized_checker(sort_check=False)
         backtest_manager = cls._initialize_backtest_manager(backtest_params)
         cls._backtest_manager_list.append(backtest_manager)
@@ -75,6 +82,7 @@ class InitializationManager:
     def _initialized_checker(cls, sort_check=False) -> bool:
         if not cls._initialized:
             cls._initialize_traded_quote_data_manager()
+            cls._initialize_coordinator_registry()
         if sort_check:
             return cls._initialized
         else:
@@ -82,10 +90,10 @@ class InitializationManager:
                 raise Exception('InitializationManager has not been initialized')
 
     @classmethod
-    def initialize_backtest_data_section(cls, backtest_data_section: 'BacktestDataSection',
+    def initialize_backtest_data_session(cls, backtest_data_session: 'BacktestDataSession',
                                          backtest_time_params: dict, expiration_params: dict):
         """
-        :param backtest_data_section:
+        :param backtest_data_session:
         :param backtest_time_params: {
             'start_date': self.start_date,
             'end_date': self.end_date,
@@ -103,7 +111,7 @@ class InitializationManager:
         quote_manager = QuoteManagerFactory.create_quote_manager(frequency=frequency)
         data_manager = cls.get_traded_quote_data_manager()
         cls.initialize_quote_manager(quote_manager, data_manager, quote_date, start_ms_of_day)
-        backtest_data_section.initialize(quote_manager, expiration_params)
+        backtest_data_session.initialize(quote_manager, expiration_params)
 
     @classmethod
     def initialize_quote_manager(cls, quote_manager: 'QuoteManager', data_manager: 'TradedQuoteDataManager'
@@ -111,8 +119,8 @@ class InitializationManager:
         quote_manager.initialize(data_manager=data_manager, quote_date=quote_date, msd=start_ms_of_day)
 
     @classmethod
-    def initialize_execute_section(cls, execution_section: 'ExecutionSection'):
-        execution_section.initialize()
+    def initialize_execute_session(cls, execution_session: 'ExecutionSession'):
+        execution_session.initialize()
 
     @classmethod
     def initialize_time_controller(cls, execution_time_controller: 'ExecutionTimeController'):
@@ -122,3 +130,23 @@ class InitializationManager:
     def initialize_quote_board(cls, quote_manager: 'QuoteManager',
                                quote_board: 'QuoteBoard', reinitialize: bool = False):
         quote_manager.initialize_quote_board(quote_board, reinitialize)
+
+    @classmethod
+    def initialize_execution_session_signal_manager(cls, signal_manager: ExecutionSessionSignalManager,
+                                                    execution_signal_list: List[ExecutionSignal]):
+        signal_manager.initialize(execution_signal_list)
+
+    @classmethod
+    def initialize_execution_session_action_manager(cls, action_manager, execution_action_list):
+        pass
+
+    @classmethod
+    def _initialize_coordinator_registry(cls):
+        registry = CoordinatorRegistry()
+        for signal_class, coordinator_session_class in cls._signal_coordinator_dict.items():
+            class_name = signal_class.__name__
+            registry.register_coordinator(class_name, coordinator_session_class)
+
+        for action_class, coordinator_session_class in cls._action_coordinator_dict.items():
+            action_name = action_class.name
+            registry.register_coordinator(action_name, coordinator_session_class)

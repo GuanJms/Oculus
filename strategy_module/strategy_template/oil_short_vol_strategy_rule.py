@@ -1,13 +1,12 @@
 from typing import Tuple, List
 
-from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
-from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
-from strategy_module.combo_module.iron_condor_rule import IronCondorRule
+from execution_module.execution_session_module.exectuion_action import ExecutionAction
+from execution_module.execution_session_module.execution_signal import ExecutionSignal
+from strategics.repo.core.combo.option.combo_basics import IronCondorRule
 from strategy_module.decorator_module.selection_module.universal_decorator.expiration_DTE_rule import ExpirationDTERule
 from strategy_module.decorator_module.selection_module.universal_decorator.synchronize_rule import SynchronizeStrikeRule
-from strategy_module.leg_module.leg_template.delta_leg_rule import DeltaCallRule, DeltaPutRule
-from strategy_module.rule import Rule
-from strategy_module.strategy_rule import StrategyRule
+from strategics.repo.core.leg.leg_template.delta_leg_rule import DeltaCallRule, DeltaPutRule
+from strategics.repo.strategy.strategy_rule import StrategyRule
 
 
 class OilShortVolStrategyRule(StrategyRule):

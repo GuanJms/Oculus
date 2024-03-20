@@ -1,5 +1,4 @@
 from strategy_module.decorator_module.rule_decorator import RuleDecorator
-from strategy_module.rule_class_checker import RuleClassChecker
 
 
 class StaticRootRule(RuleDecorator):

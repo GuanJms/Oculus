@@ -1,7 +1,6 @@
 import unittest
 from execution_module.execution_manager import ExecutionManager
 from initialization_module.initialization_manager import InitializationManager
-from strategy_module.strategy_rule import StrategyRule
 from strategy_module.strategy_template.oil_short_vol_strategy_rule import OilShortVolStrategyRule
 
 
@@ -18,7 +17,7 @@ class TestStarter(unittest.TestCase):
                                                               long_put_delta=0.1, short_put_delta=0.2,
                                                               short_term_DTE=2, long_term_DTE=30,
                                                               short_term_DTE_range=(0, 7), long_term_DTE_range=(20, 40))
-        self.backtest_manager = InitializationManager.create_backtest_section(backtest_params)
+        self.backtest_manager = InitializationManager.create_backtest_session(backtest_params)
         self.execution_manager = self.backtest_manager.execution_manager
 
     def test_execution_manager_filed(self):
@@ -26,12 +25,12 @@ class TestStarter(unittest.TestCase):
         self.assertTrue(self.execution_manager.get_backtest_manager() is not None)
         self.assertEqual(self.execution_manager.get_backtest_manager().id, self.backtest_manager.id)
         execution_manager = self.execution_manager
-        self.assertEqual(0, len(execution_manager.get_execution_section_dict()))
+        self.assertEqual(0, len(execution_manager.get_execution_session_dict()))
         self.assertFalse(execution_manager.get_backtest_time_params() is None)
 
         execution_manager.execute_strategy(self.oil_short_vol_strategy)
-        self.assertTrue(1, execution_manager.get_execution_section_dict())
-        self.assertTrue(execution_manager.get_execution_section_dict().keys()[0], self.oil_short_vol_strategy.id)
+        self.assertTrue(1, execution_manager.get_execution_session_dict())
+        self.assertTrue(execution_manager.get_execution_session_dict().keys()[0], self.oil_short_vol_strategy.id)
 
         print(self.execution_manager.get_backtest_time_params())
 

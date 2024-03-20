@@ -1,11 +1,11 @@
 from typing import Optional, List
 
 from backtest_module.backtest_data_manager import BacktestDataManager
-from backtest_module.backtest_data_section import BacktestDataSection
+from backtest_module.backtest_data_session import BacktestDataSession
 from execution_module.execution_manager import ExecutionManager
 from global_component_id_generator import GlobalComponentIDGenerator
 from global_time_generator import GlobalTimeGenerator
-from strategy_module.strategy_rule import StrategyRule
+from strategics.repo.strategy.strategy_rule import StrategyRule
 
 
 class BacktestManager:
@@ -121,7 +121,7 @@ class BacktestManager:
         # TODO: return result
         pass
 
-    def request_backtest_data_section(self) -> Optional[BacktestDataSection]:
-        return self.backtest_data_manager.request_backtest_data_section()
+    def request_backtest_data_session(self) -> Optional[BacktestDataSession]:
+        return self.backtest_data_manager.request_backtest_data_session()
 
 

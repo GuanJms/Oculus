@@ -1,6 +1,5 @@
 from strategy_module.decorator_module.rule_decorator import RuleDecorator
-from strategy_module.leg_module.leg_rule import LegRule
-from strategy_module.rule_class_checker import RuleClassChecker
+from strategics.repo.rule_class_checker import RuleClassChecker
 
 
 class MoneynessRule(RuleDecorator):

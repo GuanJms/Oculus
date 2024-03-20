@@ -1,2 +1,0 @@
-class ExecutionAction:
-    pass

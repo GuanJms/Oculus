@@ -1,9 +1,5 @@
 import unittest
 
-from strategy_module.combo_module.iron_condor_rule import IronCondorRule
-from strategy_module.decorator_module.selection_module.universal_decorator.expiration_DTE_rule import ExpirationDTERule
-from strategy_module.decorator_module.selection_module.universal_decorator.synchronize_rule import SynchronizeStrikeRule
-from strategy_module.leg_module.leg_template.delta_leg_rule import DeltaPutRule, DeltaCallRule
 from strategy_module.strategy_template.oil_short_vol_strategy_rule import OilShortVolStrategyRule
 
 

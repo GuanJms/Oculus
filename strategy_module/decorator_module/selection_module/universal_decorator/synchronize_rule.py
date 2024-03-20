@@ -2,7 +2,7 @@ from typing import Optional
 from strategy_module.decorator_module.rule_decorator import RuleDecorator
 from strategy_module.decorator_module.selection_module.universal_decorator.synchronize_rule_creator import \
     SynchronizeRuleCreator
-from strategy_module.rule import Rule
+from strategics.repo.rule import Rule
 
 
 class SynchronizeStrikeRule(RuleDecorator):

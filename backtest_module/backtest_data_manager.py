@@ -1,7 +1,7 @@
 from typing import Optional, TYPE_CHECKING
 
-from backtest_module.backtest_data_section import BacktestDataSection
-from backtest_module.backtest_module_factory.backtest_data_section_factory import BacktestDataSectionFactory
+from backtest_module.backtest_data_session import BacktestDataSession
+from backtest_module.backtest_module_factory.backtest_data_session_factory import BacktestDataSessionFactory
 from global_component_id_generator import GlobalComponentIDGenerator
 from quote_module.quote_module_factory.quote_board_factory import QuoteBoardFactory
 from quote_module.quote_module_factory.quote_manager_factory import QuoteManagerFactory
@@ -15,7 +15,7 @@ class BacktestDataManager:
     def __init__(self):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         self._backtest_manager: Optional['BacktestManager'] = None
-        self._backtest_data_section_dict: dict[str, BacktestDataSection] = {} # id: BacktestDataSection
+        self._backtest_data_session_dict: dict[str, BacktestDataSession] = {} # id: BacktestDataSession
 
     @property
     def id(self):
@@ -35,10 +35,10 @@ class BacktestDataManager:
     def set_backtest_manager(self, backtest_manager: 'BacktestManager'):
         self._backtest_manager = backtest_manager
 
-    def request_backtest_data_section(self) -> Optional[BacktestDataSection]:
-        data_section = BacktestDataSectionFactory.create_section()
-        self._backtest_data_section_dict[data_section.id] = data_section
-        return data_section
+    def request_backtest_data_session(self) -> Optional[BacktestDataSession]:
+        data_session = BacktestDataSessionFactory.create_session()
+        self._backtest_data_session_dict[data_session.id] = data_session
+        return data_session
 
 
 

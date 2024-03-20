@@ -1,8 +1,8 @@
 from typing import Optional, Tuple, List
 
-from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
-from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
-from strategy_module.rule import Rule
+from execution_module.execution_session_module.exectuion_action import ExecutionAction
+from execution_module.execution_session_module.execution_signal import ExecutionSignal
+from strategics.repo.rule import Rule
 
 
 class RuleDecorator(Rule):

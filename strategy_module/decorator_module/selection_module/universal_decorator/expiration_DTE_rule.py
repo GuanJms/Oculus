@@ -1,8 +1,10 @@
 from typing import Optional, Tuple, List
 
-from execution_module.execution_module_section.execution_action_module.exectuion_action import ExecutionAction
-from execution_module.execution_module_section.execution_signal_module.execution_signal import ExecutionSignal
-from execution_module.execution_module_section.execution_signal_module.signal_template.single_dte_signal import \
+from execution_module.execution_session_module.exectuion_action import ExecutionAction
+from execution_module.execution_session_module.execution_signal import ExecutionSignal
+from strategy_module.coordinator_module.range_dte_signal import \
+    RangeDTESignal
+from strategy_module.coordinator_module.single_dte_signal import \
     SingleDTESignal
 from strategy_module.decorator_module.rule_decorator import RuleDecorator
 
@@ -59,8 +61,8 @@ class ExpirationDTERule(RuleDecorator):
         self._expiration_rule.update(expiration_rule)
 
     def _generate_single_dte_signal(self) -> List[ExecutionSignal]:
-        single_dte_singal = SingleDTESignal(self._dte)
-        return [single_dte_singal]
+        single_dte_signal = SingleDTESignal(self._dte)
+        return [single_dte_signal]
 
     def _generate_range_dte_signal(self) -> List[ExecutionSignal]:
         range_dte_signal = RangeDTESignal(target_dte = self._dte, min_dte = self._dte_min, max_dte = self._dte_max)

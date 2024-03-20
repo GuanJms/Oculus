@@ -1,11 +1,11 @@
 import unittest
 
-from strategy_module.combo_module.iron_condor_rule import IronCondorRule
+from strategics.repo.core.combo.option.combo_basics import IronCondorRule
 from strategy_module.decorator_module.selection_module.universal_decorator.expiration_DTE_rule import ExpirationDTERule
 from strategy_module.decorator_module.selection_module.universal_decorator.static_root_rule import StaticRootRule
 from strategy_module.decorator_module.selection_module.universal_decorator.synchronize_rule import SynchronizeStrikeRule
-from strategy_module.leg_module.leg_template.delta_leg_rule import DeltaCallRule, DeltaPutRule
-from pprint import pprint
+from strategics.repo.core.leg.leg_template.delta_leg_rule import DeltaCallRule, DeltaPutRule
+
 
 class TestShortOilVolStrategy(unittest.TestCase):
     def setUp(self):

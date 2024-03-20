@@ -1,9 +1,9 @@
 from global_component_id_generator import GlobalComponentIDGenerator
-from strategy_module.strategy_rule import StrategyRule
-from section import Section
+from strategics.repo.strategy.strategy_rule import StrategyRule
+from session import Session
 
 
-class ExecutionPortfolioSection(Section):
+class ExecutionPortfolioSession(Session):
 
     def __init__(self, strategy_rule_instance: StrategyRule):
         super().__init__()

@@ -1,11 +1,9 @@
 import unittest
-from ast import main
 
-from strategy_module.combo_module.combo_template.delta_iron_condor_rule import DeltaIronCondorRule
+from strategics.repo.core.combo.option.combo_extensions import DeltaIronCondorRule
 from strategy_module.decorator_module.selection_module.universal_decorator.synchronize_rule import SynchronizeStrikeRule
-from strategy_module.leg_module.leg_template.delta_leg_rule import DeltaPutRule
-from strategy_module.leg_module.option_leg_rule import PutRule
-from pprint import pprint
+from strategics.repo.core.leg.leg_template.delta_leg_rule import DeltaPutRule
+from strategics.repo.core.leg.option.leg_basics.put_rule import PutRule
 
 
 class TestSynchronizeDecorator(unittest.TestCase):

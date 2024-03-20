@@ -1,4 +1,4 @@
-from strategy_module.strategy_rule import StrategyRule
+from strategics.repo.strategy.strategy_rule import StrategyRule
 
 
 class ZeroDTEStrategyRule(StrategyRule):

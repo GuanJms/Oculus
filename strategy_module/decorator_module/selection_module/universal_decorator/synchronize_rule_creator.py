@@ -1,7 +1,7 @@
-from strategy_module.rule import Rule
-from strategy_module.rule_class_checker import RuleClassChecker
-from strategy_module.combo_module.synchronize_combo_rule import SynchronizeComboRule
-from strategy_module.leg_module.synchronize_leg_rule import SynchronizeLegRule
+from strategics.repo.rule import Rule
+from strategics.repo.rule_class_checker import RuleClassChecker
+from strategics.repo.core.combo.option.combo_specialties.synchronize_combo_rule import SynchronizeComboRule
+from strategics.repo.core.leg.leg_specialties import SynchronizeLegRule
 
 
 class SynchronizeRuleCreator:
