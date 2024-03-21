@@ -14,7 +14,6 @@ class BacktestManager:
         self._start_date: Optional[int] = None
         self._end_date: Optional[int] = None
         self._ticker_list: Optional[str] = None
-        self._strategy_rule_list: List[StrategyRule] = []
         self._frequency: Optional[int] = None
         self._start_ms_of_day: Optional[int] = None
         self._end_ms_of_day: Optional[int] = None
@@ -116,7 +115,7 @@ class BacktestManager:
         }
         return ticker_params
 
-    def get_result(self, oil_short_vol_strategy):
+    def get_result(self, strategy):
         # TODO: return result
         pass
 

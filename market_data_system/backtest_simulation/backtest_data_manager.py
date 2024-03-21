@@ -2,7 +2,7 @@ from typing import Optional, TYPE_CHECKING
 
 from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
 from market_data_system.backtest_simulation.factory.backtest_data_session_factory import BacktestDataSessionFactory
-from global_component_id_generator import GlobalComponentIDGenerator
+from global_utils import GlobalComponentIDGenerator
 
 if TYPE_CHECKING:
     from market_data_system.backtest_simulation.backtest_manager import BacktestManager
