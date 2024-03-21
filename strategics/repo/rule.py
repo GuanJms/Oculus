@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class Rule(ABC):
     @abstractmethod
     def execute(self):

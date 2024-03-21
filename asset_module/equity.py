@@ -1,5 +1,3 @@
-from typing import Optional, List
-
 from global_component_id_generator import GlobalComponentIDGenerator
 from asset_module.asset import Asset
 

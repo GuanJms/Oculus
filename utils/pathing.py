@@ -59,7 +59,7 @@ def _update_expiration_dict(file_path: str, func_params: dict):
 
 def pathing_expirations(file_path: str, func_params: dict):
     """
-    This function is used for quote board to get the expiration dates through pathing the data source.
+    This function is used for quote board to get the expiration dates through pathing the market_data_system source.
     The expiration dates should be stored in the quote board during the initialization process.
 
     func_params = {root, quote_date, expirations: Optional[list], expiration_date_params: dict}

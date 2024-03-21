@@ -1,10 +1,8 @@
 import unittest
 
-from configuration_module.configuration_manager import ConfigurationManager
-from data_process_module.transaction import Transaction
-from data_process_module.transaction_factory import TransactionFactory
-from data_process_module.transaction_queue import TransactionQueue
-from initialization_module.initialization_manager import InitializationManager
+from global_utils.configuration.configuration_manager import ConfigurationManager
+from market_data_system.data_process_module.transaction_factory import TransactionFactory
+from market_data_system.data_process_module.transaction_queue import TransactionQueue
 from quote_module.quote_board import QuoteBoard
 from utils.process import CSVReader
 
@@ -24,8 +22,7 @@ class SimpleQuoteBoardTestCase(unittest.TestCase):
         self.assertEqual(uso_quote_board.root, 'USO')
 
     def test_quote_board_process_transaction(self):
-        import pandas as pd
-        # open the csv file and read the data
+        # open the csv file and read the market_data_system
         csv_test_path = '../tests/20240216_20240206_sorted.csv'
         csvReader = CSVReader(csv_test_path)
         header = next(csvReader)

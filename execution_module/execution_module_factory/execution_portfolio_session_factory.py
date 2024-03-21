@@ -1,5 +1,5 @@
 from execution_module.execution_portfolio import ExecutionPortfolioSession
-from strategics.repo.strategy.strategy_rule import StrategyRule
+from strategics.repo.core.strategy.strategy_rule import StrategyRule
 
 
 class ExecutionPortfolioSessionFactory:

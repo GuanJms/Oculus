@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from enum import Enum, auto
+from enum import Enum
 from typing import Set, Optional
 
-from global_component_id_generator import GlobalComponentIDGenerator
+from global_utils import GlobalComponentIDGenerator
 from status_module.status_info import StatusInfo
 
 

@@ -1,7 +1,6 @@
 import unittest
 
-from quote_module.quote_manager import QuoteManager
-from data_process_module.traded_quote_data_manager import TradedQuoteDataManager
+from market_data_system.data_process_module.traded_quote_data_manager import TradedQuoteDataManager
 import json
 class MyTestCase(unittest.TestCase):
 

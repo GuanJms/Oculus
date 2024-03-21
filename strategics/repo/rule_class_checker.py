@@ -3,7 +3,7 @@ class RuleClassChecker:
 
     @staticmethod
     def _checkDecoratorRule(rule):
-        from strategy_module.decorator_module.rule_decorator import RuleDecorator
+        from strategics.repo.decorator.rule_decorator import RuleDecorator
         while issubclass(rule.__class__, RuleDecorator):
             rule = rule.rule
         return rule
@@ -32,7 +32,7 @@ class RuleClassChecker:
 
     @classmethod
     def is_CallRule(cls, rule, sort_check: bool = False):
-        from strategics.repo.core.leg.option.leg_basics.call_rule import CallRule
+        from strategics.repo.core.leg.option.basics.call_rule import CallRule
         rule = cls._checkDecoratorRule(rule)
         if not issubclass(rule.__class__, CallRule):
             if sort_check:
@@ -42,7 +42,7 @@ class RuleClassChecker:
 
     @classmethod
     def is_PutRule(cls, rule, sort_check: bool = False):
-        from strategics.repo.core.leg.option.leg_basics.put_rule import PutRule
+        from strategics.repo.core.leg.option.basics.put_rule import PutRule
         rule = cls._checkDecoratorRule(rule)
         if not issubclass(rule.__class__, PutRule):
             if sort_check:

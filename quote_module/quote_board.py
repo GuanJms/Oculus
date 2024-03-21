@@ -1,8 +1,7 @@
-import weakref
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from data_process_module.transaction import Transaction
+from market_data_system.data_process_module.transaction import Transaction
 from global_component_id_generator import GlobalComponentIDGenerator
 from sortedcontainers import SortedDict
 
@@ -114,7 +113,7 @@ class QuoteBoard:
     def check_valid_to_initialize(self):
         if self.root is None:
             raise ValueError('root has not been initialized')
-        # TODO: check if there exits root folder in the data source
+        # TODO: check if there exits root folder in the market_data_system source
 
     def is_initialized(self):
         if self.root is None or self.expirations is None or self._quote_date is None or self._last_msd is None:

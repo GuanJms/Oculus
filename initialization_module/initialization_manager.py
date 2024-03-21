@@ -1,23 +1,22 @@
 """
-InitializationManager is used to initialize the backtest module, execution module: BacktestManager, ExecutionManager,
+InitializationManager is used to initialize the backtest module, execution_system module: BacktestManager, ExecutionManager,
 BacktestDataManager.
 """
 from typing import Optional, TYPE_CHECKING, List
-from data_process_module.traded_quote_data_manager import TradedQuoteDataManager
-from configuration_module.configuration_manager import ConfigurationManager
+from market_data_system.data_process_module.traded_quote_data_manager import TradedQuoteDataManager
 from execution_module.execution_session_module.coordinator_registry import CoordinatorRegistry
 from execution_module.execution_session_module.signal_manager import \
     ExecutionSessionSignalManager
 from execution_module.execution_session_module.execution_signal import ExecutionSignal
 from global_time_generator import GlobalTimeGenerator
 from quote_module.quote_module_factory.quote_manager_factory import QuoteManagerFactory
-from strategy_module.execution_coordinator_module.single_dte import SingleDTESignal, SingleDTESignalCoordinator
+from strategics.repo.decorator.option.selection.expiration.single_dte import SingleDTESignalGenerator, SingleDTESignalCoordinator
 
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
-    from backtest_module.backtest_data_session import BacktestDataSession
-    from backtest_module.backtest_manager import BacktestManager
-    from execution_module.execution_manager import ExecutionManager
+    from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
+    from market_data_system.backtest_simulation.backtest_manager import BacktestManager
+    from execution_system.execution_manager import ExecutionManager
     from execution_module.execution_session_module.execution_session import ExecutionSession
     from quote_module.quote_board import QuoteBoard
     from quote_module.quote_manager import QuoteManager
@@ -25,7 +24,7 @@ if TYPE_CHECKING:
 
 class InitializationManager:
     _action_coordinator_dict = {}
-    _signal_coordinator_dict = {SingleDTESignal: SingleDTESignalCoordinator}
+    _signal_coordinator_dict = {SingleDTESignalGenerator: SingleDTESignalCoordinator}
     _data_manager: Optional[TradedQuoteDataManager] = None
     _backtest_manager_list = []
     _initialized = False
@@ -37,27 +36,27 @@ class InitializationManager:
 
     @classmethod
     def _initialize_traded_quote_data_manager(cls):
-        cls._data_manager = TradedQuoteDataManager(ConfigurationManager.get_root_path())
+        cls._data_manager = TradedQuoteDataManager(ExecutionManager.get_root_path())
         if cls._data_manager.is_connected():
             cls._initialized = True
 
     @classmethod
     def _initialize_backtest_manager(cls, backtest_params: dict):
-        from backtest_module.backtest_manager import BacktestManager
+        from market_data_system.backtest_simulation.backtest_manager import BacktestManager
         instance = BacktestManager()
         instance.add_backtest_params(backtest_params)
         return instance
 
     @classmethod
     def _initialize_execution_manager(cls, backtest_manager: 'BacktestManager') -> 'ExecutionManager':
-        from execution_module.execution_manager import ExecutionManager
+        from execution_system.execution_manager import ExecutionManager
         execution_manager = ExecutionManager()
         execution_manager.set_backtest_manager(backtest_manager)
         return execution_manager
 
     @classmethod
     def _initialize_backtest_data_manager(cls, backtest_manager: 'BacktestManager'):
-        from backtest_module.backtest_data_manager import BacktestDataManager
+        from market_data_system.backtest_simulation.backtest_data_manager import BacktestDataManager
         backtest_data_manager = BacktestDataManager()
         backtest_data_manager.set_backtest_manager(backtest_manager)
         return backtest_data_manager

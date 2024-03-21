@@ -1,4 +1,4 @@
-from configuration_module.configuration_manager import ConfigurationManager
+from global_utils.configuration.configuration_manager import ConfigurationManager
 
 
 class QuoteManagerFactory:

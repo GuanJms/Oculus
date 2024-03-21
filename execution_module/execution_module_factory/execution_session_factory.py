@@ -1,10 +1,10 @@
-from backtest_module.backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
 from execution_module.execution_module_factory.execution_session_action_manager_factory import \
     ExecutionSessionActionManagerFactory
 from execution_module.execution_module_factory.execution_session_signal_manager_factory import \
     ExecutionSessionSignalManagerFactory
 from execution_module.execution_session_module.execution_session import ExecutionSession
-from strategics.repo.strategy.strategy_rule import StrategyRule
+from strategics.repo.core.strategy.strategy_rule import StrategyRule
 from execution_module.execution_module_factory.execution_portfolio_session_factory import \
     ExecutionPortfolioSessionFactory
 from execution_module.execution_module_factory.execution_time_controller_factory import ExecutionTimeControllerFactory

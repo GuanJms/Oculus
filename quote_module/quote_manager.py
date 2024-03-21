@@ -1,18 +1,15 @@
-import weakref
-
-from data_process_module.transaction_factory import TransactionFactory
+from market_data_system.data_process_module.transaction_factory import TransactionFactory
 from global_component_id_generator import GlobalComponentIDGenerator
-from global_time_generator import GlobalTimeGenerator
 from quote_module.quote_board import QuoteBoard
-from data_process_module.transaction import Transaction
-from data_process_module.transaction_queue import TransactionQueue
-from data_process_module.traded_quote_data_manager import TradedQuoteDataManager
+from market_data_system.data_process_module.transaction import Transaction
+from market_data_system.data_process_module.transaction_queue import TransactionQueue
+from market_data_system.data_process_module.traded_quote_data_manager import TradedQuoteDataManager
 from typing import List, Optional, Tuple
 
 """
 Queue manager is the class that manages the quote boards and the transaction queue
-It takes in a data manager and a frequency to update the quote boards.
-Based on the frequency, it will request data from the data manager and process the data stream and push the data to the 
+It takes in a market_data_system manager and a frequency to update the quote boards.
+Based on the frequency, it will request market_data_system from the market_data_system manager and process the market_data_system stream and push the market_data_system to the 
 subscribed quote boards with corresponding roots.
 """
 
@@ -112,7 +109,7 @@ class QuoteManager:
 
     def _configure(self):
         if not self.is_connected():
-            raise ValueError('data manager is not connected')
+            raise ValueError('market_data_system manager is not connected')
         self._configure_subscribed_quote_boards()
 
     def _advance_time_quote_board(self, quote_board: QuoteBoard, start_msd: int, end_msd: int):
@@ -248,13 +245,13 @@ class QuoteManager:
         updated_expirations = expiration_date_params.get('expirations')
         if updated_expirations is None:
             raise ValueError(
-                'expiration dates have not been updated - error in function get_expirations in data manager')
+                'expiration dates have not been updated - error in function get_expirations in market_data_system manager')
         quote_board.set_expirations(updated_expirations)
 
         expirations = quote_board.get_expirations()
         for expiration in expirations:
             self.data_manager.request_open_stream(root, date, expiration, self.id, last_mds=self._last_msd)
-            # data reader is opened for (root, quote_date, expiration) and read up to the last msd
+            # market_data_system reader is opened for (root, quote_date, expiration) and read up to the last msd
 
         self._add_quote_board_to_root_quote_board_list_dict(root, quote_board)
         self._add_quote_board_to_dictionary(quote_board)
@@ -265,9 +262,9 @@ class QuoteManager:
         if self._quote_date is None:
             raise ValueError('quote quote_date has not been set')
         if self.data_manager is None:
-            raise ValueError('data manager has not been set')
+            raise ValueError('market_data_system manager has not been set')
         if not self.is_connected():
-            raise ValueError('data manager is not connected')
+            raise ValueError('market_data_system manager is not connected')
 
     # TODO: move this functionality to BacktestManager, which will be done in the future
 
@@ -339,7 +336,7 @@ class QuoteManager:
         All quote boards should have been initialized;
         Configure the subscribed quote boards to the same timeline just in case they are not;
         """
-        # TODO: Setting all the quote boards to the same timeline in the data manager
+        # TODO: Setting all the quote boards to the same timeline in the market_data_system manager
         self._check_initialized()
 
         for quote_board in self._quote_board_list:

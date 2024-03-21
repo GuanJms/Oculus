@@ -1,7 +1,6 @@
 from typing import Optional
 
-from global_component_id_generator import GlobalComponentIDGenerator
-from global_time_generator import GlobalTimeGenerator
+from global_utils import GlobalComponentIDGenerator, GlobalTimeGenerator
 
 
 class ExecutionTimeController:

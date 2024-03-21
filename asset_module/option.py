@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from global_component_id_generator import GlobalComponentIDGenerator
 from asset_module.asset import Asset

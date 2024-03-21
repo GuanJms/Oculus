@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from backtest_module.backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
 from execution_module.execution_session_module.action_manager import \
     ExecutionSessionActionManager
 from execution_module.execution_session_module.signal_manager import \
@@ -9,8 +9,8 @@ from execution_module.execution_portfolio import ExecutionPortfolioSession
 from execution_module.execution_session_module.execution_signal import ExecutionSignal
 from execution_module.execution_time_controller import ExecutionTimeController
 from initialization_module.initialization_manager import InitializationManager
-from strategics.repo.strategy.strategy_rule import StrategyRule
-from global_component_id_generator import GlobalComponentIDGenerator
+from strategics.repo.core.strategy.strategy_rule import StrategyRule
+from global_utils import GlobalComponentIDGenerator
 
 
 class ExecutionSession:
@@ -71,9 +71,9 @@ class ExecutionSession:
         elif TYPE_MESSAGE == "CHANGE_QUOTE_DATE":
             print('_run_execution', TYPE_MESSAGE, quote_date, next_msd)
             self._run_change_quote_day_execution(quote_date, next_msd)
-        # TODO: ask execution session signal manager if it should proceed with action or not
-        #   (signal manager will refresh status of all signals and return True or False)
-        # TODO: If execution session signal manager says yes, then proceed with action manager
+        # TODO: ask execution_system session signal_generation manager if it should proceed with action or not
+        #   (signal_generation manager will refresh status of all signals and return True or False)
+        # TODO: If execution_system session signal_generation manager says yes, then proceed with action manager
 
     def _request_execution_status(self):
         return self._execution_time_controller.get_execution_status()

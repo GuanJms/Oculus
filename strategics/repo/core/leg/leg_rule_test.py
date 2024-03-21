@@ -2,17 +2,17 @@ import unittest
 
 from global_component_id_generator import GlobalComponentIDGenerator
 from strategics.repo.core.combo.combo_rule import ComboRule
-from strategy_module.decorator_module.selection_module.leg_decorator.dynamic_rule.delta_rule import DeltaRule
-from strategy_module.decorator_module.selection_module.leg_decorator.dynamic_rule.moneyness_rule import \
+from strategics.repo.decorator.option.selection.delta.delta_rule import DeltaRule
+from strategics.repo.decorator.option.selection.moneyness.moneyness_rule import \
     MoneynessRule
-from strategy_module.decorator_module.selection_module.universal_decorator.static_root_rule import StaticRootRule
-from strategy_module.decorator_module.selection_module.leg_decorator.static_rule.static_strike_rule import \
+from strategics.repo.decorator.universal.static_root_rule import StaticRootRule
+from strategics.repo.decorator.option.selection.static.static_strike_rule import \
     StaticStrikeRule
 from strategics.repo.core.leg.leg_rule import LegRule
 from strategics.repo.core.leg.leg_template.delta_leg_rule import DeltaPutRule, DeltaCallRule
 from strategics.repo.core.leg.option.option_leg_rule import OptionRule
-from strategics.repo.core.leg.option.leg_basics.call_rule import CallRule
-from strategics.repo.core.leg.option.leg_basics.put_rule import PutRule
+from strategics.repo.core.leg.option.basics.call_rule import CallRule
+from strategics.repo.core.leg.option.basics.put_rule import PutRule
 from strategics.repo.rule import Rule
 from strategics.repo.rule_class_checker import RuleClassChecker
 

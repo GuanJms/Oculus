@@ -1,4 +1,4 @@
-from global_component_id_generator import GlobalComponentIDGenerator
+from global_utils import GlobalComponentIDGenerator
 from strategics.repo.rule import Rule
 from strategics.repo.rule_class_checker import RuleClassChecker
 
@@ -47,7 +47,7 @@ class ComboRule(Rule):
         RuleClassChecker.is_LegRule(leg_rule)
         leg_param = leg_rule.get_param()
         leg_list = self._combo_param.get('leg_list')
-        leg_list[leg_rule.get_id()] = {'leg_param': leg_param, 'position': position}
+        leg_list[leg_rule.get_id()] = {'leg_param': leg_param, 'position_generation': position}
 
     def get_param(self):
         return self._combo_param

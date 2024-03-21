@@ -1,5 +1,5 @@
 from global_component_id_generator import GlobalComponentIDGenerator
-from strategics.repo.strategy.strategy_rule import StrategyRule
+from strategics.repo.core.strategy.strategy_rule import StrategyRule
 from session import Session
 
 
