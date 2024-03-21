@@ -5,14 +5,14 @@ from market_data_system.backtest_simulation.factory.backtest_data_session_factor
 from global_utils import GlobalComponentIDGenerator
 
 if TYPE_CHECKING:
-    from market_data_system.backtest_simulation.backtest_manager import BacktestManager
+    from market_data_system.backtest_simulation.backtest_manager import PipelineAdaptor
 
 
 class BacktestDataManager:
 
     def __init__(self):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
-        self._backtest_manager: Optional['BacktestManager'] = None
+        self._backtest_manager: Optional['PipelineAdaptor'] = None
         self._backtest_data_session_dict: dict[str, BacktestDataSession] = {} # id: BacktestDataSession
 
     @property
@@ -27,10 +27,10 @@ class BacktestDataManager:
     def ticker_list(self):
         return self._backtest_manager.ticker_list
 
-    def get_backtest_manager(self) -> 'BacktestManager':
+    def get_backtest_manager(self) -> 'PipelineAdaptor':
         return self._backtest_manager
 
-    def set_backtest_manager(self, backtest_manager: 'BacktestManager'):
+    def set_backtest_manager(self, backtest_manager: 'PipelineAdaptor'):
         self._backtest_manager = backtest_manager
 
     def request_backtest_data_session(self) -> Optional[BacktestDataSession]:

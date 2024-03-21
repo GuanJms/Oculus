@@ -1,9 +1,9 @@
 from typing import Optional, Type
 
-from execution_system.execution_manager import ExecutionManager
+from execution_system.adapters.backtest import BacktestExecutionAdapter
+from market_data_system.adaptors import BacktestMarketDataAdapter
 from strategics.repo.core.strategy import StrategyRule
 from global_utils import GlobalComponentIDGenerator, GlobalTimeGenerator
-from market_data_system.backtest_simulation import BacktestDataManager
 
 
 class BacktestPipeline:
@@ -12,9 +12,10 @@ class BacktestPipeline:
     def __init__(self):
         self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         self.strategy_rule_cls: Optional[Type[StrategyRule]] = None
-        self.strategy_rule_instance: Optional[StrategyRule] = None
-        self._execution_manager: Optional[ExecutionManager] = None
-        self._backtest_manager: Optional[BacktestManager] = None
+        self._execution_system_adapter = BacktestExecutionAdapter()
+        self._market_data_system_adapter = BacktestMarketDataAdapter()
+
+
 
     @property
     def id(self) -> str:
@@ -39,18 +40,16 @@ class BacktestPipeline:
                 self._set_param(key, params[key])
         pass
 
-    def set_strategy_params(self, **params):
-        if self.strategy_rule_cls is None:
-            raise ValueError("Strategy rule is not set yet.")
-        self.strategy_rule_instance = self.strategy_rule_cls(**params)
-
     def set_strategy_cls(self, strategy_rule_cls: Type[StrategyRule]):
         self.strategy_rule_cls = strategy_rule_cls
 
-    def get_strategy(self):
-        return self.strategy_rule_instance
-
-    def run(self):
-        if self.strategy_rule_instance is None:
+    def run(self,  **params):
+        if self.strategy_rule_cls is None:
             raise ValueError("Strategy rule is not set yet.")
+        # create strategu_rule_instance
+        strategy_rule_instance = self.strategy_rule_cls(**params)
+        self._execution_system_adapter.execute(strategy_rule_instance)
+        while self.request_execution_status() != "END":
+
+
 

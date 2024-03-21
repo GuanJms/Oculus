@@ -6,8 +6,11 @@ from execution_system.execution_manager import ExecutionManager
 from global_utils import GlobalComponentIDGenerator, GlobalTimeGenerator
 from strategics.repo.core.strategy.strategy_rule import StrategyRule
 
+"""
+BacktestManager contains the bactkest information
+"""
 
-class BacktestManager:
+class PipelineAdaptor:
     def __init__(self):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         self._backtest_params: dict = {}
@@ -17,9 +20,7 @@ class BacktestManager:
         self._frequency: Optional[int] = None
         self._start_ms_of_day: Optional[int] = None
         self._end_ms_of_day: Optional[int] = None
-
-        self._execution_manager = None
-        self._backtest_data_manager = None
+        self._execution_adapter: Optional[BacktestExecutionAdapter] = None
 
     @property
     def id(self) -> str:

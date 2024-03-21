@@ -10,14 +10,14 @@ from strategics.repo.core.strategy.strategy_rule import StrategyRule
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from market_data_system.backtest_simulation.backtest_manager import BacktestManager
+    from market_data_system.backtest_simulation.backtest_manager import PipelineAdaptor
 
 
 class ExecutionManager:
 
     def __init__(self, ):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
-        self._backtest_manager: Optional[BacktestManager] = None
+        self._backtest_manager: Optional[PipelineAdaptor] = None
         self._execution_session_dict: dict[str, ExecutionSession] = {} # execution_session_id: ExecutionSession
         self._strategy_id_to_execution_session_id_dict: dict[str, str] = {}
 
@@ -59,10 +59,10 @@ class ExecutionManager:
         execution_session = self._initialize_session(strategy_rule_instance, backtest_data_session)
         execution_session.start_execution()
 
-    def set_backtest_manager(self, backtest_manager: 'BacktestManager'):
+    def set_backtest_manager(self, backtest_manager: 'PipelineAdaptor'):
         self._backtest_manager = backtest_manager
 
-    def get_backtest_manager(self) -> 'BacktestManager':
+    def get_backtest_manager(self) -> 'PipelineAdaptor':
         return self._backtest_manager
 
 

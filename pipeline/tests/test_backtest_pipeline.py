@@ -1,9 +1,8 @@
 import unittest
 
-from execution_system.execution_manager import ExecutionManager
-# from initialization_module.initialization_manager import InitializationManager
 from strategics.repo.core.strategy.extensions.oil_short_vol_strategy_rule import OilShortVolStrategyRule
 from pipeline import BacktestPipeline
+
 
 class TestStarter(unittest.TestCase):
     def setUp(self):
@@ -42,9 +41,7 @@ class TestStarter(unittest.TestCase):
 
     def test_pipeline_run_method(self):
         self.pipeline.run()
-        self.assertTrue(self.pipeline.execution_manager is not None)
-        self.assertTrue(self.pipeline.backtest_data_manager is not None)
-        self.assertTrue(self.pipeline.backtest_data_manager is not None)
+        
 
 
 if __name__ == '__main__':

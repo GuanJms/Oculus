@@ -15,7 +15,7 @@ from strategics.repo.decorator.option.selection.expiration.single_dte import Sin
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
     from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
-    from market_data_system.backtest_simulation.backtest_manager import BacktestManager
+    from market_data_system.backtest_simulation.backtest_manager import PipelineAdaptor
     from execution_system.execution_manager import ExecutionManager
     from execution_module.execution_session_module.execution_session import ExecutionSession
     from quote_module.quote_board import QuoteBoard
@@ -42,20 +42,20 @@ class InitializationManager:
 
     @classmethod
     def _initialize_backtest_manager(cls, backtest_params: dict):
-        from market_data_system.backtest_simulation.backtest_manager import BacktestManager
-        instance = BacktestManager()
+        from market_data_system.backtest_simulation.backtest_manager import PipelineAdaptor
+        instance = PipelineAdaptor()
         instance.add_backtest_params(backtest_params)
         return instance
 
     @classmethod
-    def _initialize_execution_manager(cls, backtest_manager: 'BacktestManager') -> 'ExecutionManager':
+    def _initialize_execution_manager(cls, backtest_manager: 'PipelineAdaptor') -> 'ExecutionManager':
         from execution_system.execution_manager import ExecutionManager
         execution_manager = ExecutionManager()
         execution_manager.set_backtest_manager(backtest_manager)
         return execution_manager
 
     @classmethod
-    def _initialize_backtest_data_manager(cls, backtest_manager: 'BacktestManager'):
+    def _initialize_backtest_data_manager(cls, backtest_manager: 'PipelineAdaptor'):
         from market_data_system.backtest_simulation.backtest_data_manager import BacktestDataManager
         backtest_data_manager = BacktestDataManager()
         backtest_data_manager.set_backtest_manager(backtest_manager)

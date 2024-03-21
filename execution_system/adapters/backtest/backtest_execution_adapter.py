@@ -1,0 +1,2 @@
+class BacktestExecutionAdapter:
+    pass
