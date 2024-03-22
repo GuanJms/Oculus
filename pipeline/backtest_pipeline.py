@@ -1,10 +1,11 @@
+import time
 from typing import Optional, Type
 
 from execution_system.adapters.backtest import BacktestExecutionAdapter
 from market_data_system.adaptors import BacktestMarketDataAdapter
 from strategics.repo.core.strategy import StrategyRule
 from global_utils import GlobalComponentIDGenerator, GlobalTimeGenerator
-from execution_system import ExecutionStatusType
+from pipeline import PipelineStatusType
 
 
 class BacktestPipeline:
@@ -15,8 +16,17 @@ class BacktestPipeline:
         self.strategy_rule_cls: Optional[Type[StrategyRule]] = None
         self._execution_system_adapter = BacktestExecutionAdapter()
         self._market_data_system_adapter = BacktestMarketDataAdapter()
+        self._status = PipelineStatusType.UNINITIATED
+        self._runnable = False
 
 
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, status: PipelineStatusType):
+        self._status = status
 
     @property
     def id(self) -> str:
@@ -39,21 +49,26 @@ class BacktestPipeline:
         for key in params.keys():
             if key in self._backtest_param_keys:
                 self._set_param(key, params[key])
-        pass
+        if all([hasattr(self, key) for key in self._backtest_param_keys]):
+            self._runnable = True
 
     def set_strategy_cls(self, strategy_rule_cls: Type[StrategyRule]):
         self.strategy_rule_cls = strategy_rule_cls
+        self.status = PipelineStatusType.IDLE
 
-    def run(self,  **params):
-        if self.strategy_rule_cls is None:
-            raise ValueError("Strategy rule is not set yet.")
-        # create strategu_rule_instance
+    def run(self, **params):
+        if not self.status.is_initiated():
+            raise Exception("Pipeline is not initiated")
+        if not self.status == PipelineStatusType.IDLE or self.status == PipelineStatusType.PROCESSING
+            raise Exception("Pipeline is not in IDLE or is already running")
+
+        # create strategy_rule_instance
         strategy_rule_instance = self.strategy_rule_cls(**params)
         self._execution_system_adapter.execute(strategy_rule_instance)
-        while :
-            execution_status = self.request_execution_status()
-            if execution_status ==
-
-
-
-
+        while self._execution_system_adapter.status.is_running():
+            if self._execution_system_adapter.status.is_data_requesting():
+                data_request_query = self._execution_system_adapter.get_data_request_query()
+                new_data = self._market_data_system_adapter.request_data(data_request_query)
+                self._execution_system_adapter.feed(data=new_data)
+            else:
+                time.sleep(0.01)
