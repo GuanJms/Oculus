@@ -4,6 +4,7 @@ from execution_system.adapters.backtest import BacktestExecutionAdapter
 from market_data_system.adaptors import BacktestMarketDataAdapter
 from strategics.repo.core.strategy import StrategyRule
 from global_utils import GlobalComponentIDGenerator, GlobalTimeGenerator
+from execution_system import ExecutionStatusType
 
 
 class BacktestPipeline:
@@ -49,7 +50,10 @@ class BacktestPipeline:
         # create strategu_rule_instance
         strategy_rule_instance = self.strategy_rule_cls(**params)
         self._execution_system_adapter.execute(strategy_rule_instance)
-        while self.request_execution_status() != "END":
+        while :
+            execution_status = self.request_execution_status()
+            if execution_status ==
+
 
 
 
