@@ -74,7 +74,7 @@ class BacktestPipeline:
         self._execution_system_adapter.execute(strategy_rule_instance)
         while self._execution_system_adapter.status.is_running():
             if self._execution_system_adapter.status.is_data_requesting():
-                data_request_query = self._execution_system_adapter.get_data_request_query()
+                data_request_query = self._execution_system_adapter.get_data()
                 self._market_data_system_adapter.simulation.next()
                 new_data = self._market_data_system_adapter.request_data(data_request_query)
                 self._execution_system_adapter.feed(data=new_data)

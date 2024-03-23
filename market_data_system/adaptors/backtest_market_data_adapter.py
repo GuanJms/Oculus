@@ -1,18 +1,30 @@
 from typing import Optional
 
+from market_data_system.adaptors.market_data_adapter import MarketDataAdapter
 
-class BacktestMarketDataAdapter:
+
+class BacktestMarketDataAdapter(MarketDataAdapter):
 
     _backtest_param_keys = ['start_date', 'end_date', 'ticker_list', 'frequency']
     _int_backtest_param_keys = ['start_date', 'end_date', 'frequency']
 
     def __init__(self):
-        self.simulation = None
+        self._market_data_facade = None
         self._runnable: bool = False
         self.start_ms_of_day: Optional[int] = None
         self.end_ms_of_day: Optional[int] = None
 
-    def request_data(self, data_request_query):
+    def get_data(self, *args, **kwargs):
+        pass
+
+    def create_data_session(self, *args, **kwargs):
+        pass
+
+    def end_data_session(self, *args, **kwargs):
+        pass
+
+    def _configure(self, *args, **kwargs):
+
         pass
 
     def is_runnable(self) -> bool:
