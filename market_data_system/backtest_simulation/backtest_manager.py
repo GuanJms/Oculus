@@ -10,6 +10,7 @@ from strategics.repo.core.strategy.strategy_rule import StrategyRule
 BacktestManager contains the bactkest information
 """
 
+
 class PipelineAdaptor:
     def __init__(self):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
@@ -121,5 +122,3 @@ class PipelineAdaptor:
 
     def request_backtest_data_session(self) -> Optional[BacktestDataSession]:
         return self.backtest_data_manager.request_backtest_data_session()
-
-
