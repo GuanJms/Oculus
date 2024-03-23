@@ -39,10 +39,10 @@ class BacktestPipeline:
     def _set_param(self, key: str, value):
         setattr(self, key, value)
 
-    def get_params(self):
+    def get_params(self) -> dict:
         return {key: getattr(self, key) for key in self.__dict__.keys()}
 
-    def get_param(self, key: str):
+    def get_param(self, key: str) -> Optional:
         return getattr(self, key)
 
     def set_params(self, **params):
@@ -59,8 +59,15 @@ class BacktestPipeline:
     def run(self, **params):
         if not self.status.is_initiated():
             raise Exception("Pipeline is not initiated")
+        if not self._runnable:
+            raise Exception("Pipeline is not runnable")
         if not self.status == PipelineStatusType.IDLE or self.status == PipelineStatusType.PROCESSING
             raise Exception("Pipeline is not in IDLE or is already running")
+        if not self._market_data_system_adapter.is_runnable():
+            self._market_data_system_adapter.set_backtest_setting(
+                **{key: getattr(self, key) for key in self._backtest_param_keys})
+        if not self._market_data_system_adapter.is_runnable():
+            raise Exception("Execution system is not runnable")
 
         # create strategy_rule_instance
         strategy_rule_instance = self.strategy_rule_cls(**params)
@@ -68,6 +75,7 @@ class BacktestPipeline:
         while self._execution_system_adapter.status.is_running():
             if self._execution_system_adapter.status.is_data_requesting():
                 data_request_query = self._execution_system_adapter.get_data_request_query()
+                self._market_data_system_adapter.simulation.next()
                 new_data = self._market_data_system_adapter.request_data(data_request_query)
                 self._execution_system_adapter.feed(data=new_data)
             else:

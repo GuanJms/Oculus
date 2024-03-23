@@ -20,7 +20,6 @@ class PipelineAdaptor:
         self._frequency: Optional[int] = None
         self._start_ms_of_day: Optional[int] = None
         self._end_ms_of_day: Optional[int] = None
-        self._execution_adapter: Optional[BacktestExecutionAdapter] = None
 
     @property
     def id(self) -> str:
