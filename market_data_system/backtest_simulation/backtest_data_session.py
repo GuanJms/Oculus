@@ -2,23 +2,28 @@ from typing import Optional, List
 
 from global_utils import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
+from market_data_system._data_session import DataSession
+from market_data_system.enums import OperationMode
 from quote_module.quote_board import QuoteBoard
 from quote_module.quote_manager import QuoteManager
 from quote_module.quote_module_factory.quote_board_factory import QuoteBoardFactory
 from session import Session
 
 
-class BacktestDataSession(Session):
+class BacktestDataSession(DataSession):
 
     def __init__(self):
-        super().__init__()
-        self._expiration_params: dict[str, dict] = {}
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._session_type = OperationMode.BACKTESTING
+        self._expiration_params: dict[str, dict] = {}
         self._quote_manager: Optional[QuoteManager] = None
         self._ticker_list: Optional[List[str]] = None
 
-    def refresh_status(self):
-        raise NotImplementedError("TODO: implement refresh_status")
+    def close(self):
+        pass
+
+    def get_session_type(self):
+        return self._session_type
 
     @property
     def ticker_list(self):
@@ -26,6 +31,14 @@ class BacktestDataSession(Session):
 
     def request_advance_time(self):
         self._quote_manager.request_advance_time()
+
+    def advance_date(self, quote_date: int, start_ms_of_day: int):
+        self._quote_manager.delete_all_quote_board_list()
+        self._quote_manager.request_advance_date(quote_date, start_ms_of_day)
+        expiration_params = self.get_expiration_params()
+        quote_board_list = QuoteBoardFactory.create_quote_board_list(self._ticker_list, expiration_params)
+        for quote_board in quote_board_list:
+            InitializationManager.initialize_quote_board(self._quote_manager, quote_board, reinitialize=False)
 
     def _get_quote_board_list(self) -> List[QuoteBoard]:
         return self._quote_manager.get_quote_board_list()
@@ -56,23 +69,8 @@ class BacktestDataSession(Session):
     def get_data_session_process_status(self):
         return self._quote_manager.get_process_status()
 
-    def advance_date(self, quote_date: int, start_ms_of_day: int):
-        self._quote_manager.delete_all_quote_board_list()
-        self._quote_manager.request_advance_date(quote_date, start_ms_of_day)
-        expiration_params = self.get_expiration_params()
-        quote_board_list = QuoteBoardFactory.create_quote_board_list(self._ticker_list, expiration_params)
-        for quote_board in quote_board_list:
-            InitializationManager.initialize_quote_board(self._quote_manager, quote_board, reinitialize=False)
-
     def get_expiration_params(self):
         return self._expiration_params
 
     def set_expiration_params(self, expiration_params: dict):
         self._expiration_params = expiration_params
-            
-
-
-
-
-
-

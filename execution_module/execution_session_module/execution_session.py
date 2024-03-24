@@ -81,11 +81,12 @@ class ExecutionSession:
     def _request_next_time_message(self):
         return self._execution_time_controller.get_next_time_message()
 
-    def _run_same_quote_day_execution(self, quote_date_message, next_msd):
-        self._backtest_data_session.request_advance_time()
+    # def _run_same_quote_day_execution(self, quote_date_message, next_msd):
+    #     self._backtest_data_session.request_advance_time()
+    #     # TODO: redo the process here
 
-    def _run_change_quote_day_execution(self, quote_date, start_msd):
-        self._backtest_data_session.advance_date(quote_date, start_msd)
+    # def _run_change_quote_day_execution(self, quote_date, start_msd):
+    #     self._backtest_data_session.advance_date(quote_date, start_msd)
 
     def _create_signal_session_list(self) -> List[ExecutionSignal]:
         signal_session_list = []

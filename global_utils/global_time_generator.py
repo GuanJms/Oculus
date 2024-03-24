@@ -6,6 +6,16 @@ from bisect import bisect_right
 class GlobalTimeGenerator:
     nasdaq_calendar = None
 
+    @classmethod
+    def get_current_timestamp(cls):
+        from datetime import datetime
+        return int(datetime.now().timestamp())
+
+    @classmethod
+    def convert_timestamp_to_datetime(cls, timestamp: int):
+        from datetime import datetime
+        return datetime.fromtimestamp(timestamp)
+
     @staticmethod
     def generate_current_date_integer():
         from datetime import datetime

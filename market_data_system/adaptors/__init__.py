@@ -1,1 +1,2 @@
 from .backtest_market_data_adapter import BacktestMarketDataAdapter
+from ._market_data_adapter import MarketDataAdapter
