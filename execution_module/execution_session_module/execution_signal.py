@@ -1,6 +1,6 @@
 from typing import Optional
 
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from session import Session
 
 

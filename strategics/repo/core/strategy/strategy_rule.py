@@ -2,7 +2,7 @@ from typing import Tuple, List
 
 from strategics.repo import SignalGenerator, ActionGenerator
 
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from strategics.repo.rule import Rule
 from strategics.repo.rule_class_checker import RuleClassChecker
 

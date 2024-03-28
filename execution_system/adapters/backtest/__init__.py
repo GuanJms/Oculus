@@ -1,1 +1,1 @@
-from .backtest_execution_adapter import BacktestExecutionAdapter
+from .backtest_execution_adapter import BacktestExecutionHubAdapter

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from global_utils.configuration.configuration_manager import ConfigurationManager
+from utils.global_id.configuration.configuration_manager import ConfigurationManager
 
 
 class Transaction:

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Set, Optional
 
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from status_module.status_info import StatusInfo
 
 

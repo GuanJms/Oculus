@@ -1,7 +1,5 @@
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from strategics.repo import SignalGenerator
-from status_module.execution_status_module.signal_session_status_info import SignalStatusInfo
-from status_module.execution_status_module.signal_status import SignalStatus
 
 
 class SingleDTESignalGenerator(SignalGenerator):

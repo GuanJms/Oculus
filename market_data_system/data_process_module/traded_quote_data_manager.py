@@ -7,7 +7,7 @@ import json
 import os
 from typing import List, Optional, Tuple
 
-from global_utils.configuration.configuration_manager import ConfigurationManager
+from utils.global_id.configuration.configuration_manager import ConfigurationManager
 from market_data_system.data_process_module.traded_quote_reader import TradedQuoteReader
 from utils.pathing import walk_in_process, pathing_expirations, generate_path
 

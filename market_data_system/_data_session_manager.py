@@ -1,9 +1,9 @@
-from typing import Dict, Type, Optional, Union
+from typing import Dict, Optional, Union
 
-from market_data_system._data_session import DataSession
+from market_data_system.utils._data_session import DataSession
 from weakref import WeakSet
 from backtest_simulation import BacktestDataSession
-from market_data_system.enums import OperationMode
+from market_data_system._enums import OperationMode
 
 
 class DataSessionManager:

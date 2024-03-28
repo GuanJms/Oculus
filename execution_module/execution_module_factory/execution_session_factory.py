@@ -1,4 +1,4 @@
-from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
 from execution_module.execution_module_factory.execution_session_action_manager_factory import \
     ExecutionSessionActionManagerFactory
 from execution_module.execution_module_factory.execution_session_signal_manager_factory import \

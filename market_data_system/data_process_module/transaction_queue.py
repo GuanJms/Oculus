@@ -1,7 +1,7 @@
 from collections import deque
 from typing import Optional, List
 
-from global_utils.configuration.configuration_manager import ConfigurationManager
+from utils.global_id.configuration.configuration_manager import ConfigurationManager
 from market_data_system.data_process_module.transaction import Transaction
 
 

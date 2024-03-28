@@ -1,6 +1,6 @@
 from collections import deque
 from typing import List, Optional, Tuple
-from global_utils.configuration.configuration_manager import ConfigurationManager
+from utils.global_id.configuration.configuration_manager import ConfigurationManager
 from utils.process import CSVReader
 
 

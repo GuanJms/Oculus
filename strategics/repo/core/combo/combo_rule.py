@@ -1,4 +1,4 @@
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from strategics.repo.rule import Rule
 from strategics.repo.rule_class_checker import RuleClassChecker
 

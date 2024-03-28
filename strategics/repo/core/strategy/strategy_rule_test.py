@@ -1,5 +1,5 @@
 import unittest
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 
 class MyTestCase(unittest.TestCase):
     def test_strategy_id(self):

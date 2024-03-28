@@ -4,7 +4,7 @@ This scrip is used to read, sort and store the csv file.
 import glob
 import pandas as pd
 import os
-from global_utils.configuration.configuration_manager import ConfigurationManager
+from utils.global_id.configuration.configuration_manager import ConfigurationManager
 
 
 # Root path to the project market_data_system

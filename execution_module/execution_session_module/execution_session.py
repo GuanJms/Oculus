@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
 from execution_module.execution_session_module.action_manager import \
     ExecutionSessionActionManager
 from execution_module.execution_session_module.signal_manager import \
@@ -10,13 +10,14 @@ from execution_module.execution_session_module.execution_signal import Execution
 from execution_module.execution_time_controller import ExecutionTimeController
 from initialization_module.initialization_manager import InitializationManager
 from strategics.repo.core.strategy.strategy_rule import StrategyRule
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 
 
 class ExecutionSession:
 
     def __init__(self, strategy_rule_instance: StrategyRule, execution_time_controller: ExecutionTimeController,
-                 backtest_data_session: BacktestDataSession, execution_portfolio_session: ExecutionPortfolioSession):
+                 backtest_data_session: 'BacktestDataSession', execution_portfolio_session: 'ExecutionPortfolioSession'):
+        raise NotImplementedError("TODO: Take out ExecutionTimeContoller")
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         self._strategy_rule = strategy_rule_instance
         self._execution_time_controller = execution_time_controller

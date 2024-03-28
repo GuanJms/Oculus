@@ -1,4 +1,4 @@
-from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
 
 
 class BacktestDataSessionFactory:

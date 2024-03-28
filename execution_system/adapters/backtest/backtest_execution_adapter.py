@@ -2,7 +2,7 @@ from execution_system import ExecutionStatusType
 from strategics.repo.core.strategy import StrategyRule
 
 
-class BacktestExecutionAdapter:
+class BacktestExecutionHubAdapter:
 
     def __init__(self):
         self._status = ExecutionStatusType.NONE_INITIATED

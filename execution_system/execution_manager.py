@@ -1,23 +1,23 @@
 from typing import Optional
 
-from market_data_system.backtest_simulation.backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
 from execution_module.execution_module_factory.execution_session_factory import ExecutionSessionFactory
 from execution_module.execution_session_module.execution_session import ExecutionSession
-from global_utils import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
 from strategics.repo.core.strategy.strategy_rule import StrategyRule
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from market_data_system.backtest_simulation.backtest_manager import PipelineAdaptor
+    from market_data_system.backtest_simulation._backtest_manager import HubAdaptor
 
 
 class ExecutionManager:
 
     def __init__(self, ):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
-        self._backtest_manager: Optional[PipelineAdaptor] = None
+        self._backtest_manager: Optional[HubAdaptor] = None
         self._execution_session_dict: dict[str, ExecutionSession] = {} # execution_session_id: ExecutionSession
         self._strategy_id_to_execution_session_id_dict: dict[str, str] = {}
 
@@ -59,10 +59,10 @@ class ExecutionManager:
         execution_session = self._initialize_session(strategy_rule_instance, backtest_data_session)
         execution_session.start_execution()
 
-    def set_backtest_manager(self, backtest_manager: 'PipelineAdaptor'):
+    def set_backtest_manager(self, backtest_manager: 'HubAdaptor'):
         self._backtest_manager = backtest_manager
 
-    def get_backtest_manager(self) -> 'PipelineAdaptor':
+    def get_backtest_manager(self) -> 'HubAdaptor':
         return self._backtest_manager
 
 
