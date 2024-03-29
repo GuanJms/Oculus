@@ -20,3 +20,9 @@ class InitializationStatusType(Enum):
 
     def is_ready(self):
         return self.value == InitializationStatusType.READY
+
+
+class HubType(Enum):
+    LIVE_TRADING = auto()
+    BACKTESTING = auto()
+    PAPER_TRADING = auto()

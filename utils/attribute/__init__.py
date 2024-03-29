@@ -1,0 +1,1 @@
+from ._exit import check_attribute_exist
