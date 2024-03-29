@@ -3,11 +3,11 @@ from utils.global_id import GlobalComponentIDGenerator
 
 
 from market_data_system.facade import MarketDataSystemFacade
-from ._market_data_adapter import MarketDataAdapter
+from ._market_data_system_hub_adapter import MarketDataSystemHubAdapter
 from market_data_system._enums import OperationMode
 
 
-class BacktestMarketDataHubAdapter(MarketDataAdapter):
+class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
 
     def __init__(self):
         self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))

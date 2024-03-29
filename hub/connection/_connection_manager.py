@@ -7,14 +7,9 @@ from hub.connection._hub_connection import HubConnection
 
 
 class HubConnectionManager:
-    instance = None
 
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(HubConnectionManager, cls).__new__(cls)
-        return cls.instance
-
-    def __init__(self):
+    def __init__(self, hub_id: str):
+        self.hub_id = hub_id
         self.hub_connections: Dict[str, HubConnection] = dict()  # key: hub_id, value: HubConnection
 
     def add_hub_connection(self, hub_id: str, hub_connection: HubConnection):

@@ -1,19 +1,27 @@
-from typing import Optional, Any, List, Type
+from typing import Optional, Any, List, Type, Dict
 
-from hub._enums import RunningStatusType, InitializationStatusType
+from hub._enums import RunningStatusType, InitializationStatusType, HubType
 from strategics.repo.core.strategy import StrategyRule
 from utils.global_id import GlobalComponentIDGenerator
+from ._hub_session import HubSession
+from ._hub_session_factory import HubSessionFactory
+from .connection import HubConnectionManager
+from execution_system.adapters import ExecutionSystemHubAdapter
+from market_data_system.adaptors import MarketDataSystemHubAdapter
 
 
 class Hub:
     def __init__(self):
         self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._hub_connection_manager: HubConnectionManager = HubConnectionManager(self._id)
         self.strategy_rule_cls: Optional[Type[StrategyRule]] = None
         self._running_status = RunningStatusType.INACTIVE
         self._init_status = InitializationStatusType.UNINITIATED
         self._protected_class_param_keys: List[str] = []
-        self._execution_system: Optional[Any] = None
-        self._market_data_system: Optional[Any] = None
+        self._execution_system: Optional[ExecutionSystemHubAdapter] = None
+        self._market_data_system: Optional[MarketDataSystemHubAdapter] = None
+        self._hub_type: Optional[HubType] = None
+        self._hub_sessions: Dict[str, HubSession] = {}
 
     @property
     def status(self):
@@ -30,6 +38,10 @@ class Hub:
     @property
     def market_data_system(self):
         return self._market_data_system
+
+    @property
+    def hub_connection_manager(self):
+        return self._hub_connection_manager
 
     def _set_params(self, params: dict):
         for key, value in params.items():
@@ -59,3 +71,12 @@ class Hub:
     def check_init(self):
         raise NotImplementedError("check_init method must be implemented in subclass")
 
+    def create_hub_session(self, strategy_params: Optional[Any] = None):
+        if self.strategy_rule_cls is None:
+            raise Exception("Strategy rule class is not set")
+        hub_session = HubSessionFactory.create(hub_type=self._hub_type, strategy_rule_cls=self.strategy_rule_cls,
+                                               strategy_params=strategy_params)
+        self._hub_sessions[hub_session.id] = hub_session
+
+    def get_hub_sessions(self) -> Dict[str, HubSession]:
+        return self._hub_sessions

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class MarketDataAdapter(ABC):
+class MarketDataSystemHubAdapter(ABC):
 
     @abstractmethod
     def request_data(self, *args, **kwargs):

@@ -1,8 +1,8 @@
 from typing import Set, Dict, Any
 
 from execution_system.adapters.backtest import BacktestExecutionHubAdapter
-from market_data_system.adaptors import BacktestMarketDataHubAdapter
-from ._enums import InitializationStatusType, RunningStatusType
+from market_data_system.adaptors import BacktestMarketDataHubSystemHubAdapter
+from ._enums import InitializationStatusType, RunningStatusType, HubType
 from ._integration_hub import Hub
 
 
@@ -10,8 +10,9 @@ class BacktestHub(Hub):
 
     def __init__(self):
         super().__init__()
+        self._hub_type = HubType.BACKTESTING
         self._execution_system = BacktestExecutionHubAdapter()
-        self._market_data_system = BacktestMarketDataHubAdapter()
+        self._market_data_system = BacktestMarketDataHubSystemHubAdapter()
         self._protected_class_param_keys = ['start_date', 'end_date', 'ticker_list', 'frequency']
         self._int_backtest_param_keys = ['start_date', 'end_date', 'frequency']
 
@@ -39,9 +40,29 @@ class BacktestHub(Hub):
         self.check_init()
         if self._init_status != InitializationStatusType.READY:
             raise Exception("[SHOULD NOT BE RUN] Pipeline is not correctly initialized")
+        self.run_config(strategy_param_set)
 
-        # TODO: create HubSessions for Set
+    def run_config(self, strategy_param_set: Set[Dict[str, Any]]):
+        """
+        This function should create HubConnection for each time the strategy is run with a set of strategy_params.
+        Configuration include
+        TODO: create HubSession for each strategy_params
+        TODO: create Timeline for Hub (all HubSessions should share the same timeline)
+        TODO: create DataSession for Hub (all HubSessions should share the same data session)
+        """
         for strategy_params in strategy_param_set:
+            self.create_hub_session(strategy_params=strategy_params)  # create hub session for each strategy_params
+
+        self.execution_system.request_session(self.id)  # request execution session
+        self.market_data_system.request_session(self.id)  # request data session
+
+
+
+
+
+
+
+
 
 
         #

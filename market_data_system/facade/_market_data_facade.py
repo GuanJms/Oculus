@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 from market_data_system._data_session_manager import DataSessionManager
-from market_data_system.adaptors import MarketDataAdapter
+from market_data_system.adaptors import MarketDataSystemHubAdapter
 from market_data_system._enums import OperationMode
 from utils._transmittable_interface import _EventSubscriber
 
@@ -17,9 +17,9 @@ class MarketDataFacade(_EventSubscriber):
 
     def __init__(self):
         self._session_manager = DataSessionManager()
-        self._registered_adapters: Dict[str, MarketDataAdapter] = {}
+        self._registered_adapters: Dict[str, MarketDataSystemHubAdapter] = {}
 
-    def register_adapter(self, adapter_id: str, adapter: MarketDataAdapter):
+    def register_adapter(self, adapter_id: str, adapter: MarketDataSystemHubAdapter):
         self._registered_adapters[adapter_id] = adapter
 
     def request_advance_simulation_timestep(self, adapter_id):
