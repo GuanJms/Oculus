@@ -8,3 +8,4 @@ def connect_to_server(host, port):
 
 if __name__ == '__main__':
     connect_to_server('localhost', 5001)
+
