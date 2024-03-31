@@ -1,9 +1,8 @@
-from market_data_system._enums import OperationMode
 from market_data_system.facade import SimulationMarketDataFacade, RealtimeMarketDataFacade
-from market_data_system.connection import ConnectionManager
-from market_data_system._data_session_manager import DataSessionManager
+from market_data_system.connection import MarketDataSystemConnectionManager
+from market_data_system.data_session._data_session_manager import DataSessionManager
 from market_data_system.utils import convert_timeline_type_to_operation_mode
-from _enums import TimelineType
+from _enums import TimelineType, OperationMode
 
 
 class MarketDataSystemFacade:
@@ -18,7 +17,7 @@ class MarketDataSystemFacade:
     def __init__(self):
         self._simulation_market_data_facade = SimulationMarketDataFacade()
         self._realtime_market_data_facade = RealtimeMarketDataFacade()
-        self._connection_manager = ConnectionManager()
+        self._connection_manager = MarketDataSystemConnectionManager()
         self._session_manager = DataSessionManager()
 
     def connect(self, **kwargs):
@@ -31,14 +30,6 @@ class MarketDataSystemFacade:
                     operation_mode = convert_timeline_type_to_operation_mode(TimelineType.SIMULATION)
                     self.create_session(kwargs['connector_id'], operation_mode)
 
-
-    def create_session(self, adapter_id: str, operation_mode: OperationMode):
-        self._session_manager.create_session(adapter_id, operation_mode)
-
-    def delete_session(self, adapter_id):
-        self._session_manager.delete_session(adapter_id)
-
-
-
-
+    def create_session(self, hub_id: str, operation_mode: OperationMode):
+        self._session_manager.create_session(hub_id, operation_mode)
 

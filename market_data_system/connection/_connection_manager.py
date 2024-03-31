@@ -1,18 +1,18 @@
 from typing import Dict
 
-from _connection import Connection
+from _connection import MarketDataSystemConnection
 
 
-class ConnectionManager:
+class MarketDataSystemConnectionManager:
     instance = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
-            cls.instance = super(ConnectionManager, cls).__new__(cls)
+            cls.instance = super(MarketDataSystemConnectionManager, cls).__new__(cls)
         return cls.instance
 
     def __init__(self):
-        self._configurations: Dict[Connection] = dict()
+        self._configurations: Dict[MarketDataSystemConnection] = {}
         raise NotImplementedError
 
     def create_connection(self, connector_id, connector_type):

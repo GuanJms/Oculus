@@ -3,7 +3,7 @@ from execution_module.execution_session_module.signal_manager import \
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from execution_module.execution_session_module.execution_session import ExecutionSession
+    from execution_system.sessions._execution_session import ExecutionSession
 
 
 class ExecutionSessionSignalManagerFactory:

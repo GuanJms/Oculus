@@ -1,11 +1,10 @@
 from typing import Dict, List
 
 from execution_module.execution_session_module.coordinator_registry import CoordinatorRegistry
-from execution_module.execution_session_module.execution_session import ExecutionSession
+from execution_system.sessions._execution_session import ExecutionSession
 from execution_module.execution_session_module.execution_signal import ExecutionSignal
 from execution_module.execution_session_module.execution_signal_coordinator import \
     ExecutionSignalCoordinator
-from initialization_module.initialization_manager import InitializationManager
 
 
 def _create_execution_signal_coordinator(execution_signal: ExecutionSignal) -> ExecutionSignalCoordinator:

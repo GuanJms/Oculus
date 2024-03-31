@@ -1,1 +1,1 @@
-from ._connection_manager import ConnectionManager
+from ._connection_manager import MarketDataSystemConnectionManager

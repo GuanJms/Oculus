@@ -1,1 +1,2 @@
 from ._execution_system_hub_adapter import ExecutionSystemHubAdapter
+from ._execution_system_hub_connection_manager import ExecutionSystemHubConnectionManager

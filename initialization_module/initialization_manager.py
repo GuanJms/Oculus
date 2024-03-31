@@ -14,10 +14,10 @@ from strategics.repo.decorator.option.selection.expiration.single_dte import Sin
 
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
-    from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
+    from market_data_system.backtest_simulation._backtest_data_session import BacktestDataSession
     from market_data_system.backtest_simulation._backtest_manager import HubAdaptor
     from execution_system.execution_manager import ExecutionManager
-    from execution_module.execution_session_module.execution_session import ExecutionSession
+    from execution_system.sessions._execution_session import ExecutionSession
     from quote_module.quote_board import QuoteBoard
     from quote_module.quote_manager import QuoteManager
 

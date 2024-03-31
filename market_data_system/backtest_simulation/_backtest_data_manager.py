@@ -1,7 +1,7 @@
 from typing import Optional, TYPE_CHECKING
 
-from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
-from market_data_system.backtest_simulation.factory.backtest_data_session_factory import BacktestDataSessionFactory
+from market_data_system.backtest_simulation._backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation.backtest_data_session_factory import BacktestDataSessionFactory
 from utils.global_id import GlobalComponentIDGenerator
 
 if TYPE_CHECKING:
@@ -34,7 +34,7 @@ class BacktestDataManager:
         self._backtest_manager = backtest_manager
 
     def request_backtest_data_session(self) -> Optional[BacktestDataSession]:
-        data_session = BacktestDataSessionFactory.create_session()
+        data_session = BacktestDataSessionFactory.create_data_session()
         self._backtest_data_session_dict[data_session.id] = data_session
         return data_session
 

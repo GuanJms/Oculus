@@ -1,8 +1,8 @@
 from typing import Optional
 
-from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
-from execution_module.execution_module_factory.execution_session_factory import ExecutionSessionFactory
-from execution_module.execution_session_module.execution_session import ExecutionSession
+from market_data_system.backtest_simulation._backtest_data_session import BacktestDataSession
+from execution_system.sessions._execution_session_factory import ExecutionSessionFactory
+from execution_system.sessions._execution_session import ExecutionSession
 from utils.global_id import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
 from strategics.repo.core.strategy.strategy_rule import StrategyRule

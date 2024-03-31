@@ -1,7 +1,7 @@
 from typing import Optional
 
 from market_data_system.backtest_simulation._backtest_data_manager import BacktestDataManager
-from market_data_system.backtest_simulation.data_session._backtest_data_session import BacktestDataSession
+from market_data_system.backtest_simulation._backtest_data_session import BacktestDataSession
 from execution_system.execution_manager import ExecutionManager
 from utils.global_id import GlobalComponentIDGenerator, GlobalTimeGenerator
 from strategics.repo.core.strategy.strategy_rule import StrategyRule

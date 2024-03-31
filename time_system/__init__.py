@@ -1,1 +1,2 @@
-from ._simulation_timeline_manager import SimulationTimelineManager
+from time_system.timeline._simulation_timeline import SimulationTimeline
+from ._enums import *
