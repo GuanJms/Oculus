@@ -13,7 +13,7 @@ class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
         self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         # self._market_data_system = MarketDataSystemFacade() # TODO: Refactor; No need facade here
         self._operation_mode = OperationMode.BACKTEST
-        self._runnable: bool = False
+        # self._runnable: bool = False
         self.start_ms_of_day: Optional[int] = None
         self.end_ms_of_day: Optional[int] = None
 
@@ -43,8 +43,8 @@ class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
     def advance_simulation_timestep(self):
         self._market_data_system.request_advance_simulation_timestep(adapter_id=self.id)
 
-    def is_runnable(self) -> bool:
-        return self._runnable
+    # def is_runnable(self) -> bool:
+    #     return self._runnable
 
     # def set_backtest_setting(self, **params):
     #     for key, value in params.items():
@@ -57,4 +57,4 @@ class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
     def set_market_data_setting(self, **kwargs):
         keys = set(kwargs.keys())
         if ticker_list := keys.intersection({'ticker_list'}):
-            # #TODO: SET COMPOENT TAHT CAN HANDLE TICKER LIST
+            #TODO: SET COMPOENT TAHT CAN HANDLE TICKER LIST
