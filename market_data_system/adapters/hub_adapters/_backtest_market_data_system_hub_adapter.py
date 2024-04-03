@@ -1,11 +1,10 @@
 from typing import Optional
 from utils.global_id import GlobalComponentIDGenerator
 
-from market_data_system.facade import MarketDataSystemFacade
-from market_data_system.adapters.hub_adapters import MarketDataSystemHubConnectionManger
+from ...facade import MarketDataSystemFacade
+from ..hub_adapters import MarketDataSystemHubConnectionManger
 from ._market_data_system_hub_adapter import MarketDataSystemHubAdapter
-from _enums import OperationMode
-
+from ..._enums import OperationMode
 
 class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
 
@@ -56,5 +55,7 @@ class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
 
     def set_market_data_setting(self, **kwargs):
         keys = set(kwargs.keys())
-        if ticker_list := keys.intersection({'ticker_list'}):
+
+        # if ticker_list := keys.intersection({'ticker_list'}):
             #TODO: SET COMPOENT TAHT CAN HANDLE TICKER LIST
+

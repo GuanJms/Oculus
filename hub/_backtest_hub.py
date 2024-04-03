@@ -101,5 +101,6 @@ class BacktestHub(Hub):
                                               frequency=self.get_param('frequency'),
                                               start_ms_of_day=self.get_param('start_ms_of_day'),
                                               end_ms_of_day=self.get_param('end_ms_of_day'))
-        self.market_data_system.set_market_data_setting(ticker_list=self.get_param('ticker_list'))
+        # self.market_data_system.set_market_data_setting(ticker_list=self.get_param('ticker_list'))
+        # Let us set
 

@@ -1,7 +1,7 @@
 import unittest
 
 from utils.global_id.configuration.configuration_manager import ConfigurationManager
-from market_data_system.data_process_module.transaction import Transaction
+from data_process_module import Transaction
 from quote_module.quote_module_factory.quote_manager_factory import QuoteManagerFactory
 
 

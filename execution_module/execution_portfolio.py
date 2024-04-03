@@ -1,4 +1,4 @@
-from global_component_id_generator import GlobalComponentIDGenerator
+from utils.global_id import GlobalComponentIDGenerator
 from strategics.repo.core.strategy.strategy_rule import StrategyRule
 from session import Session
 

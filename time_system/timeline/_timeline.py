@@ -70,19 +70,19 @@ class Timeline(_EventTransmittable, _EventPublisher):
             raise ValueError("Time not set")
 
     def __eq__(self, other):
-        return self.time == other.time
+        return self.time == other.timeline
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __lt__(self, other):
-        return self.time < other.time
+        return self.time < other.timeline
 
     def __le__(self, other):
-        return self.time <= other.time
+        return self.time <= other.timeline
 
     def __gt__(self, other):
-        return self.time > other.time
+        return self.time > other.timeline
 
     def __ge__(self, other):
-        return self.time >= other.time
+        return self.time >= other.timeline

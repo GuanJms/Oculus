@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from market_data_system.data_process_module.transaction import Transaction
-from global_component_id_generator import GlobalComponentIDGenerator
+from data_process_module import Transaction
+from utils.global_id import GlobalComponentIDGenerator
 from sortedcontainers import SortedDict
 
 

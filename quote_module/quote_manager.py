@@ -1,9 +1,9 @@
-from market_data_system.data_process_module.transaction_factory import TransactionFactory
-from global_component_id_generator import GlobalComponentIDGenerator
+from data_process_module import TransactionFactory
+from utils.global_id import GlobalComponentIDGenerator
 from quote_module.quote_board import QuoteBoard
-from market_data_system.data_process_module.transaction import Transaction
-from market_data_system.data_process_module.transaction_queue import TransactionQueue
-from market_data_system.data_process_module.traded_quote_data_manager import TradedQuoteDataManager
+from data_process_module import Transaction
+from data_process_module import TransactionQueue
+from data_process_module import TradedQuoteDataManager
 from typing import List, Optional, Tuple
 
 """

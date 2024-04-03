@@ -1,1 +1,2 @@
-from .backtest_data_session_factory import BacktestDataSessionFactory
+from ._backtest_data_session_factory import BacktestDataSessionFactory
+from ._backtest_data_session import BacktestDataSession

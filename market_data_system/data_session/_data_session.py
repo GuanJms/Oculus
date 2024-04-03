@@ -1,6 +1,6 @@
 from typing import Optional
 
-from _enums import OperationMode
+from .._enums import OperationMode
 from utils.global_id import GlobalComponentIDGenerator
 
 

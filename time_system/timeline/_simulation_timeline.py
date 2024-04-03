@@ -61,7 +61,7 @@ class SimulationTimeline(Timeline):
             self.set_time(ms_of_day=self._end_ms_of_day)
         else:
             self.set_time(ms_of_day=ms_of_day + self.time_interval)
-        self.publish(SimulationEventType.ADVANCE_MS_OF_DAY, self.get_time(TimeType.MS_OF_DAY)
+        self.publish(SimulationEventType.ADVANCE_MS_OF_DAY, self.get_time(TimeType.MS_OF_DAY))
 
     def _advance_date(self):
         current_date = self.get_time(TimeType.DATE)

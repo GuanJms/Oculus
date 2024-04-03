@@ -2,15 +2,13 @@
 InitializationManager is used to initialize the backtest module, execution_system module: BacktestManager, ExecutionManager,
 BacktestDataManager.
 """
-from typing import Optional, TYPE_CHECKING, List
-from market_data_system.data_process_module.traded_quote_data_manager import TradedQuoteDataManager
+from typing import Optional, TYPE_CHECKING
+from data_process_module import TradedQuoteDataManager
 from execution_module.execution_session_module.coordinator_registry import CoordinatorRegistry
-from execution_module.execution_session_module.signal_manager import \
-    ExecutionSessionSignalManager
-from execution_module.execution_session_module.execution_signal import ExecutionSignal
-from global_time_generator import GlobalTimeGenerator
+# from execution_module.execution_session_module.signal_manager import \
+#     ExecutionSessionSignalManager
 from quote_module.quote_module_factory.quote_manager_factory import QuoteManagerFactory
-from strategics.repo.decorator.option.selection.expiration.single_dte import SingleDTESignalGenerator, SingleDTESignalCoordinator
+# from strategics.repo.decorator.option.selection.expiration.single_dte import SingleDTESignalGenerator, SingleDTESignalCoordinator
 
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
@@ -24,7 +22,7 @@ if TYPE_CHECKING:
 
 class InitializationManager:
     _action_coordinator_dict = {}
-    _signal_coordinator_dict = {SingleDTESignalGenerator: SingleDTESignalCoordinator}
+    # _signal_coordinator_dict = {SingleDTESignalGenerator: SingleDTESignalCoordinator}
     _data_manager: Optional[TradedQuoteDataManager] = None
     _backtest_manager_list = []
     _initialized = False
@@ -130,10 +128,10 @@ class InitializationManager:
                                quote_board: 'QuoteBoard', reinitialize: bool = False):
         quote_manager.initialize_quote_board(quote_board, reinitialize)
 
-    @classmethod
-    def initialize_execution_session_signal_manager(cls, signal_manager: ExecutionSessionSignalManager,
-                                                    execution_signal_list: List[ExecutionSignal]):
-        signal_manager.initialize(execution_signal_list)
+    # @classmethod
+    # def initialize_execution_session_signal_manager(cls, signal_manager: ExecutionSessionSignalManager,
+    #                                                 execution_signal_list: List[ExecutionSignal]):
+    #     signal_manager.initialize(execution_signal_list)
 
     @classmethod
     def initialize_execution_session_action_manager(cls, action_manager, execution_action_list):

@@ -2,7 +2,7 @@ from market_data_system.facade import SimulationMarketDataFacade, RealtimeMarket
 from market_data_system.connection import MarketDataSystemConnectionManager
 from market_data_system.data_session._data_session_manager import DataSessionManager
 from market_data_system.utils import convert_timeline_type_to_operation_mode
-from _enums import TimelineType, OperationMode
+from .._enums import TimelineType, OperationMode
 
 
 class MarketDataSystemFacade:

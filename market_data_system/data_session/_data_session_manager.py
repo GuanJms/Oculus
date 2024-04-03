@@ -2,9 +2,8 @@ from typing import Dict, Optional, Union
 
 from market_data_system.data_session._data_session import DataSession
 from weakref import WeakSet
-from market_data_system.backtest_simulation.data_session import BacktestDataSession
-from _enums import OperationMode
-
+from market_data_system.backtest_simulation import BacktestDataSession
+from .._enums import OperationMode
 
 class DataSessionManager:
     instance = None

@@ -1,5 +1,5 @@
-from _enums import OperationMode
-from market_data_system.backtest_simulation import BacktestDataSessionFactory
+from .._enums import OperationMode
+from ..backtest_simulation import BacktestDataSessionFactory
 
 
 class MarketDataSessionFactory:

@@ -1,8 +1,8 @@
 import unittest
 
 from utils.global_id.configuration.configuration_manager import ConfigurationManager
-from market_data_system.data_process_module.transaction_factory import TransactionFactory
-from market_data_system.data_process_module.transaction_queue import TransactionQueue
+from data_process_module import TransactionFactory
+from data_process_module import TransactionQueue
 from quote_module.quote_board import QuoteBoard
 from utils.process import CSVReader
 

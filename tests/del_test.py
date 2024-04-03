@@ -1,7 +1,7 @@
 import os
 import glob
 
-from market_data_system.data_process_module.traded_quote_data_manager import TradedQuoteDataManager
+from data_process_module import TradedQuoteDataManager
 
 
 def update_expiration_dict(file_path: str, func_params: dict):
