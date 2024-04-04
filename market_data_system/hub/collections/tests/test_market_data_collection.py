@@ -1,5 +1,5 @@
 import unittest
-from market_data_system.data_hub._market_data_hub import AssetDataHub
+from market_data_system.hub._market_data_hub import AssetDataHub
 
 class TestCaseMarketDataCollection(unittest.TestCase):
 

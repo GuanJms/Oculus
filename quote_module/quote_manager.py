@@ -133,7 +133,7 @@ class QuoteManager:
         for quote_board in quote_board_to_advance:
             self._advance_time_quote_board(quote_board, start_msd, end_msd)
         self._process_queue()
-        if self._transaction_queue.empty():
+        if self._transaction_queue._empty():
             self._set_last_msd(end_msd)
 
     def request_advance_time(self, delta_time_ms: int = None):
@@ -177,7 +177,7 @@ class QuoteManager:
 
     def _process_queue(self):
         self._transaction_queue.sort()
-        while not self._transaction_queue.empty():
+        while not self._transaction_queue._empty():
             transaction = self._transaction_queue.next()
             self._process_transaction(transaction)
 

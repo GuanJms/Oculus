@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from utils.global_id import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
-from market_data_system.data_session._data_session import DataSession
+from market_data_system.session._data_session import DataSession
 from .._enums import OperationMode
 from quote_module.quote_board import QuoteBoard
 from quote_module.quote_manager import QuoteManager

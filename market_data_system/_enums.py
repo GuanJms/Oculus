@@ -65,5 +65,26 @@ class TransactionType(Enum):
     ASK = 'ASK'
 
 
+class StructureDomainTag(Enum):
+    STRUCTURED = auto()
+    SEMI_STRUCTURED = auto()
+    UNSTRUCTURED = auto()
+
+
+class AssetDomainTag(Enum):
+    EQUITY = auto()
+
+
+class EquityDomainTag(Enum):
+    STOCK = auto()
+    OPTION = auto()
+
+
+class PriceDomainTag(Enum):
+    BID = auto()
+    ASK = auto()
+    TRADE = auto()
+
+
 __all__ = ["SimulationEventType", "OperationMode", "TimelineType", "AssetType", "OptionType", "AssetCollectionType",
            "TimeType", "TransactionType"]

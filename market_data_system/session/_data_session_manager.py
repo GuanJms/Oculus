@@ -1,6 +1,6 @@
 from typing import Dict, Optional, Union
 
-from market_data_system.data_session._data_session import DataSession
+from market_data_system.session._data_session import DataSession
 from weakref import WeakSet
 from market_data_system.backtest_simulation import BacktestDataSession
 from .._enums import OperationMode

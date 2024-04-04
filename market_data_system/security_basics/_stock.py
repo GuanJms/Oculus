@@ -5,7 +5,7 @@ from ._asset import Asset
 from .._enums import AssetType
 
 
-class Equity(Asset):
+class Stock(Asset):
 
     def __init__(self):
         super().__init__()

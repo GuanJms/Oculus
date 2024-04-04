@@ -5,19 +5,7 @@ def csv_iter_generator(file_name: str):
             line = line.strip()
             yield line.split(",")
 
-
-import weakref
-
-
 class CSVReader:
-    # _instnace_tracker = weakref.WeakSet()
-    #
-    # def __new__(cls, *args, **kwargs):
-    #     instance = super(CSVReader, cls).__new__(cls)
-    #     cls._instnace_tracker.add(instance)
-    #     print(f"CSVReader init {len(cls._instnace_tracker)}")
-    #     return instance
-
     def __init__(self, file_name: str):
         self.empty = False
         self.peek = None

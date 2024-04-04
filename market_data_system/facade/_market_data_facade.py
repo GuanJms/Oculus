@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from market_data_system.data_session._data_session_manager import DataSessionManager
+from market_data_system.session._data_session_manager import DataSessionManager
 from market_data_system.adapters import MarketDataSystemHubAdapter
 from utils._transmittable_interface import _EventSubscriber
 

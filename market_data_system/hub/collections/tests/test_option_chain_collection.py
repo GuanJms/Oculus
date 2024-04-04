@@ -1,6 +1,6 @@
 import unittest
 
-from market_data_system.data_hub.collections._option_chain_collection import OptionChainCollection
+from market_data_system.hub.collections._option_chain_collection import OptionChainCollection
 
 
 class TestOptionChainCollection(unittest.TestCase):

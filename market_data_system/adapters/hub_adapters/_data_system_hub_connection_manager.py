@@ -2,7 +2,7 @@ from typing import Dict, Optional
 
 from _enums import OperationMode
 from market_data_system import DataSession
-from market_data_system.data_session import MarketDataSessionFactory
+from market_data_system.session import MarketDataSessionFactory
 
 
 class MarketDataSystemHubConnectionManger:
