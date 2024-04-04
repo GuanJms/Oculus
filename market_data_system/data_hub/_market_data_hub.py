@@ -5,14 +5,14 @@ with same Timeline manner.
 """
 from typing import Optional
 
-from ._option_chain_collection import OptionChainCollection
-from ._equity_collection import EquityCollection
-from ...security_basics import Asset
-from ...time_basics import Timeline
-from ..._enums import AssetType
+from market_data_system.data_hub.collections._option_chain_collection import OptionChainCollection
+from market_data_system.data_hub.collections._equity_collection import EquityCollection
+from market_data_system.security_basics import Asset
+from market_data_system.time_basics import Timeline
+from market_data_system._enums import AssetType
 
 
-class MarketDataCollection:
+class AssetDataHub:
     def __init__(self):
         self._option_chain_collection: OptionChainCollection = OptionChainCollection()
         self._equity_collection: EquityCollection = EquityCollection()

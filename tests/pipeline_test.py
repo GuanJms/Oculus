@@ -37,7 +37,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(quote_manager.frequency, 60000) # default frequency is 60 secondss
 
         quote_manager._advance_time() # default runs at set frequency
-        transaction_quoue = quote_manager._get_transaction_queue() # get the transaction waits
+        transaction_quoue = quote_manager._get_transaction_queue() # get the price waits
 
         test_quote = transaction_quoue
 
@@ -54,7 +54,7 @@ class MyTestCase(unittest.TestCase):
         # test test_quote_price is QuotePrice class
         self.assertIsInstance(test_quote_price, QuotePrice)
 
-        quote_manager._process_queue() # process the transaction queue # TODO: need to make this automated
+        quote_manager._process_queue() # process the price queue # TODO: need to make this automated
         current_quote_price = spy_quote_board.get_quote_price(root, strike, maturity, type, right)
 
         quote_manager._advance_time(total = 60000) # 60 seconds later

@@ -7,3 +7,4 @@ class EquityCollection(AssetCollection):
     def __init__(self):
         super().__init__()
         self._asset_type = AssetType.EQUITY
+z

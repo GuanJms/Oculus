@@ -1,5 +1,5 @@
 import unittest
-from .._transaction import Transaction
+from quote_module.transaction._transaction import Transaction
 
 
 class TransactionTest(unittest.TestCase):

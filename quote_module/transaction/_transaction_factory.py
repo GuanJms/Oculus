@@ -1,7 +1,7 @@
 from typing import List
 
 from ._transaction import Transaction
-from ..._enums import TransactionType
+from market_data_system._enums import TransactionType
 from decimal import Decimal
 
 
@@ -81,7 +81,7 @@ class TransactionFactory:
     @classmethod
     def process_raw_transaction_list(cls, header: List[str], raw_transaction_list: List[List[str]]) -> List[
         Transaction]:
-        """TODO: definity need to be make it more genric in the future. Now it is hard coded for the transaction"""
+        """TODO: definity need to be make it more genric in the future. Now it is hard coded for the price"""
         header_index = cls.find_header_index(header)
         transaction_list = []
         for raw_transaction in raw_transaction_list:

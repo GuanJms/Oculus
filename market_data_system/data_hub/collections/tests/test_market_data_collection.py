@@ -1,10 +1,10 @@
 import unittest
-from .._market_data_collection import MarketDataCollection
+from market_data_system.data_hub._market_data_hub import AssetDataHub
 
 class TestCaseMarketDataCollection(unittest.TestCase):
 
     def setUp(self):
-        self.market_data_collection = MarketDataCollection()
+        self.market_data_collection = AssetDataHub()
 
 
     def test_spy_equity(self):

@@ -39,7 +39,7 @@ class AssetCollection:
 
     @staticmethod
     def create_asset_collection(asset: Asset, asset_type: AssetType, collection_type: AssetCollectionType):
-        if asset_type == AssetType.OPTION and collection_type == AssetCollectionType.MultiAssetCollection:
+        if asset_type == AssetType.OPTION and collection_type == AssetCollectionType.MultiAsset:
             from ...security_basics.option_basics import OptionChain
             from ...security_basics.option_basics.core import Option
             if not isinstance(asset, Option):

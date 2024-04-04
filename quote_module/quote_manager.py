@@ -7,7 +7,7 @@ from data_process_module import TradedQuoteDataManager
 from typing import List, Optional, Tuple
 
 """
-Queue manager is the class that manages the quote boards and the transaction queue
+Queue manager is the class that manages the quote boards and the price queue
 It takes in a market_data_system manager and a frequency to update the quote boards.
 Based on the frequency, it will request market_data_system from the market_data_system manager and process the market_data_system stream and push the market_data_system to the 
 subscribed quote boards with corresponding roots.

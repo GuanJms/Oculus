@@ -8,5 +8,5 @@ class OptionChainCollection(AssetCollection):
     def __init__(self):
         super().__init__()
         self._asset_type = AssetType.OPTION
-        self._asset_collection_type = AssetCollectionType.MultiAssetCollection
+        self._asset_collection_type = AssetCollectionType.MultiAsset
 

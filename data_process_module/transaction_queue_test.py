@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from market_data_system.data_processor.transaction._transaction import Transaction
+from quote_module.transaction._transaction import Transaction
 from data_process_module.transaction_queue import TransactionQueue
 
 

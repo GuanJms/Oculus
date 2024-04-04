@@ -4,7 +4,7 @@ from .. import Asset
 from ..._enums import MultiAssetType, OptionType
 from .core import Option, Put, Call
 from ._option_pair import OptionPair
-from .._asset_collection import MultiAsset
+from .._multi_asset import MultiAsset
 
 
 class OptionChain(MultiAsset):

@@ -2,7 +2,7 @@ from collections import deque
 from typing import Optional, List
 
 from utils.global_id.configuration.configuration_manager import ConfigurationManager
-from market_data_system.data_processor.transaction._transaction import Transaction
+from quote_module.transaction._transaction import Transaction
 
 
 class _TransactionQueueIterator:

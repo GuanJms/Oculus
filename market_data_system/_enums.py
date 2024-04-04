@@ -27,8 +27,8 @@ class AssetType(Enum):
 
 
 class AssetCollectionType(Enum):
-    SingleAssetCollection = auto()
-    MultiAssetCollection = auto()
+    SingleAsset = auto()
+    MultiAsset = auto()
 
 
 class OptionType(Enum):

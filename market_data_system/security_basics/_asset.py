@@ -16,10 +16,20 @@ class Asset:
         self._type: Optional[AssetType] = None
         self._expiration: Optional[int] = None
         self._price: Optional['Decimal'] = None
+        self._bid: Optional['Decimal'] = None
+        self._ask: Optional['Decimal'] = None
 
     @property
     def id(self) -> str:
         return self._id
+
+    @property
+    def bid(self) -> Decimal:
+        return self._bid
+
+    @property
+    def ask(self) -> Decimal:
+        return self._ask
 
     @property
     def ticker(self) -> str:
@@ -38,3 +48,9 @@ class Asset:
 
     def set_price(self, price: int | float | str | Decimal):
         self._price = value_to_decimal_class(price)
+
+    def set_bid(self, bid: int | float | str | Decimal):
+        self._bid = value_to_decimal_class(bid)
+
+    def set_ask(self, ask: int | float | str | Decimal):
+        self._ask = value_to_decimal_class(ask)
