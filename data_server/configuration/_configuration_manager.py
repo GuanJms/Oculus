@@ -1,6 +1,7 @@
 import os
 import json
 from typing import Optional, TextIO, Iterator
+from ..utils.device_enviroment import get_macbook_enviroment
 
 
 def update_configure(func):
@@ -17,12 +18,25 @@ class ConfigurationManager:
     _root_system: Optional[str] = None
     _domain_path: dict = {}
     _initialized: bool = False
-    _testing_device = 'AIR'
+    _testing_device: Optional[str] = None
+
+    @classmethod
+    def set_testing_device(cls):
+        import platform
+        os_name = platform.system()
+        match os_name:
+            case "Darwin":  # MacOS
+                cls._testing_device = get_macbook_enviroment()
+            case "Windows":
+                # Add your code for Windows here
+                raise NotImplementedError("Windows is not supported")
+            case _:
+                raise EnvironmentError(f"Unsupported OS: {os_name}")
 
     @classmethod
     def _run_path_config(cls, config_file):
         config_data = json.load(config_file)
-        cls._root_system = config_data.get(f'DATABASE_ROOT_{cls._testing_device}', None)
+        cls._root_system = config_data.get(f'DATABASE_ROOT', None).get(cls._testing_device, None)
         cls._domain_path = config_data.get('DOMAIN_PATH', None)
 
     @classmethod
@@ -38,8 +52,14 @@ class ConfigurationManager:
 
     @classmethod
     def _check_initialized(cls):
-        if not cls._initialized:
-            cls.load_configurations()
+        if cls._testing_device is None:
+            try:
+                cls.set_testing_device()
+            except Exception as e:
+                print(f"Error setting testing device: {e}")
+        else:
+            if not cls._initialized:
+                cls.load_configurations()
 
     @classmethod
     def _run_configure_folder(cls, filename: str, config_file: TextIO):
@@ -73,4 +93,3 @@ class ConfigurationManager:
             traverser = traverser[domain]
             domain_path_to_return[domain] = traverser.get("BASE")
         return domain_path_to_return
-

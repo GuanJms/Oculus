@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from data_server._enums import AssetDomain, EquityDomain, PriceDomain
-from ..utils._generate_pathes import get_stock_quote_path, get_stock_traded_path, get_option_quote_path, \
+from data_server.utils.path._generate_paths import get_stock_quote_path, get_stock_traded_path, get_option_quote_path, \
     get_option_traded_quote_path
 
 

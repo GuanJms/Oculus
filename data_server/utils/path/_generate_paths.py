@@ -1,7 +1,9 @@
 from pathlib import Path
 
-from ..configuration import ConfigurationManager
+from data_server.configuration import ConfigurationManager
 
+def check_path_exists(path):
+    return Path(path).exists()
 
 def get_stock_quote_path(**kwargs):
     if 'root' not in kwargs:
@@ -20,6 +22,9 @@ def get_stock_quote_path(**kwargs):
 
     stock_quote_path = DATABASE_ROOT / DOMAIN_PATH['EQUITY'] / DOMAIN_PATH['STOCK'] / root / DOMAIN_PATH[
         'QUOTE'] / year / month / file_name
+    path = Path(stock_quote_path)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {stock_quote_path}")
     return stock_quote_path
 
 
