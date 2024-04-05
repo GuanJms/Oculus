@@ -1,0 +1,27 @@
+{
+    "DATABASE_ROOT_PRO": "/Users/jamesguan/Project/TemptDataHouse",
+    "DATABASE_ROOT_AIR": "/Users/jamesguan/ProjectS/TemptDataHouse",
+    "DOMAIN_PATH": {
+        "EQUITY": {
+            "BASE": "",
+            "STOCK": {
+                "BASE": "Equity",
+                "TRADED": {
+                    "BASE": "raw_traded_quote"
+                },
+                "QUOTE" :{
+                    "BASE": "raw_quote"
+                }
+            },
+            "OPTION": {
+                "BASE": "Option",
+                "TRADED": {
+                    "BASE": "raw_traded_quote"
+                },
+                "QUOTE" :{
+                    "BASE": "raw_quote"
+                }
+            }
+        }
+    }
+}

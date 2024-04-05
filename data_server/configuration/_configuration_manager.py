@@ -1,6 +1,6 @@
 import os
 import json
-from typing import Optional, TextIO
+from typing import Optional, TextIO, Iterator
 
 
 def update_configure(func):
@@ -8,16 +8,22 @@ def update_configure(func):
         cls = args[0]
         cls._check_initialized()
         return func(*args, **kwargs)
+
     return wrapper
 
 
 class ConfigurationManager:
     _configure_folder_path: str = os.path.join(os.path.dirname(__file__), 'configuration_files')
     _root_system: Optional[str] = None
-    _domain_path_dict: dict = {}
-    _path_config: dict = {}
+    _domain_path: dict = {}
     _initialized: bool = False
+    _testing_device = 'AIR'
 
+    @classmethod
+    def _run_path_config(cls, config_file):
+        config_data = json.load(config_file)
+        cls._root_system = config_data.get(f'DATABASE_ROOT_{cls._testing_device}', None)
+        cls._domain_path = config_data.get('DOMAIN_PATH', None)
 
     @classmethod
     def load_configurations(cls):
@@ -39,10 +45,13 @@ class ConfigurationManager:
     def _run_configure_folder(cls, filename: str, config_file: TextIO):
         if 'path_config' in filename:
             cls._run_path_config(config_file)
-        if 'raw_traded_quote_config' in filename:
-            cls._run_raw_traded_quote_config(config_file)
+        if 'domain_config' in filename:
+            cls._run_domain_config(config_file)
 
-
+    @classmethod
+    def _run_domain_config(cls, config_file):
+        #TODO: Write domain-related time column variable
+        pass
 
     @classmethod
     @update_configure
@@ -53,16 +62,15 @@ class ConfigurationManager:
         return cls._root_system
 
     @classmethod
-    def _run_path_config(cls, config_file):
-        config_data = json.load(config_file)
-        cls._path_config.update(config_data)
-        cls._root_system = config_data.get('root_system', None)
-        cls._quote_folder_name = config_data.get('quote_folder_name', None)
+    def get_path_config(cls):
+        pass
 
     @classmethod
-    def _run_raw_traded_quote_config(cls, config_file):
-        config_data = json.load(config_file)
-        cls._raw_traded_quote_config.update(config_data)
-        cls._MSD_COL_NAME = config_data.get('MSD_COL_NAME', None)
-        cls._MSD_COL_NAME_SECONDARY = config_data.get('MSD_COL_NAME_SECONDARY', None)
+    def get_domain_path(cls, domain_iterator: Iterator):
+        domain_path_to_return = {}
+        traverser = cls._domain_path
+        for domain in domain_iterator:
+            traverser = traverser[domain]
+            domain_path_to_return[domain] = traverser.get("BASE")
+        return domain_path_to_return
 
