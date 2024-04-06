@@ -2,8 +2,10 @@ from pathlib import Path
 
 from data_server.configuration import ConfigurationManager
 
+
 def check_path_exists(path):
     return Path(path).exists()
+
 
 def get_stock_quote_path(**kwargs):
     if 'root' not in kwargs:
@@ -14,9 +16,12 @@ def get_stock_quote_path(**kwargs):
     domains = kwargs.get('domains')
     root = kwargs.get('root')
     date = kwargs.get('date')
+    if isinstance(date, int):
+        date = str(date)
     year = date[0:4]
     month = date[4:6]
-    file_name = f'{date}.csv'
+    file_type = kwargs.get('file_type')
+    file_name = f'{date}.{file_type}'
     DATABASE_ROOT = Path(ConfigurationManager.get_root_system())
     DOMAIN_PATH = ConfigurationManager.get_domain_path(domains)
 

@@ -17,6 +17,7 @@ class TimeDataStreamReader(IntradayTimeReader, TimePeekable, BatchReader):
     def __init__(self):
         self._stream: Optional[CSVReadingStream] = None
         self._path: Optional[Path] = None
+        self._file_type: Optional[str] = None
         self._data_cache: deque = deque()
         self._date: Optional[int] = None
         self._reading_batch: Optional[int] = None
@@ -24,6 +25,10 @@ class TimeDataStreamReader(IntradayTimeReader, TimePeekable, BatchReader):
         self._intraday_time_column_IX: Optional[int] = None
         self._intraday_time: Optional[int] = None
         self._header: Optional[list] = None
+
+        self._has_header: Optional[bool] = None
+        self._encoding: Optional[str] = None
+        self._delimiter: Optional[str] = None
 
         self.status = ReaderStatus.CLOSED
         self.set_reading_batch(self.READING_BATCH)
@@ -36,13 +41,13 @@ class TimeDataStreamReader(IntradayTimeReader, TimePeekable, BatchReader):
     def _next(self):
         return self._data_cache.popleft() if not self.empty else None
 
-    def open_stream(self, path: Path, has_header: bool = True, encoding: str = 'utf-8', delimiter: str = ','):
+    def _open_stream(self, has_header: bool = True, encoding: str = 'utf-8', delimiter: str = ','):
         self._data_cache = deque()
-        self._path = path
-        self._stream = CSVReadingStream.open(path, encoding=encoding, delimiter=delimiter)
+        self._stream = CSVReadingStream.open(self.get_path(), encoding=encoding, delimiter=delimiter)
         if has_header:
             self._header = next(self._stream)
             self._intraday_time_column_IX = self._header.index(self._intraday_time_column)
+        self.status = ReaderStatus.OPEN
 
     def _read_util_time(self, time: int):
         record_to_return = []
@@ -98,3 +103,13 @@ class TimeDataStreamReader(IntradayTimeReader, TimePeekable, BatchReader):
         # read more if the data cache is empty
         if len(self._data_cache) == 0:
             self._read_batch()
+
+    def get_path(self):
+        return self._path
+
+    def set_path(self, path: Path):
+        self._path = path
+
+    def open_stream(self):
+        self._open_stream(has_header=self._has_header, encoding=self._encoding,
+                          delimiter=self._delimiter)

@@ -1,4 +1,27 @@
-{
-    "MSD_COL_NAME": "ms_of_day",
-    "MSD_COL_NAME_SECONDARY": "ms_of_day2"
+{"DOMAIN": {
+        "EQUITY": {
+            "BASE": "",
+            "STOCK": {
+                "BASE": "Equity",
+                "TRADED": {
+                    "BASE": "raw_traded_quote"
+                },
+                "QUOTE" :{
+                    "FILE_TYPE": "csv",
+                    "TIME_COLUMN": "ms_of_day",
+                    "HAS_HEADER": "True",
+                    "FOLDER_NAME": "raw_quote"
+                }
+            },
+            "OPTION": {
+                "BASE": "Option",
+                "TRADED": {
+                    "BASE": "raw_traded_quote"
+                },
+                "QUOTE" :{
+                    "BASE": "raw_quote"
+                }
+            }
+        }
+    }
 }

@@ -12,16 +12,21 @@ class ReaderStatus(Enum):
     ERROR = auto()
 
 
-class AssetDomain(Enum):
+class DomainEnum(Enum):
+    def to_string(self):
+        return self.name.upper()
+
+
+class AssetDomain(DomainEnum):
     EQUITY = auto()
 
 
-class EquityDomain(Enum):
+class EquityDomain(DomainEnum):
     STOCK = auto()
     OPTION = auto()
 
 
-class PriceDomain(Enum):
+class PriceDomain(DomainEnum):
     TRADED = auto()
     QUOTE = auto()
     TRADED_QUOTE = auto()

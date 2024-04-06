@@ -59,31 +59,33 @@ class TimeType(Enum):
         return self == TimeType.TIME_OF_DAY or self == TimeType.MS_OF_DAY
 
 
-class TransactionType(Enum):
-    TRADED = 'TRADED'
-    BID = 'BID'
-    ASK = 'ASK'
+class DomainEnum(Enum):
+    def to_string(self):
+        return self.name.upper()
 
 
-class StructureDomainTag(Enum):
+class StructureDomainTag(DomainEnum):
     STRUCTURED = auto()
     SEMI_STRUCTURED = auto()
     UNSTRUCTURED = auto()
 
+    def to_string(self):
+        return self.name.upper()
 
-class AssetDomainTag(Enum):
+
+class AssetDomain(DomainEnum):
     EQUITY = auto()
 
 
-class EquityDomainTag(Enum):
+class EquityDomain(DomainEnum):
     STOCK = auto()
     OPTION = auto()
 
 
-class PriceDomainTag(Enum):
-    BID = auto()
-    ASK = auto()
-    TRADE = auto()
+class PriceDomain(DomainEnum):
+    TRADED = auto()
+    QUOTE = auto()
+    TRADED_QUOTE = auto()
 
 
 __all__ = ["SimulationEventType", "OperationMode", "TimelineType", "AssetType", "OptionType", "AssetCollectionType",
