@@ -1,6 +1,5 @@
 import unittest
 
-
 class TestRequestDataServer(unittest.TestCase):
 
     def test_incoming_data_request(self):
