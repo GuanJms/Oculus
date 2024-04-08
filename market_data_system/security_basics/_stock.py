@@ -2,28 +2,25 @@ from decimal import Decimal
 from typing import Optional, Any
 
 from ._asset import Asset
-from .._enums import AssetType
+from .._enums import AssetDomain, EquityDomain
 
 
 class Stock(Asset):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__()
-        self._type = AssetType.EQUITY
-        self._company_name: Optional[str] = None
-        self._sector: Optional[str] = None
-        self._industry: Optional[str] = None
-        self._country: Optional[str] = None
-        self._market_cap: Optional[float] = None
-        self._earning_per_share: Optional[Decimal] = None
-        self._dividend: Optional[Decimal] = None
+        self._domains = [AssetDomain.EQUITY, EquityDomain.STOCK]
 
-    def get_param(self, param: str) -> Optional[Any]:
-        # check if the param exists
-        if hasattr(self, param):
-            return getattr(self, param)
-        if not param.startswith('_'):
-            private = f"_{param}"
-            if hasattr(self, private):
-                return getattr(self, private)
-        return None
+        if 'ticker' not in kwargs:
+            raise ValueError('ticker is required')
+
+        self._ticker: Optional[str] = kwargs.get('ticker')
+        self._company_name: Optional[str] = kwargs.get('company_name', None)
+        self._sector: Optional[str] = kwargs.get('sector', None)
+        self._industry: Optional[str] = kwargs.get('industry', None)
+        self._country: Optional[str] = kwargs.get('country', None)
+        self._market_cap: Optional[float] = kwargs.get('market_cap', None)
+        self._earning_per_share: Optional[Decimal] = kwargs.get('earning_per_share', None)
+        self._dividend: Optional[Decimal] = kwargs.get('dividend', None)
+
+

@@ -1,10 +1,10 @@
 from ._asset_collection import AssetCollection
-from ..._enums import AssetType
+from ..._enums import DomainEnum, EquityDomain, AssetDomain
 
 
-class EquityCollection(AssetCollection):
+class StockCollection(AssetCollection):
 
     def __init__(self):
         super().__init__()
-        self._asset_type = AssetType.EQUITY
+        self._domains = [AssetDomain.EQUITY, EquityDomain.STOCK]
 z

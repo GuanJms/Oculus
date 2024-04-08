@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .core import Put, Call
-from ..._enums import OptionType
+from ..._enums import OptionDomain
 
 
 class OptionPair:
@@ -12,9 +12,9 @@ class OptionPair:
             raise ValueError("Expiration must be an integer")
         self._strike = strike
         self._expiration = expiration
-        if put is not None and put.type != OptionType.PUT:
+        if put is not None and put.type != OptionDomain.PUT:
             raise ValueError("Put option type is not PUT")
-        if call is not None and call.type != OptionType.CALL:
+        if call is not None and call.type != OptionDomain.CALL:
             raise ValueError("Call option type is not CALL")
         self._put = put
         self._call = call
@@ -29,12 +29,12 @@ class OptionPair:
 
     @put.setter
     def put(self, put: Put):
-        if self._put.type != OptionType.PUT:
+        if self._put.type != OptionDomain.PUT:
             raise ValueError("Put option type is not PUT")
         self._put = put
     @call.setter
     def call(self, call: Call):
-        if self._call.type != OptionType.CALL:
+        if self._call.type != OptionDomain.CALL:
             raise ValueError("Call option type is not CALL")
         self._call = call
 
@@ -42,14 +42,14 @@ class OptionPair:
     def strike(self):
         return self._strike
 
-    def get_option(self, option_type: OptionType | str):
+    def get_option(self, option_type: OptionDomain | str):
         if isinstance(option_type, str):
-            option_type = OptionType.get_option_type(option_type)
+            option_type = OptionDomain.get_option_type(option_type)
 
         match option_type:
-            case OptionType.PUT:
+            case OptionDomain.PUT:
                 return self._put
-            case OptionType.CALL:
+            case OptionDomain.CALL:
                 return self._call
             case _:
                 raise ValueError("Invalid option type")

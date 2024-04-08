@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 from .. import Asset
-from ..._enums import MultiAssetType, OptionType
+from ..._enums import MultiAssetType, OptionDomain
 from .core import Option, Put, Call
 from ._option_pair import OptionPair
 from .._multi_asset import MultiAsset
@@ -28,14 +28,14 @@ class OptionChain(MultiAsset):
         strike = option.strike
         if strike not in self._asset_list:
             self._asset_list[strike] = OptionPair(strike=strike, expiration=self.expiration)
-        if option.option_type == OptionType.PUT:
+        if option.option_type == OptionDomain.PUT:
             self._asset_list[strike].put = option
-        elif option.option_type == OptionType.CALL:
+        elif option.option_type == OptionDomain.CALL:
             self._asset_list[strike].call = option
 
     def get_strike_options(self, strike: int) -> OptionPair:
         return self._asset_list[strike]
 
-    def get_option(self, strike: int, option_type: OptionType) -> Option:
+    def get_option(self, strike: int, option_type: OptionDomain) -> Option:
         return self._asset_list[strike].get_option(option_type)
 

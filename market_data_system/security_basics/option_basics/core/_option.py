@@ -1,6 +1,6 @@
 from typing import Optional
 
-from ...._enums import AssetType, OptionType
+from ...._enums import OptionDomain
 from ..._asset import Asset
 
 
@@ -10,12 +10,12 @@ class Option(Asset):
         super().__init__()
         self._ticker = ticker
         self._type: AssetType.OPTION
-        self._option_type: Optional[OptionType] = None
+        self._option_type: Optional[OptionDomain] = None
         self._strike = strike
         self._expiration = expiration  # Remark: Add Date Time class if there is need for that in the future
 
     @property
-    def option_type(self) -> OptionType:
+    def option_type(self) -> OptionDomain:
         return self._option_type
 
     @property

@@ -19,11 +19,32 @@ class TimelineType(Enum):
     REALTIME = auto()
 
 
-class AssetType(Enum):
+class DomainEnum(Enum):
+    def to_string(self):
+        return self.name.upper()
+
+
+class StructureDomain(DomainEnum):
+    STRUCTURED = auto()
+    SEMI_STRUCTURED = auto()
+    UNSTRUCTURED = auto()
+
+    def to_string(self):
+        return self.name.upper()
+
+
+class AssetDomain(DomainEnum):
     EQUITY = auto()
-    BOND = auto()
+
+
+class EquityDomain(DomainEnum):
+    STOCK = auto()
     OPTION = auto()
-    INDEX = auto()
+
+class PriceDomain(DomainEnum):
+    TRADED = auto()
+    QUOTE = auto()
+    TRADED_QUOTE = auto()
 
 
 class AssetCollectionType(Enum):
@@ -31,7 +52,7 @@ class AssetCollectionType(Enum):
     MultiAsset = auto()
 
 
-class OptionType(Enum):
+class OptionDomain(Enum):
     CALL = auto()
     PUT = auto()
 
@@ -59,34 +80,5 @@ class TimeType(Enum):
         return self == TimeType.TIME_OF_DAY or self == TimeType.MS_OF_DAY
 
 
-class DomainEnum(Enum):
-    def to_string(self):
-        return self.name.upper()
-
-
-class StructureDomainTag(DomainEnum):
-    STRUCTURED = auto()
-    SEMI_STRUCTURED = auto()
-    UNSTRUCTURED = auto()
-
-    def to_string(self):
-        return self.name.upper()
-
-
-class AssetDomain(DomainEnum):
-    EQUITY = auto()
-
-
-class EquityDomain(DomainEnum):
-    STOCK = auto()
-    OPTION = auto()
-
-
-class PriceDomain(DomainEnum):
-    TRADED = auto()
-    QUOTE = auto()
-    TRADED_QUOTE = auto()
-
-
-__all__ = ["SimulationEventType", "OperationMode", "TimelineType", "AssetType", "OptionType", "AssetCollectionType",
-           "TimeType", "TransactionType"]
+__all__ = ["SimulationEventType", "OperationMode", "TimelineType", "OptionDomain", "AssetCollectionType",
+           "TimeType", "DomainEnum", "StructureDomain", "AssetDomain", "EquityDomain", "PriceDomain",]

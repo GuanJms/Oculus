@@ -1,9 +1,7 @@
-from abc import abstractmethod
 from decimal import Decimal
-from typing import Optional, List
+from typing import Optional, List, Any
 
-from ..time_basics import Time, Timeline
-from .._enums import AssetType
+from .._enums import DomainEnum
 from ..utils import value_to_decimal_class
 from utils.global_id import GlobalComponentIDGenerator
 
@@ -13,7 +11,7 @@ class Asset:
     def __init__(self):
         self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
         self._ticker: Optional[str] = None
-        self._type: Optional[AssetType] = None
+        self._domains: Optional[List[DomainEnum]] = None
         self._expiration: Optional[int] = None
         self._price: Optional['Decimal'] = None
         self._bid: Optional['Decimal'] = None
@@ -36,8 +34,8 @@ class Asset:
         return self._ticker
 
     @property
-    def type(self) -> AssetType:
-        return self._type
+    def domains(self) -> List[DomainEnum]:
+        return self._domains
 
     @property
     def price(self) -> Decimal:
@@ -54,3 +52,18 @@ class Asset:
 
     def set_ask(self, ask: int | float | str | Decimal):
         self._ask = value_to_decimal_class(ask)
+
+    def get_param(self, param: str) -> Optional[Any]:
+        # check if the param exists
+        if hasattr(self, param):
+            return getattr(self, param)
+        if not param.startswith('_'):
+            private = f"_{param}"
+            if hasattr(self, private):
+                return getattr(self, private)
+        return None
+
+    def get_params(self) -> dict[str, Optional]:
+        # TODO: needs testing! Not sure if the code is correct
+        all_params = {key: value for key, value in vars(self).items() if value is not None}
+        return all_params

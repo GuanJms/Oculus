@@ -1,5 +1,4 @@
 import pandas_market_calendars as mcal
-from utils.global_id.configuration.configuration_manager import ConfigurationManager
 from bisect import bisect_right
 
 
@@ -38,7 +37,7 @@ class GlobalTimeGenerator:
     @classmethod
     def load_calendar(cls):
         import pandas as pd
-        START_DATE = str(ConfigurationManager.START_DATE)
+        START_DATE = 20230601 # TODO: hard-cord setting
         START_DATE = f"{START_DATE[:4]}-{START_DATE[4:6]}-{START_DATE[6:]}"
         END_DATE = pd.Timestamp.today() + pd.Timedelta(days=30)
         END_DATE = END_DATE.strftime('%Y-%m-%d')

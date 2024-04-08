@@ -3,13 +3,11 @@ InitializationManager is used to initialize the backtest module, execution_syste
 BacktestDataManager.
 """
 from typing import Optional, TYPE_CHECKING
-from data_process_module import TradedQuoteDataManager
 from execution_module.execution_session_module.coordinator_registry import CoordinatorRegistry
 # from execution_module.execution_session_module.signal_manager import \
 #     ExecutionSessionSignalManager
-from quote_module.quote_module_factory.quote_manager_factory import QuoteManagerFactory
 # from strategics.repo.decorator.option.selection.expiration.single_dte import SingleDTESignalGenerator, SingleDTESignalCoordinator
-
+from utils.global_id import GlobalTimeGenerator
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
     from market_data_system.backtest_simulation._backtest_data_session import BacktestDataSession
@@ -23,20 +21,19 @@ if TYPE_CHECKING:
 class InitializationManager:
     _action_coordinator_dict = {}
     # _signal_coordinator_dict = {SingleDTESignalGenerator: SingleDTESignalCoordinator}
-    _data_manager: Optional[TradedQuoteDataManager] = None
     _backtest_manager_list = []
     _initialized = False
 
-    @classmethod
-    def get_traded_quote_data_manager(cls) -> Optional[TradedQuoteDataManager]:
-        cls._initialized_checker()
-        return cls._data_manager
+    # @classmethod
+    # def get_traded_quote_data_manager(cls) -> Optional[TradedQuoteDataManager]:
+    #     cls._initialized_checker()
+    #     return cls._data_manager
 
-    @classmethod
-    def _initialize_traded_quote_data_manager(cls):
-        cls._data_manager = TradedQuoteDataManager(ExecutionManager.get_root_path())
-        if cls._data_manager.is_connected():
-            cls._initialized = True
+    # @classmethod
+    # def _initialize_traded_quote_data_manager(cls):
+    #     cls._data_manager = TradedQuoteDataManager(ExecutionManager.get_root_path())
+    #     if cls._data_manager.is_connected():
+    #         cls._initialized = True
 
     @classmethod
     def _initialize_backtest_manager(cls, backtest_params: dict):

@@ -1,17 +1,17 @@
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 from ...security_basics import Asset, MultiAsset
-from ..._enums import AssetType, AssetCollectionType
+from ..._enums import AssetCollectionType, DomainEnum
 
 
 class AssetCollection:
     def __init__(self):
         self._collections: Dict[str, Asset | MultiAsset] = {}
         self._asset_collection_type: Optional[AssetCollectionType] = None
-        self._asset_type: Optional[AssetType] = None
+        self._domains: Optional[List[DomainEnum]] = None
 
     def check_type(self, asset: Asset):
-        if asset.type != self._asset_type:
-            raise ValueError(f"Asset type {asset.type} is not compatible with collection type {self._asset_type}")
+        if set(asset.domains).intersection(self._domains) != self._domains:
+            raise ValueError(f"Asset domain {asset.domains} is not compatible with collection domain {self._domains}")
 
     def add_asset(self, asset: Asset):
         self.check_type(asset)
@@ -33,12 +33,12 @@ class AssetCollection:
         # ticker_collection is element of collections with key as ticker
         ticker_collection = self._collections.get(asset.ticker, None)
         if ticker_collection is None:
-            ticker_collection = self.create_asset_collection(asset, self._asset_type, self._asset_collection_type)
+            ticker_collection = self.create_asset_collection(asset, self._domains, self._asset_collection_type)
             self._collections[asset.ticker] = ticker_collection
         ticker_collection.add_asset(asset)
 
     @staticmethod
-    def create_asset_collection(asset: Asset, asset_type: AssetType, collection_type: AssetCollectionType):
+    def create_asset_collection(asset: Asset, asset_domains: List[DomainEnum], collection_type: AssetCollectionType):
         if asset_type == AssetType.OPTION and collection_type == AssetCollectionType.MultiAsset:
             from ...security_basics.option_basics import OptionChain
             from ...security_basics.option_basics.core import Option

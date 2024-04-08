@@ -4,10 +4,6 @@ from utils.global_id import GlobalComponentIDGenerator
 from initialization_module.initialization_manager import InitializationManager
 from market_data_system.session._data_session import DataSession
 from .._enums import OperationMode
-from quote_module.quote_board import QuoteBoard
-from quote_module.quote_manager import QuoteManager
-from quote_module.quote_module_factory.quote_board_factory import QuoteBoardFactory
-
 
 class BacktestDataSession(DataSession):
 
@@ -15,7 +11,7 @@ class BacktestDataSession(DataSession):
         super().__init__()
         self._session_type = OperationMode.BACKTEST
         self._expiration_params: dict[str, dict] = {}
-        self._quote_manager: Optional[QuoteManager] = None
+        # self._quote_manager: Optional[QuoteManager] = None
         self._ticker_list: Optional[List[str]] = None
 
     def close(self):
@@ -32,35 +28,35 @@ class BacktestDataSession(DataSession):
         self._quote_manager.delete_all_quote_board_list()
         self._quote_manager.request_advance_date(quote_date, start_ms_of_day)
         expiration_params = self.get_expiration_params()
-        quote_board_list = QuoteBoardFactory.create_quote_board_list(self._ticker_list, expiration_params)
-        for quote_board in quote_board_list:
-            InitializationManager.initialize_quote_board(self._quote_manager, quote_board, reinitialize=False)
+        # quote_board_list = QuoteBoardFactory.create_quote_board_list(self._ticker_list, expiration_params)
+        # for quote_board in quote_board_list:
+        #     InitializationManager.initialize_quote_board(self._quote_manager, quote_board, reinitialize=False)
 
-    def _get_quote_board_list(self) -> List[QuoteBoard]:
-        return self._quote_manager.get_quote_board_list()
-
-    def _get_quote_board_by_ticker(self, ticker: str) -> List[QuoteBoard]:
-        return self._quote_manager.get_quote_board_list_by_root(ticker)
-
-    def request_quote_board(self, ticker: Optional[str] = None) -> List[QuoteBoard]:
-        if ticker is None:
-            return self._get_quote_board_list()
-        else:
-            return self._get_quote_board_by_ticker(ticker)
-
-    def set_quote_manager(self, quote_manager: QuoteManager):
-        self._quote_manager = quote_manager
+    # def _get_quote_board_list(self) -> List[QuoteBoard]:
+    #     return self._quote_manager.get_quote_board_list()
+    #
+    # def _get_quote_board_by_ticker(self, ticker: str) -> List[QuoteBoard]:
+    #     return self._quote_manager.get_quote_board_list_by_root(ticker)
+    #
+    # def request_quote_board(self, ticker: Optional[str] = None) -> List[QuoteBoard]:
+    #     if ticker is None:
+    #         return self._get_quote_board_list()
+    #     else:
+    #         return self._get_quote_board_by_ticker(ticker)
+    #
+    # def set_quote_manager(self, quote_manager: QuoteManager):
+    #     self._quote_manager = quote_manager
 
     def set_ticker_params(self, tickers_params: dict):
         self._ticker_list = tickers_params.get("ticker_list")
 
-    def initialize(self, quote_manager: QuoteManager, expiration_params: dict):
-        # DONE: modify this such that it can handle expiration_params
-        self.set_quote_manager(quote_manager)
-        # DONE: create quote board for each ticker
-        quote_board_list = QuoteBoardFactory.create_quote_board_list(self._ticker_list, expiration_params)
-        for quote_board in quote_board_list:
-            InitializationManager.initialize_quote_board(quote_manager, quote_board, reinitialize=False)
+    # def initialize(self, quote_manager: QuoteManager, expiration_params: dict):
+    #     # DONE: modify this such that it can handle expiration_params
+    #     self.set_quote_manager(quote_manager)
+    #     # DONE: create quote board for each ticker
+    #     quote_board_list = QuoteBoardFactory.create_quote_board_list(self._ticker_list, expiration_params)
+    #     for quote_board in quote_board_list:
+    #         InitializationManager.initialize_quote_board(quote_manager, quote_board, reinitialize=False)
 
     def get_data_session_process_status(self):
         return self._quote_manager.get_process_status()
