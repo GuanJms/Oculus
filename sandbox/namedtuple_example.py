@@ -1,5 +1,5 @@
 from collections import namedtuple
-from market_data_system.security_basics import Call, Put, Option
+from data_system.security_basics import Call, Put, Option
 
 OptionsPair = namedtuple('OptionsPair', ['call', 'put'])
 

@@ -6,7 +6,7 @@ from datetime import timedelta, datetime
 from time_system.utils._date_time_transformation import check_valid_time_interval, get_milliseconds, get_date
 from time_system.adapters import ExecutionSystemTimelineAdapter, MarketDataSystemTimelineAdapter
 from time_system._enums import TimeType, TimelineType
-from market_data_system._enums import SimulationEventType
+from data_system._enums import SimulationEventType
 
 
 class SimulationTimeline(Timeline):

@@ -8,7 +8,7 @@ from strategics.repo.core.strategy.strategy_rule import StrategyRule
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from market_data_system.backtest_simulation._backtest_manager import HubAdaptor
+    from data_system.backtest_simulation._backtest_manager import HubAdaptor
 
 
 class ExecutionManager:

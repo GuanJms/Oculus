@@ -3,7 +3,7 @@ from typing import Any, Optional
 from time_system.adapters._time_adapter import TimelineAdapter
 from time_system._enums import TimelineType
 from utils._transmittable_interface import _EventTransmittable
-from market_data_system.facade import MarketDataSystemFacade
+from data_system.facade import MarketDataSystemFacade
 
 
 class MarketDataSystemTimelineAdapter(TimelineAdapter):

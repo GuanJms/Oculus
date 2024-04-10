@@ -1,6 +1,6 @@
 from typing import Optional
 
-from market_data_system.asset._base import Asset
+from data_system.asset._base import Asset
 from global_component_id_generator import GlobalComponentIDGenerator
 from session import Session
 
