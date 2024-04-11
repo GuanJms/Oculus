@@ -7,4 +7,5 @@ a data formate that Injector class can use to inject the data into AssetDataHub.
 
 
 class StockDataPipeline:
-    pass
+
+
