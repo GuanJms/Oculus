@@ -6,7 +6,6 @@ from data_system.session import MarketDataSessionFactory
 
 
 class MarketDataSystemHubConnectionManger:
-    instance = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):

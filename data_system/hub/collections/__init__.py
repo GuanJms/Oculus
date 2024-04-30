@@ -1,2 +1,2 @@
-from ._option_chain_collection import OptionChainCollection
-from ._stock_collection import StockCollection
+from ._opt_chain_collection_hub import OptionChainCollectionHub
+from ._stock_collection_hub import StockCollectionHub

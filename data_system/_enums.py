@@ -49,8 +49,8 @@ class PriceDomain(DomainEnum):
 
 
 class AssetCollectionType(Enum):
-    SingleAsset = auto()
-    MultiAsset = auto()
+    Asset = auto()
+    AssetCollection = auto()
 
 
 class OptionDomain(Enum):
@@ -69,6 +69,11 @@ class OptionDomain(Enum):
 
 class MultiAssetType(Enum):
     OPTION_CHAIN = auto()
+
+
+class SingleAssetType(Enum):
+    OPTION = auto()
+    STOCK = auto()
 
 
 class TimeType(Enum):

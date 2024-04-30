@@ -4,17 +4,17 @@ from .. import Asset
 from ..._enums import MultiAssetType, OptionDomain
 from .core import Option, Put, Call
 from ._option_pair import OptionPair
-from .._multi_asset import MultiAsset
+from .._asset_collection import AssetCollection
 
 
-class OptionChain(MultiAsset):
+class OptionChain(AssetCollection):
 
     def __init__(self, ticker: str, expiration: int):
         super().__init__()
         self._ticker = ticker
-        self._type = MultiAssetType.OPTION_CHAIN
+        self._asset_type = MultiAssetType.OPTION_CHAIN
         self._expiration = expiration
-        self._asset_list: Dict[int, OptionPair] = {}
+        self._assets: Dict[int, OptionPair] = {}  # key: strike, value: OptionPair
 
     @property
     def ticker(self) -> str:
@@ -26,16 +26,16 @@ class OptionChain(MultiAsset):
 
     def add_asset(self, option: Option):
         strike = option.strike
-        if strike not in self._asset_list:
-            self._asset_list[strike] = OptionPair(strike=strike, expiration=self.expiration)
+        if strike not in self._assets:
+            self._assets[strike] = OptionPair(strike=strike, expiration=self.expiration)
         if option.option_type == OptionDomain.PUT:
-            self._asset_list[strike].put = option
+            self._assets[strike].put = option
         elif option.option_type == OptionDomain.CALL:
-            self._asset_list[strike].call = option
+            self._assets[strike].call = option
 
     def get_strike_options(self, strike: int) -> OptionPair:
-        return self._asset_list[strike]
+        return self._assets[strike]
 
     def get_option(self, strike: int, option_type: OptionDomain) -> Option:
-        return self._asset_list[strike].get_option(option_type)
+        return self._assets[strike].get_option(option_type)
 

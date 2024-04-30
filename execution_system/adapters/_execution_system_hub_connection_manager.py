@@ -4,7 +4,6 @@ from execution_system.sessions import ExecutionSessionFactory, ExecutionSession
 
 
 class ExecutionSystemHubConnectionManager:
-    instance = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):

@@ -9,8 +9,6 @@ from integration_hub.connection import HubConnectionFactory
 
 class HubConnectionManager:
 
-    instance = None
-
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
             cls.instance = super(HubConnectionManager, cls).__new__(cls)

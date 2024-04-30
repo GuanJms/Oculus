@@ -6,7 +6,6 @@ from data_system.backtest_simulation import BacktestDataSession
 from .._enums import OperationMode
 
 class DataSessionManager:
-    instance = None
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):

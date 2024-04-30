@@ -5,10 +5,9 @@ from .._asset_data_hub import AssetDataHub
 from ...time_basics import Timeline
 
 
-class TestMarketDataHub(unittest.TestCase):
+class TestAssetDataHub(unittest.TestCase):
     def setUp(self):
         self.hub = AssetDataHub()
-
 
     def test_hub_stock_adding(self):
         hub = self.hub
@@ -17,24 +16,22 @@ class TestMarketDataHub(unittest.TestCase):
             hub.add_asset(Stock(ticker=stock))
         self.assertEqual(len(hub.get_assets()), len(stocks))
 
+    def test_hub_option_adding(self):
+        hub = self.hub
+        stocks = ['TSLA']
+        for stock in stocks:
+            hub.add_option_chain(ticker=stock)
+
+
     def test_timeline_setting(self):
         timeline = Timeline()
-        ms_of_day = 9.5*60*1000*60
+        ms_of_day = 9.5 * 60 * 1000 * 60
         date = 20210101
         timeline.set_time(ms_of_day=ms_of_day, date=date)
         self.hub.set_timeline(timeline)
         self.assertEqual(self.hub.get_timeline(), timeline)
         self.assertAlmostEquals(self.hub.get_timeline().get_time(time_type='ms_of_day'), ms_of_day)
         self.assertEqual(self.hub.get_timeline().get_date(), date)
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

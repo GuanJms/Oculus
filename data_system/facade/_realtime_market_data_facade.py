@@ -2,7 +2,6 @@ from data_system.facade._market_data_facade import MarketDataFacade
 
 
 class RealtimeMarketDataFacade(MarketDataFacade):
-    instance = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):

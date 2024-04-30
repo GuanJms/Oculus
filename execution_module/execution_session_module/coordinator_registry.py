@@ -7,7 +7,6 @@ from execution_module.execution_session_module.execution_signal_coordinator impo
 
 
 class CoordinatorRegistry:
-    _instance = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, '_instance'):

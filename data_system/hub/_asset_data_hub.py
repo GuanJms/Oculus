@@ -5,18 +5,22 @@ with same Timeline manner.
 """
 from typing import Optional
 
+from .middleware import HubTickerFactory
+from .middleware.opt_chain_handler import HubOptionChainHandler
 from ..utils._id_operations import generate_unique_uuid
-from .collections import OptionChainCollection, StockCollection
+from .collections import OptionChainCollectionHub, StockCollectionHub
 from ..security_basics import Asset
 from ..time_basics import Timeline
 from .._enums import *
 
 
 class AssetDataHub:
+    option_domains = [AssetDomain.EQUITY, EquityDomain.OPTION]
+
     def __init__(self):
         self._id: str = generate_unique_uuid()
-        self._option_chain_collection: OptionChainCollection = OptionChainCollection()
-        self._equity_collection: StockCollection = StockCollection()
+        self._option_chain_collection: OptionChainCollectionHub = OptionChainCollectionHub()
+        self._equity_collection: StockCollectionHub = StockCollectionHub()
         self._timeline: Optional[Timeline] = None
         self._public_token: str | None = None
         self._private_key: str | None = None
@@ -51,9 +55,9 @@ class AssetDataHub:
     def add_asset(self, asset: Asset):
         domains = set(asset.domains)
         if domains == {AssetDomain.EQUITY, EquityDomain.STOCK}:
-            self._equity_collection.add_asset(asset)
+            self._equity_collection.add(asset)
         elif domains == {AssetDomain.EQUITY, EquityDomain.OPTION}:
-            self._option_chain_collection.add_asset(asset)
+            self._option_chain_collection.add(asset)
         else:
             raise ValueError(f"Asset domains {asset.domains} is not supported")
 
@@ -91,3 +95,9 @@ class AssetDataHub:
 
     def get_connection_errors(self) -> list[str]:
         return self._connection_errors
+
+    def add_option_chain(self, ticker: str):
+        hub_ticker = HubTickerFactory.create_ticker(ticker=ticker, domains=self.option_domains)
+        option_chain_list = HubOptionChainHandler.create_option_chain(hub_tic=hub_ticker)
+        for option_chain in option_chain_list:
+            self._option_chain_collection.add(option_chain)

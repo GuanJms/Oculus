@@ -7,8 +7,6 @@ from utils._transmittable_interface import _EventSubscriber
 
 class MarketDataFacade(_EventSubscriber):
 
-    instance = None
-
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(MarketDataFacade, cls).__new__(cls)

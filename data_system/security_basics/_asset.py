@@ -1,10 +1,8 @@
 from decimal import Decimal
 from typing import Optional, List, Any
 
-from .._enums import DomainEnum, PriceDomain
-from ..utils import value_to_decimal_class
+from .._enums import DomainEnum, PriceDomain, SingleAssetType
 from utils.global_id import GlobalComponentIDGenerator
-from ..utils._domain_operations import domain_to_chains
 
 
 class Asset:
@@ -52,13 +50,17 @@ class Asset:
         self._ticker = tick
 
     def set_price(self, price: int | float | str | Decimal):
+        from ..utils import value_to_decimal_class
         self._price = value_to_decimal_class(price)
 
     def set_bid(self, bid: int | float | str | Decimal):
+        from ..utils import value_to_decimal_class
         self._bid = value_to_decimal_class(bid)
 
     def set_ask(self, ask: int | float | str | Decimal):
+        from ..utils import value_to_decimal_class
         self._ask = value_to_decimal_class(ask)
+
 
     def get_param(self, param: str) -> Optional[Any]:
         # check if the param exists
@@ -76,6 +78,8 @@ class Asset:
         return all_params
 
     def get_domain_chain_str(self, price_domain: PriceDomain | None = None) -> str:
+        from ..utils._domain_operations import domain_to_chains
+
         domains = self._domains.copy()
         if price_domain is not None and not isinstance(price_domain, PriceDomain):
             raise ValueError('price_domain must be a PriceDomain enum')

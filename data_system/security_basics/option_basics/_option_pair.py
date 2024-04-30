@@ -5,7 +5,8 @@ from ..._enums import OptionDomain
 
 
 class OptionPair:
-    def __init__(self, strike: int, expiration: int, put: Optional[Put] = None, call: Optional[Call] = None):
+    def __init__(self, ticker: str, strike: int, expiration: int, put: Optional[Put] = None, call: Optional[Call] = None):
+        self._ticker = ticker
         if not isinstance(strike, int):
             raise ValueError("Strike must be an integer")
         if not isinstance(expiration, int):
@@ -18,6 +19,10 @@ class OptionPair:
             raise ValueError("Call option type is not CALL")
         self._put = put
         self._call = call
+
+    @property
+    def ticker(self):
+        return self._ticker
 
     @property
     def put(self):

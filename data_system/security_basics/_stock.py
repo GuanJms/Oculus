@@ -2,7 +2,7 @@ from decimal import Decimal
 from typing import Optional, Any
 
 from ._asset import Asset
-from .._enums import AssetDomain, EquityDomain
+from .._enums import AssetDomain, EquityDomain, SingleAssetType
 
 
 class Stock(Asset):
