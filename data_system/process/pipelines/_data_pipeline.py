@@ -27,8 +27,11 @@ class DataPipeline:
     def process(self, data, **kwargs):
         data = data.copy()
         # self._validate_steps() # TODO: implement this
-        for step in self.steps:
-            data, kwargs = step.process(data, verbose=self.verbose, **kwargs)
+        for name, step in self.steps:
+            if hasattr(step, "process"):
+                data, kwargs = step.process(data, verbose=self.verbose, **kwargs)
+            elif hasattr(step, "inject"):
+                data, kwargs = step.inject(data, **kwargs)
 
     def get_step_names(self):
         return [step.name for step in self.steps]

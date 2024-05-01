@@ -11,34 +11,120 @@ from data_system.process.pipelines import StockDataPipeline
 
 class TestProcessStockDataPipeline(unittest.TestCase):
     def setUp(self):
-        self.hub = AssetDataHub()
-        self.asset_list = []
-        self.tickers = ["TSLA", "SPY"]
-        for stock in self.tickers:
-            asset = Stock(ticker=stock)
-            self.asset_list.append(asset)
-            self.hub.add_asset(asset=asset)
-
-        self.timeline = Timeline()
-        self.ms_of_day = 0
-        self.date = 20230602
-        self.timeline.set_time(ms_of_day=self.ms_of_day, date=self.date)
-        self.hub.set_timeline(timeline=self.timeline)
-        self.requester = StoculusTimelineRequester()
-        self.hub._id = "123456"  # Fix hub id such that it wont open too much connection in Stoculus during testing
-        self.requester.start_connection(self.hub)
+        self.response = {
+            "data": [
+                {
+                    "date": 20230602,
+                    "ticker": "TSLA",
+                    "domains": "EQUITY.STOCK.QUOTE",
+                    "data": [
+                        [
+                            "0",
+                            "34200000",
+                            "4",
+                            "1",
+                            "210.01",
+                            "0",
+                            "1",
+                            "65",
+                            "210.2",
+                            "0",
+                            "20230602",
+                        ]
+                    ],
+                    "header": [
+                        "",
+                        "ms_of_day",
+                        "bid_size",
+                        "bid_exchange",
+                        "bid",
+                        "bid_condition",
+                        "ask_size",
+                        "ask_exchange",
+                        "ask",
+                        "ask_condition",
+                        "date",
+                    ],
+                },
+                {
+                    "date": 20230602,
+                    "ticker": "SPY",
+                    "domains": "EQUITY.STOCK.QUOTE",
+                    "data": [
+                        [
+                            "0",
+                            "34200000",
+                            "20",
+                            "1",
+                            "424.46",
+                            "0",
+                            "9",
+                            "1",
+                            "424.5",
+                            "0",
+                            "20230602",
+                        ]
+                    ],
+                    "header": [
+                        "",
+                        "ms_of_day",
+                        "bid_size",
+                        "bid_exchange",
+                        "bid",
+                        "bid_condition",
+                        "ask_size",
+                        "ask_exchange",
+                        "ask",
+                        "ask_condition",
+                        "date",
+                    ],
+                },
+                {
+                    "date": 20230602,
+                    "ticker": "FAKE",
+                    "domains": "EQUITY.OPTION.QUOTE",
+                    "data": [
+                        [
+                            "0",
+                            "34200000",
+                            "20",
+                            "1",
+                            "424.46",
+                            "0",
+                            "9",
+                            "1",
+                            "424.5",
+                            "0",
+                            "20230602",
+                        ]
+                    ],
+                    "header": [
+                        "",
+                        "ms_of_day",
+                        "bid_size",
+                        "bid_exchange",
+                        "bid",
+                        "bid_condition",
+                        "ask_size",
+                        "ask_exchange",
+                        "ask",
+                        "ask_condition",
+                        "date",
+                    ],
+                },
+            ],
+            "status": "DONE",
+        }
+        self.dp = StockDataPipeline(
+            steps=[],
+            domains=None,
+            verbose=False,
+        )
 
     def test_setup_data_pipeline(self):
-        # Request data from Stoculus
-        update_time = 9.5 * 60 * 60 * 1000
-        response = self.requester.read_upto_time(self.hub, update_time)
-        print("Read upto time response:", update_time)
-        data = response["data"]
-        reading_status = response["status"]
-        ms_of_day_list = [int(row[1]) for row in data[0]["data"]]
-        print("Read upto time data:", ms_of_day_list)
-        print("Read upto time status:", reading_status)
-        print(response)
+        data = self.response["data"][0]
+        domains = data["domains"]
+        self.dp.process(data, price_domain=domains[-1])
 
 
 if __name__ == "__main__":

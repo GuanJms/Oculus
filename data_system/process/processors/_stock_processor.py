@@ -37,7 +37,7 @@ class StockProcessor(DataProcessor):
         header = data.get("header", [])
         date = data.get("date", None)
         ticker = data.get("ticker", None)
-        price_domain = data.get("price_domain", None)
+        price_domain = data.get("domains", None)
         content_rows = data.get("data", None)
 
         if header is None or date is None or ticker is None or price_domain is None:
