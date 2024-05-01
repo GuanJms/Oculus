@@ -4,9 +4,8 @@ from ._connection import MarketDataSystemConnection
 
 
 class MarketDataSystemConnectionManager:
-
     def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, 'instance'):
+        if not hasattr(cls, "instance"):
             cls.instance = super(MarketDataSystemConnectionManager, cls).__new__(cls)
         return cls.instance
 

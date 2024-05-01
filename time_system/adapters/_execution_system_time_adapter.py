@@ -6,12 +6,11 @@ from utils._transmittable_interface import _EventTransmittable
 
 
 class ExecutionSystemTimelineAdapter(TimelineAdapter):
-
     def __init__(self, timeline_type: TimelineType):
         super().__init__()
         raise NotImplementedError
 
-    def send_event(self, receiver: '_EventTransmittable', event: Any, event_data: Any):
+    def send_event(self, receiver: "_EventTransmittable", event: Any, event_data: Any):
         pass
 
     def receive_event(self, event: Any, event_data: Any):
@@ -22,8 +21,3 @@ class ExecutionSystemTimelineAdapter(TimelineAdapter):
 
     def receive_timestamp(self, time: Any):
         pass
-
-
-
-
-

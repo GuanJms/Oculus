@@ -5,7 +5,6 @@ from utils.process import CSVReader
 
 
 class TradedQuoteReader:
-
     #
     # _instnace_tracker = weakref.WeakSet()
     #
@@ -15,9 +14,16 @@ class TradedQuoteReader:
     #     print(f"TradedQuoteReader init {len(cls._instnace_tracker)}")
     #     return instance
 
-
-    def __init__(self, path: str, root: str, date: int, asset_type: str,
-                 MSD_COL_NAME: str, expiration: int = None, max_row_reading_batch: int = 1000, ):
+    def __init__(
+        self,
+        path: str,
+        root: str,
+        date: int,
+        asset_type: str,
+        MSD_COL_NAME: str,
+        expiration: int = None,
+        max_row_reading_batch: int = 1000,
+    ):
         """
         TradeQuoteReader is a class that reads the traded quote market_data_system from the csv file.
         It reads the market_data_system in batch and do processing in batch, that incldues return the header,
@@ -30,17 +36,17 @@ class TradedQuoteReader:
         :param reading_size: the size of the batch to read the market_data_system
         """
 
-        if asset_type not in ['option', 'stock']:
-            raise ValueError('Asset type not supported')
-        if path.split('.')[-1] not in ['csv']:
-            raise ValueError('File type not supported')
-        if asset_type == 'option' and expiration is None:
-            raise ValueError('Expiration quote_date is required for option')
+        if asset_type not in ["option", "stock"]:
+            raise ValueError("Asset type not supported")
+        if path.split(".")[-1] not in ["csv"]:
+            raise ValueError("File type not supported")
+        if asset_type == "option" and expiration is None:
+            raise ValueError("Expiration quote_date is required for option")
 
         self.path = path
         self.MSD_COL_NAME = MSD_COL_NAME
         self.asset_type = asset_type
-        self.file_type = path.split('.')[-1]
+        self.file_type = path.split(".")[-1]
         self.root = root
         self.date = date
         self.expiration = expiration
@@ -65,7 +71,7 @@ class TradedQuoteReader:
         if self.header is not None:
             return self.header
         else:
-            raise ValueError('Stream is not open')
+            raise ValueError("Stream is not open")
 
     def read_until_msd(self, msd: int) -> Tuple[List[List[str]], str]:
         record_to_return = []
@@ -135,7 +141,6 @@ class TradedQuoteReader:
         _, reading_status = self.read_until_msd(start_msd)
         while reading_status == "ONGOING":
             _, reading_status = self.read_until_msd(start_msd)
-
 
     # TODO: modify the functions such at the end of the file, the stream will be closed automatically and marked as
     #  closed. So it wont allow to read the market_data_system again.

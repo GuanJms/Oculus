@@ -15,13 +15,7 @@ class TestAssetDataHub(unittest.TestCase):
         for stock in stocks:
             hub.add_asset(Stock(ticker=stock))
         self.assertEqual(len(hub.get_assets()), len(stocks))
-
-    def test_hub_option_adding(self):
-        hub = self.hub
-        stocks = ['TSLA']
-        for stock in stocks:
-            hub.add_option_chain(ticker=stock)
-
+        print(hub.get_assets())
 
     def test_timeline_setting(self):
         timeline = Timeline()

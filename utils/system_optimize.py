@@ -10,7 +10,7 @@ def track_memory_usage():
 
     # Take a snapshot and display the top statistics
     snapshot = tracemalloc.take_snapshot()
-    top_stats = snapshot.statistics('lineno')
+    top_stats = snapshot.statistics("lineno")
 
     print("[ Top 10 ]")
     for stat in top_stats[:10]:

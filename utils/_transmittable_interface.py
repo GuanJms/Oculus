@@ -14,7 +14,7 @@ class _TimeStampedTransmittable(ABC):
 
 class _EventTransmittable(ABC):
     @abstractmethod
-    def send_event(self, receiver: '_EventTransmittable', event: Any, event_data: Any):
+    def send_event(self, receiver: "_EventTransmittable", event: Any, event_data: Any):
         pass
 
     @abstractmethod
@@ -23,22 +23,20 @@ class _EventTransmittable(ABC):
 
 
 class _EventSubscriber(ABC):
-
     @abstractmethod
     def receive_event(self, event: Any, event_data: Any):
         pass
 
 
 class _EventPublisher(ABC):
-
     @abstractmethod
     def publish(self, event: Any, event_data: Any):
         pass
 
     @abstractmethod
-    def add_subscriber(self, subscriber: '_EventSubscriber'):
+    def add_subscriber(self, subscriber: "_EventSubscriber"):
         pass
 
     @abstractmethod
-    def delete_subscriber(self, subscriber: '_EventSubscriber'):
+    def delete_subscriber(self, subscriber: "_EventSubscriber"):
         pass

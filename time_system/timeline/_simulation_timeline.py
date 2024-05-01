@@ -3,14 +3,20 @@ from typing import Union, Optional
 from time_system.timeline._timeline import Timeline
 from datetime import timedelta, datetime
 
-from time_system.utils._date_time_transformation import check_valid_time_interval, get_milliseconds, get_date
-from time_system.adapters import ExecutionSystemTimelineAdapter, MarketDataSystemTimelineAdapter
+from time_system.utils._date_time_transformation import (
+    check_valid_time_interval,
+    get_milliseconds,
+    get_date,
+)
+from time_system.adapters import (
+    ExecutionSystemTimelineAdapter,
+    MarketDataSystemTimelineAdapter,
+)
 from time_system._enums import TimeType, TimelineType
 from data_system._enums import SimulationEventType
 
 
 class SimulationTimeline(Timeline):
-
     def __init__(self):
         super().__init__()
         # TimeManager has Time
@@ -20,13 +26,14 @@ class SimulationTimeline(Timeline):
         self._end_ms_of_day: int = -1
         self._start_date: int = -1
         self._end_date: int = -1
-        self._execution_system: Optional['ExecutionSystemTimelineAdapter'] = None
-        self._market_data_system: Optional['MarketDataSystemTimelineAdapter'] = None
+        self._execution_system: Optional["ExecutionSystemTimelineAdapter"] = None
+        self._market_data_system: Optional["MarketDataSystemTimelineAdapter"] = None
         self.calendar: Calendar = NASDAQCalendar()
 
     @property
     def time_interval(self):
         return self._time_interval
+
     #
     # def start(self, **kwargs):
     #     # Start adapter
@@ -48,7 +55,9 @@ class SimulationTimeline(Timeline):
 
         if ms_of_day < self._start_ms_of_day:
             self.set_time(ms_of_day=self._start_ms_of_day)
-            self.publish(SimulationEventType.ADVANCE_MS_OF_DAY, self.get_time(TimeType.MS_OF_DAY))
+            self.publish(
+                SimulationEventType.ADVANCE_MS_OF_DAY, self.get_time(TimeType.MS_OF_DAY)
+            )
 
         if ms_of_day >= self._end_ms_of_day:
             self._advance_date()
@@ -61,7 +70,9 @@ class SimulationTimeline(Timeline):
             self.set_time(ms_of_day=self._end_ms_of_day)
         else:
             self.set_time(ms_of_day=ms_of_day + self.time_interval)
-        self.publish(SimulationEventType.ADVANCE_MS_OF_DAY, self.get_time(TimeType.MS_OF_DAY))
+        self.publish(
+            SimulationEventType.ADVANCE_MS_OF_DAY, self.get_time(TimeType.MS_OF_DAY)
+        )
 
     def _advance_date(self):
         current_date = self.get_time(TimeType.DATE)

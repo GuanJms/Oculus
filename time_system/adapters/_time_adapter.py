@@ -1,12 +1,15 @@
 from typing import Any, Optional
 
-from utils._transmittable_interface import _TimeStampedTransmittable, _EventTransmittable, _EventSubscriber
+from utils._transmittable_interface import (
+    _TimeStampedTransmittable,
+    _EventTransmittable,
+    _EventSubscriber,
+)
 
 
 class TimelineAdapter(_TimeStampedTransmittable, _EventTransmittable, _EventSubscriber):
-
     def __init__(self):
-        self._system: Optional['_EventSubscriber'] = None
+        self._system: Optional["_EventSubscriber"] = None
 
     @property
     def system(self):
@@ -21,9 +24,8 @@ class TimelineAdapter(_TimeStampedTransmittable, _EventTransmittable, _EventSubs
     def receive_event(self, event: Any, event_data: Any):
         self.system.event_subscriber.receive()
 
-    def send_event(self, receiver: '_EventTransmittable', event: Any, event_data: Any):
+    def send_event(self, receiver: "_EventTransmittable", event: Any, event_data: Any):
         pass
-
 
     # def register_target_system_adapter(self, target_system_adapter: _TimeStampedCommunication):
     #     self._system = target_system_adapter

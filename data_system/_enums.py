@@ -59,9 +59,9 @@ class OptionDomain(Enum):
 
     @classmethod
     def get_option_type(cls, option_type):
-        if option_type.upper() in ["CALL", 'C']:
+        if option_type.upper() in ["CALL", "C"]:
             return cls.CALL
-        elif option_type.upper() in ["PUT", 'P']:
+        elif option_type.upper() in ["PUT", "P"]:
             return cls.PUT
         else:
             raise ValueError("Invalid option type")
@@ -86,5 +86,16 @@ class TimeType(Enum):
         return self == TimeType.TIME_OF_DAY or self == TimeType.MS_OF_DAY
 
 
-__all__ = ["SimulationEventType", "OperationMode", "TimelineType", "OptionDomain", "AssetCollectionType",
-           "TimeType", "DomainEnum", "StructureDomain", "AssetDomain", "EquityDomain", "PriceDomain", ]
+__all__ = [
+    "SimulationEventType",
+    "OperationMode",
+    "TimelineType",
+    "OptionDomain",
+    "AssetCollectionType",
+    "TimeType",
+    "DomainEnum",
+    "StructureDomain",
+    "AssetDomain",
+    "EquityDomain",
+    "PriceDomain",
+]

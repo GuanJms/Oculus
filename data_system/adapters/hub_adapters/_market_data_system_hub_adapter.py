@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class MarketDataSystemHubAdapter(ABC):
-
     @property
     @abstractmethod
     def connection_manager(self):

@@ -9,14 +9,14 @@ from strategics.repo.core.strategy import StrategyRule
 from utils.global_id import GlobalComponentIDGenerator
 
 
-
 class HubSession:
-
     def __init__(self, *args, **kwargs):
-        self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
-        self._strategy_rule_cls: Type[StrategyRule] = kwargs.get('strategy_rule_cls')
-        self._strategy_params: Optional[Any] = kwargs.get('strategy_params')
-        self._hub_type: HubType = kwargs.get('hub_type')
+        self._id: str = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
+        self._strategy_rule_cls: Type[StrategyRule] = kwargs.get("strategy_rule_cls")
+        self._strategy_params: Optional[Any] = kwargs.get("strategy_params")
+        self._hub_type: HubType = kwargs.get("hub_type")
 
     @property
     def id(self) -> str:

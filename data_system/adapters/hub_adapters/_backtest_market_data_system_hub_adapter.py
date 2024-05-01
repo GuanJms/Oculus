@@ -6,10 +6,12 @@ from ..hub_adapters import MarketDataSystemHubConnectionManger
 from ._market_data_system_hub_adapter import MarketDataSystemHubAdapter
 from ..._enums import OperationMode
 
-class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
 
+class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
     def __init__(self):
-        self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._id: str = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
         # self._market_data_system = MarketDataSystemFacade() # TODO: Refactor; No need facade here
         self._operation_mode = OperationMode.BACKTEST
         # self._runnable: bool = False
@@ -24,12 +26,13 @@ class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
     def id(self) -> str:
         return self._id
 
-
     def request_data(self, *args, **kwargs):
         pass
 
     def request_session(self, hub_id: str):
-        self.connection_manager.create_data_session(hub_id=hub_id, operation_mode=self._operation_mode)
+        self.connection_manager.create_data_session(
+            hub_id=hub_id, operation_mode=self._operation_mode
+        )
 
     def get_session_id(self, hub_id: str):
         """
@@ -57,5 +60,4 @@ class BacktestMarketDataHubSystemHubAdapter(MarketDataSystemHubAdapter):
         keys = set(kwargs.keys())
 
         # if ticker_list := keys.intersection({'ticker_list'}):
-            #TODO: SET COMPOENT TAHT CAN HANDLE TICKER LIST
-
+        # TODO: SET COMPOENT TAHT CAN HANDLE TICKER LIST

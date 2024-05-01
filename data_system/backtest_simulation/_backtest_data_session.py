@@ -5,8 +5,8 @@ from initialization_module.initialization_manager import InitializationManager
 from data_system.session._data_session import DataSession
 from .._enums import OperationMode
 
-class BacktestDataSession(DataSession):
 
+class BacktestDataSession(DataSession):
     def __init__(self):
         super().__init__()
         self._session_type = OperationMode.BACKTEST

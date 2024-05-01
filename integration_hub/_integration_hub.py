@@ -13,7 +13,9 @@ from time_system.adapters.hub_adapters import TimeSystemHubAdapter
 
 class Hub:
     def __init__(self):
-        self._id: str = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._id: str = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
         self._hub_connection_manager: HubConnectionManager = HubConnectionManager()
         self.strategy_rule_cls: Optional[Type[StrategyRule]] = None
         self._running_status = RunningStatusType.INACTIVE
@@ -82,8 +84,11 @@ class Hub:
     def create_hub_session(self, strategy_params: Optional[Any] = None):
         if self.strategy_rule_cls is None:
             raise Exception("Strategy rule class is not set")
-        hub_session = HubSessionFactory.create(hub_type=self._hub_type, strategy_rule_cls=self.strategy_rule_cls,
-                                               strategy_params=strategy_params)
+        hub_session = HubSessionFactory.create(
+            hub_type=self._hub_type,
+            strategy_rule_cls=self.strategy_rule_cls,
+            strategy_params=strategy_params,
+        )
         self._hub_sessions[hub_session.id] = hub_session
 
     def get_hub_sessions(self) -> Dict[str, HubSession]:

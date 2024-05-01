@@ -2,8 +2,9 @@ from typing import Union, List, Type, Any
 from datetime import datetime, timedelta
 
 
-def msd_date_to_datetime(milliseconds_of_day: Union[int, str], date: Union[int, str]) \
-        -> datetime:
+def msd_date_to_datetime(
+    milliseconds_of_day: Union[int, str], date: Union[int, str]
+) -> datetime:
     if isinstance(milliseconds_of_day, str):
         milliseconds_of_day = int(milliseconds_of_day)
     if not isinstance(milliseconds_of_day, int):
@@ -14,13 +15,11 @@ def msd_date_to_datetime(milliseconds_of_day: Union[int, str], date: Union[int, 
         raise ValueError("Date must be a string")
 
     seconds = milliseconds_of_day / 1000
-    date = datetime.strptime(date, '%Y%m%d')
+    date = datetime.strptime(date, "%Y%m%d")
     return date + timedelta(seconds=seconds)
 
 
-
-def msd_to_deltatime(milliseconds_of_day: Union[int, str]) \
-        -> timedelta:
+def msd_to_deltatime(milliseconds_of_day: Union[int, str]) -> timedelta:
     if isinstance(milliseconds_of_day, str):
         milliseconds_of_day = int(milliseconds_of_day)
     if not isinstance(milliseconds_of_day, int):
@@ -34,16 +33,18 @@ def time_of_day_to_ms_of_day(time: datetime) -> int:
     time = time.time()
 
     # Calculating total milliseconds
-    milliseconds = (time.hour * 3600 + time.minute * 60 + time.second) * 1000 + time.microsecond // 1000
+    milliseconds = (
+        time.hour * 3600 + time.minute * 60 + time.second
+    ) * 1000 + time.microsecond // 1000
     return milliseconds
 
 
 def display_time(time: datetime) -> str:
-    return time.strftime('%Y-%m-%d %H:%M:%S %f')
+    return time.strftime("%Y-%m-%d %H:%M:%S %f")
 
 
 def date_to_int(time: datetime) -> int:
-    return int(time.strftime('%Y%m%d'))
+    return int(time.strftime("%Y%m%d"))
 
 
 def get_milliseconds(ms_of_day: Any) -> int:

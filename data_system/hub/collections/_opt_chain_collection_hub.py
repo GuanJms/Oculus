@@ -23,7 +23,7 @@ class OptionChainCollectionHub(AssetCollectionHub):
         _collection: OptionChainCollection = self.get_collection(collection_name=ticker)
         _collection.add(option_chain)
 
-    def _construct_collection_if_not_exists(self, collection_name: str) -> OptionChainCollection:
+    def _create_base_collection(self, collection_name: str) -> OptionChainCollection:
         return OptionChainCollection(ticker=collection_name)
 
     def get_assets(self) -> List[OptionChain]:

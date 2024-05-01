@@ -8,7 +8,9 @@ from status_module.status_info import StatusInfo
 
 class Session(ABC):
     def __init__(self):
-        self._id: Optional[str] = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._id: Optional[str] = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
 
         self._statuses: Set[StatusInfo] = set()
 

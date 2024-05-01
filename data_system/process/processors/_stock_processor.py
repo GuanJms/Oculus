@@ -4,16 +4,16 @@ from ._data_processor import DataProcessor
 from ...utils import value_to_decimal_class
 
 conversion_map = {
-    'ms_of_day': int,
-    'bid_size': int,
-    'bid_exchange': int,
-    'bid': Decimal,
-    'bid_condition': str,  # No conversion needed, but included for completeness
-    'ask_size': int,
-    'ask_exchange': int,
-    'ask': Decimal,
-    'ask_condition': str,  # No conversion needed, but included for completeness
-    'date': int,
+    "ms_of_day": int,
+    "bid_size": int,
+    "bid_exchange": int,
+    "bid": Decimal,
+    "bid_condition": str,  # No conversion needed, but included for completeness
+    "ask_size": int,
+    "ask_exchange": int,
+    "ask": Decimal,
+    "ask_condition": str,  # No conversion needed, but included for completeness
+    "date": int,
 }
 
 
@@ -34,20 +34,23 @@ class StockProcessor(DataProcessor):
     """
 
     def process(self, data, **kwargs):
-        header = data.get('header', [])
-        date = data.get('date', None)
-        ticker = data.get('ticker', None)
-        price_domain = data.get('price_domain', None)
-        content_rows = data.get('data', None)
+        header = data.get("header", [])
+        date = data.get("date", None)
+        ticker = data.get("ticker", None)
+        price_domain = data.get("price_domain", None)
+        content_rows = data.get("data", None)
 
         if header is None or date is None or ticker is None or price_domain is None:
-            raise ValueError('Missing required data')
+            raise ValueError("Missing required data")
 
         # Creating a dictionary that maps headers to values
         converted_rows = []
         for row in content_rows:
-            converted_row = [conversion_map[header[i]](row[i]) for i in range(len(header))
-                             if header[i] in conversion_map]
+            converted_row = [
+                conversion_map[header[i]](row[i])
+                for i in range(len(header))
+                if header[i] in conversion_map
+            ]
             converted_rows.append(converted_row)
-        data.update({'data': converted_rows})
+        data.update({"data": converted_rows})
         return data, kwargs

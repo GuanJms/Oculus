@@ -27,17 +27,22 @@ class StockDataPipeline(DataPipeline):
     sample one tick data: ['0', '34200000', '4', '1', '210.01', '0', '1', '65', '210.2', '0', '20230602']
     """
 
-    def __init__(self, steps, *, domains=None, verbose=False):  # TODO: implement verbose feature
-        steps = [('stock_data_processor', StockProcessor()),
-                 ('stock_data_injector', StockDataInjector())] + steps
+    def __init__(
+        self, steps, *, domains=None, verbose=False
+    ):  # TODO: implement verbose feature
+        steps = [
+            ("stock_data_processor", StockProcessor()),
+            ("stock_data_injector", StockDataInjector()),
+        ] + steps
 
-        super().__init__(steps, domains=[AssetDomain.EQUITY, EquityDomain.STOCK], verbose=verbose)
+        super().__init__(
+            steps, domains=[AssetDomain.EQUITY, EquityDomain.STOCK], verbose=verbose
+        )
 
     def set_params(self, **kwargs):
         params_keys = kwargs.keys()
         # parse the parameters by the processor name follow by the parameter name
         for key in params_keys:
-            processor_name, param_name = key.split('__')
+            processor_name, param_name = key.split("__")
             processor = self.find_step(processor_name)
             processor.set_params(**{param_name: kwargs[key]})
-

@@ -27,7 +27,9 @@ class TransactionQueue:
 
     # TODO: verify if the iteration process clears the queue; or its just a copy of the queue
 
-    def add_transactions(self, transactions: List[Transaction], message_request: Optional[bool] = False):
+    def add_transactions(
+        self, transactions: List[Transaction], message_request: Optional[bool] = False
+    ):
         for transaction in transactions:
             self.queue.append(transaction)
         if self.default_sort:
@@ -35,6 +37,7 @@ class TransactionQueue:
         if message_request:
             if len(self.queue) > self.max_size:
                 return "PROCESS-QUEUE-REQUEST"
+
     def __len__(self):
         return len(self.queue)
 
@@ -46,9 +49,11 @@ class TransactionQueue:
             self.queue = deque(sorted(self.queue, key=lambda x: x.ms_of_day))
         else:
             try:
-                self.queue = deque(sorted(self.queue, key=lambda x: getattr(x, sort_key)))
+                self.queue = deque(
+                    sorted(self.queue, key=lambda x: getattr(x, sort_key))
+                )
             except AttributeError:
-                raise ValueError('sort_key not supported')
+                raise ValueError("sort_key not supported")
 
     def empty(self) -> bool:
         return len(self.queue) == 0

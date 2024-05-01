@@ -1,14 +1,13 @@
 from execution_system.sessions._execution_session import ExecutionSession
 from _enums import OperationMode
 
-class ExecutionSessionFactory:
 
+class ExecutionSessionFactory:
     @staticmethod
     def create_session(operation_mode: OperationMode) -> ExecutionSession:
         raise NotImplementedError
 
-
-    #TODO: find the connected places and refactor
+    # TODO: find the connected places and refactor
 
     # @classmethod
     # def create_session(cls, strategy_rule_instance: StrategyRule,

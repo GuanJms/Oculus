@@ -17,10 +17,14 @@ class HubManager:
         self._strategy_hub_dict: dict[Type[StrategyRule], List[BacktestHub]] = {}
         self._name_dict: dict[str, Type[StrategyRule]] = {}
 
-    def find_strategy_cls_by_name(self, strategy_name: str) -> Optional[Type[StrategyRule]]:
+    def find_strategy_cls_by_name(
+        self, strategy_name: str
+    ) -> Optional[Type[StrategyRule]]:
         return self._name_dict.get(strategy_name, None)
 
-    def get_runnable_hub_by_strategy_cls(self, strategy_cls: Type[StrategyRule]) -> Optional[BacktestHub]:
+    def get_runnable_hub_by_strategy_cls(
+        self, strategy_cls: Type[StrategyRule]
+    ) -> Optional[BacktestHub]:
         hubs = self._strategy_hub_dict.get(strategy_cls, [])
         if find_inactive_hub(hubs) is None:
             new_hub = BacktestHub()
@@ -36,8 +40,12 @@ class HubManager:
             self._strategy_hub_dict[strategy_cls] = [new_hub]
         self._name_dict[strategy_name] = strategy_cls
 
-    def run_strategy(self, strategy_cls: Optional[Type[StrategyRule]] = None,
-                     strategy_name: Optional[str] = None, **kwargs):
+    def run_strategy(
+        self,
+        strategy_cls: Optional[Type[StrategyRule]] = None,
+        strategy_name: Optional[str] = None,
+        **kwargs
+    ):
         if strategy_cls is None and strategy_name is None:
             raise ValueError("Either strategy_cls or strategy_name should be provided.")
         if strategy_cls is None:
@@ -45,4 +53,3 @@ class HubManager:
 
         runnable_hub = self.get_runnable_hub_by_strategy_cls(strategy_cls)
         runnable_hub.run(**kwargs)
-

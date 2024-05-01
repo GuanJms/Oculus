@@ -1,7 +1,12 @@
 from datetime import datetime
 from typing import Union
 
-from data_system.time_basics._date_time_transformation import msd_date_to_datetime, display_time, get_milliseconds, get_date
+from data_system.time_basics._date_time_transformation import (
+    msd_date_to_datetime,
+    display_time,
+    get_milliseconds,
+    get_date,
+)
 
 
 class Time:
@@ -59,8 +64,12 @@ class Time:
         return msd_date_to_datetime(self.ms_of_day, self.date)
 
     def set_datetime(self, date_time: datetime):
-        self.ms_of_day = (date_time.hour * 3600000 + date_time.minute * 60000
-                          + date_time.second * 1000 + date_time.microsecond // 1000)
+        self.ms_of_day = (
+            date_time.hour * 3600000
+            + date_time.minute * 60000
+            + date_time.second * 1000
+            + date_time.microsecond // 1000
+        )
         self.date = get_date(date_time)
 
     def set_ms_of_day(self, ms_of_day: Union[int, str]):

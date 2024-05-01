@@ -1,10 +1,12 @@
 from typing import List, Optional
 
 from data_system.backtest_simulation._backtest_data_session import BacktestDataSession
-from execution_module.execution_session_module.action_manager import \
-    ExecutionSessionActionManager
-from execution_module.execution_session_module.signal_manager import \
-    ExecutionSessionSignalManager
+from execution_module.execution_session_module.action_manager import (
+    ExecutionSessionActionManager,
+)
+from execution_module.execution_session_module.signal_manager import (
+    ExecutionSessionSignalManager,
+)
 from execution_module.execution_portfolio import ExecutionPortfolioSession
 from execution_module.execution_session_module.execution_signal import ExecutionSignal
 from execution_module.execution_time_controller import ExecutionTimeController
@@ -14,10 +16,16 @@ from utils.global_id import GlobalComponentIDGenerator
 
 
 class ExecutionSession:
-
-    def __init__(self, strategy_rule_instance: StrategyRule, execution_time_controller: ExecutionTimeController,
-                 backtest_data_session: 'BacktestDataSession', execution_portfolio_session: 'ExecutionPortfolioSession'):
-        self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+    def __init__(
+        self,
+        strategy_rule_instance: StrategyRule,
+        execution_time_controller: ExecutionTimeController,
+        backtest_data_session: "BacktestDataSession",
+        execution_portfolio_session: "ExecutionPortfolioSession",
+    ):
+        self._id = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
         raise NotImplementedError("TODO: Take out ExecutionTimeContoller")
         self._strategy_rule = strategy_rule_instance
         self._execution_time_controller = execution_time_controller
@@ -56,21 +64,27 @@ class ExecutionSession:
             self._run_execution()
 
     def initialize(self):
-        InitializationManager.initialize_time_controller(self._execution_time_controller)
+        InitializationManager.initialize_time_controller(
+            self._execution_time_controller
+        )
 
         # Initializes the signals and actions
         execution_signal_list, execution_action_list = self._strategy_rule.execute()
-        InitializationManager.initialize_execution_session_signal_manager(signal_manager=self._signal_manager,
-                                                                          execution_signal_list=execution_signal_list)
-        InitializationManager.initialize_execution_session_action_manager(action_manager=self._action_manager,
-                                                                          execution_action_list=execution_action_list)
+        InitializationManager.initialize_execution_session_signal_manager(
+            signal_manager=self._signal_manager,
+            execution_signal_list=execution_signal_list,
+        )
+        InitializationManager.initialize_execution_session_action_manager(
+            action_manager=self._action_manager,
+            execution_action_list=execution_action_list,
+        )
 
     def _run_execution(self):
         TYPE_MESSAGE, quote_date, next_msd = self._request_next_time_message()
         if TYPE_MESSAGE == "SAME_QUOTE_DATE":
             self._run_same_quote_day_execution(quote_date, next_msd)
         elif TYPE_MESSAGE == "CHANGE_QUOTE_DATE":
-            print('_run_execution', TYPE_MESSAGE, quote_date, next_msd)
+            print("_run_execution", TYPE_MESSAGE, quote_date, next_msd)
             self._run_change_quote_day_execution(quote_date, next_msd)
         # TODO: ask execution_system session signal_generation manager if it should proceed with action or not
         #   (signal_generation manager will refresh status of all signals and return True or False)
@@ -96,16 +110,31 @@ class ExecutionSession:
             signal_session_list.append(signal_session)
         return signal_session_list
 
-    def _create_signal_session(self, execution_signal: ExecutionSignal,
-                               execution_singal_handler: ExecutionSignalCoordinator) -> ExecutionSignal:
+    def _create_signal_session(
+        self,
+        execution_signal: ExecutionSignal,
+        execution_singal_handler: ExecutionSignalCoordinator,
+    ) -> ExecutionSignal:
         pass
 
-    def set_execution_session_signal_manager(self, execution_session_signal_manager: ExecutionSessionSignalManager):
-        if not isinstance(execution_session_signal_manager, ExecutionSessionSignalManager):
-            raise ValueError("execution_session_signal_manager must be an instance of ExecutionSessionSignalManager")
+    def set_execution_session_signal_manager(
+        self, execution_session_signal_manager: ExecutionSessionSignalManager
+    ):
+        if not isinstance(
+            execution_session_signal_manager, ExecutionSessionSignalManager
+        ):
+            raise ValueError(
+                "execution_session_signal_manager must be an instance of ExecutionSessionSignalManager"
+            )
         self._signal_manager = execution_session_signal_manager
 
-    def set_execution_session_action_manager(self, execution_session_action_manager: ExecutionSessionActionManager):
-        if not isinstance(execution_session_action_manager, ExecutionSessionActionManager):
-            raise ValueError("execution_session_action_manager must be an instance of ExecutionSessionActionManager")
+    def set_execution_session_action_manager(
+        self, execution_session_action_manager: ExecutionSessionActionManager
+    ):
+        if not isinstance(
+            execution_session_action_manager, ExecutionSessionActionManager
+        ):
+            raise ValueError(
+                "execution_session_action_manager must be an instance of ExecutionSessionActionManager"
+            )
         self._action_manager = execution_session_action_manager

@@ -52,18 +52,23 @@ class DataPipeline:
             if p is None or p == "passthrough":
                 continue
             if not hasattr(p, "transform"):
-                raise TypeError(f"All intermediate steps should be transformers "
-                                f"and implement transform or be the string 'passthrough' "
-                                f"({hasattr(p, 'transform')} transform | "
-                                f"{hasattr(p, 'inject')}). "
-                                f"'{p}' (type {type(p)}) doesn't")
-        if (injector is not None
-                and injector != "passthrough"
-                and not hasattr(injector, "inject")
+                raise TypeError(
+                    f"All intermediate steps should be transformers "
+                    f"and implement transform or be the string 'passthrough' "
+                    f"({hasattr(p, 'transform')} transform | "
+                    f"{hasattr(p, 'inject')}). "
+                    f"'{p}' (type {type(p)}) doesn't"
+                )
+        if (
+            injector is not None
+            and injector != "passthrough"
+            and not hasattr(injector, "inject")
         ):
-            raise TypeError(f"Last step of the processor should be"
-                            "data injector and implement inject or be the string 'passthrough'."
-                            f"'{injector}' (type {type(injector)}) doesn't")
+            raise TypeError(
+                f"Last step of the processor should be"
+                "data injector and implement inject or be the string 'passthrough'."
+                f"'{injector}' (type {type(injector)}) doesn't"
+            )
 
     def __len__(self):
         """

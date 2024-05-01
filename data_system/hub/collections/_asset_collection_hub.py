@@ -21,11 +21,10 @@ class AssetCollectionHub:
         raise NotImplementedError("Child class should implement this method")
 
     def get_collection(self, collection_name: str):
-        _collection = self._collections.get(collection_name, None)
-        if _collection is None:
-            _collection = self._construct_collection_if_not_exists(collection_name)
+        _collection = self._collections.get(collection_name, self._create_base_collection(collection_name))
+        if _collection is not None:
             self._collections[collection_name] = _collection
         return _collection
 
-    def _construct_collection_if_not_exists(self, collection_name: str):
-        raise NotImplementedError("Child class should implement this method")
+    def _create_base_collection(self, collection_name: str):
+        return None

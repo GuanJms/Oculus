@@ -2,16 +2,21 @@ from typing import Optional, Any, List
 
 from time_system.timeline import Time
 from time_system._enums import TimeType, TimelineType
-from utils._transmittable_interface import _EventTransmittable, _EventPublisher, _EventSubscriber
+from utils._transmittable_interface import (
+    _EventTransmittable,
+    _EventPublisher,
+    _EventSubscriber,
+)
 from utils.global_id import GlobalComponentIDGenerator
 
 
 class Timeline(_EventTransmittable, _EventPublisher):
-
     def __init__(self):
-        self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._id = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
         self.time = Time(0, 19700101)
-        self._event_subscribers: List['_EventSubscriber'] = []
+        self._event_subscribers: List["_EventSubscriber"] = []
         self._timeline_type: Optional[TimelineType] = None
 
     @property
@@ -26,14 +31,14 @@ class Timeline(_EventTransmittable, _EventPublisher):
         for subscriber in self._event_subscribers:
             subscriber.receive_event(event, event_data)
 
-    def add_subscriber(self, subscriber: '_EventSubscriber'):
+    def add_subscriber(self, subscriber: "_EventSubscriber"):
         self._event_subscribers.append(subscriber)
 
-    def delete_subscriber(self, subscriber: '_EventSubscriber'):
+    def delete_subscriber(self, subscriber: "_EventSubscriber"):
         if subscriber in self._event_subscribers:
             self._event_subscribers.remove(subscriber)
 
-    def send_event(self, receiver: '_EventTransmittable', event: Any, event_data: Any):
+    def send_event(self, receiver: "_EventTransmittable", event: Any, event_data: Any):
         receiver.receive_event(event, event_data)
 
     def receive_event(self, event: Any, event_data: Any):
@@ -42,14 +47,16 @@ class Timeline(_EventTransmittable, _EventPublisher):
     def set_time(self, **kwargs):
         keys = kwargs.keys()
         match True:
-            case _ if keys == {'ms_of_day', 'date'}:
-                self.time = self.time.set_date_time(ms_of_day=kwargs['ms_of_day'], date=kwargs['date'])
-            case _ if keys == {'ms_of_day'}:
-                self.time = self.time.set_ms_of_day(kwargs['ms_of_day'])
-            case _ if keys == {'date'}:
-                self.time = self.time.set_date(kwargs['date'])
-            case _ if keys == {'datetime'}:
-                self.time = self.time.set_datetime(kwargs['datetime'])
+            case _ if keys == {"ms_of_day", "date"}:
+                self.time = self.time.set_date_time(
+                    ms_of_day=kwargs["ms_of_day"], date=kwargs["date"]
+                )
+            case _ if keys == {"ms_of_day"}:
+                self.time = self.time.set_ms_of_day(kwargs["ms_of_day"])
+            case _ if keys == {"date"}:
+                self.time = self.time.set_date(kwargs["date"])
+            case _ if keys == {"datetime"}:
+                self.time = self.time.set_datetime(kwargs["datetime"])
             case _:
                 raise ValueError(f"Invalid time setting{keys}")
 

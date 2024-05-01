@@ -6,9 +6,10 @@ from .._enums import TimeType
 
 
 class Timeline:
-
     def __init__(self):
-        self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._id = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
         self.time = Time(0, 19700101)
 
     @property
@@ -26,14 +27,16 @@ class Timeline:
         """
         keys = kwargs.keys()
         match True:
-            case _ if keys == {'ms_of_day', 'date'}:
-                self.time.set_date_time(ms_of_day=kwargs['ms_of_day'], date=kwargs['date'])
-            case _ if keys == {'ms_of_day'}:
-                self.time.set_ms_of_day(kwargs['ms_of_day'])
-            case _ if keys == {'date'}:
-                self.time.set_date(kwargs['date'])
-            case _ if keys == {'datetime'}:
-                self.time.set_datetime(kwargs['datetime'])
+            case _ if keys == {"ms_of_day", "date"}:
+                self.time.set_date_time(
+                    ms_of_day=kwargs["ms_of_day"], date=kwargs["date"]
+                )
+            case _ if keys == {"ms_of_day"}:
+                self.time.set_ms_of_day(kwargs["ms_of_day"])
+            case _ if keys == {"date"}:
+                self.time.set_date(kwargs["date"])
+            case _ if keys == {"datetime"}:
+                self.time.set_datetime(kwargs["datetime"])
             case _:
                 raise ValueError(f"Invalid time setting{keys}")
 
@@ -56,11 +59,11 @@ class Timeline:
         if isinstance(time_type, str):
             time_type = time_type.upper()
         match time_type:
-            case TimeType.MS_OF_DAY | 'MS_OF_DAY':
+            case TimeType.MS_OF_DAY | "MS_OF_DAY":
                 return self.time.ms_of_day
-            case TimeType.DATE | 'DATE':
+            case TimeType.DATE | "DATE":
                 return self.get_date()
-            case TimeType.DATETIME | 'DATETIME':
+            case TimeType.DATETIME | "DATETIME":
                 return self.time.to_datetime()
             case _:
                 raise ValueError(f"Invalid time type: {time_type}")

@@ -5,9 +5,10 @@ from utils.global_id import GlobalComponentIDGenerator
 
 
 class DataSession:
-
     def __init__(self):
-        self._id = GlobalComponentIDGenerator.generate_unique_id(self.__class__.__name__, id(self))
+        self._id = GlobalComponentIDGenerator.generate_unique_id(
+            self.__class__.__name__, id(self)
+        )
         self._session_type: Optional[OperationMode] = None
 
     @property

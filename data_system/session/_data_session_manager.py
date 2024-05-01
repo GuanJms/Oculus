@@ -5,10 +5,10 @@ from weakref import WeakSet
 from data_system.backtest_simulation import BacktestDataSession
 from .._enums import OperationMode
 
-class DataSessionManager:
 
+class DataSessionManager:
     def __new__(cls):
-        if not hasattr(cls, 'instance'):
+        if not hasattr(cls, "instance"):
             cls.instance = super(DataSessionManager, cls).__new__(cls)
         return cls.instance
 
@@ -41,8 +41,11 @@ class DataSessionManager:
         if data_session.session_type() == OperationMode.BACKTEST:
             data_session.request_advance_time()
         else:
-            raise ValueError("Session type not supported for this operation - advance_simulation_timestep")
+            raise ValueError(
+                "Session type not supported for this operation - advance_simulation_timestep"
+            )
 
     def find_session(self, hub_id) -> Optional[Union[DataSession, BacktestDataSession]]:
         return self._data_session_map.get(hub_id, None)
+
     # TODO: find_session is confusing. Should it be able to use hub_id, data_session_id! Use another class to keep track that

@@ -3,7 +3,6 @@ from typing import Optional
 
 
 class ExecutionSystemHubAdapter(ABC):
-
     @property
     @abstractmethod
     def connection_manager(self):
@@ -14,7 +13,9 @@ class ExecutionSystemHubAdapter(ABC):
         pass
 
     @abstractmethod
-    def get_session_ids(self, hub_session_ids: Optional[list] = None, hub_id: Optional[str] = None) -> dict:
+    def get_session_ids(
+        self, hub_session_ids: Optional[list] = None, hub_id: Optional[str] = None
+    ) -> dict:
         pass
 
     @abstractmethod

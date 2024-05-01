@@ -3,7 +3,6 @@ from global_time_generator import GlobalTimeGenerator
 
 
 class MyTestCase(unittest.TestCase):
-
     def test_next_business_day(self):
         from datetime import datetime, timedelta
 
@@ -29,9 +28,11 @@ class MyTestCase(unittest.TestCase):
 
         result_next_business_day_list = []
         for date in dates:
-            result_next_business_day_list.append(GlobalTimeGenerator.get_next_business_day(date))
+            result_next_business_day_list.append(
+                GlobalTimeGenerator.get_next_business_day(date)
+            )
         self.assertEqual(result, result_next_business_day_list)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

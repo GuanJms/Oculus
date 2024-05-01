@@ -101,3 +101,6 @@ class AssetDataHub:
         option_chain_list = HubOptionChainHandler.create_option_chain(hub_tic=hub_ticker)
         for option_chain in option_chain_list:
             self._option_chain_collection.add(option_chain)
+
+    def has_token_key(self):
+        return self._public_token is not None and self._private_key is not None
