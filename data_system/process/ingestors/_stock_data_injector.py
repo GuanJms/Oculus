@@ -23,4 +23,3 @@ class StockDataInjector(DataInjector):
 
         return data, kwargs
 
-

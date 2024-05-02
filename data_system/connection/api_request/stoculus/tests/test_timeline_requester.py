@@ -36,7 +36,7 @@ class TestTimelineRequester(unittest.TestCase):
         print("test_server_reader_tickers:", timeline_status)
 
     def test_hub_read_upto_time(self):
-        response = self.requester.read_upto_time(self.hub, 9.6 * 60 * 60 * 1000)
+        response = self.requester.read_upto_time(self.hub, 9.8 * 60 * 60 * 1000)
         data = response["data"]
         reading_status = response["status"]
         # dict keys: ['data', 'status']
@@ -64,6 +64,21 @@ class TestTimelineRequester(unittest.TestCase):
 
         print("stock_a_meta:", stock_a_meta)
         print("stock_b_meta:", stock_b_meta)
+
+    def test_large_read_upto_time(self):
+        read_upto_time = 9.52 * 60 * 60 * 1000
+        data_list = []
+        response = self.requester.read_upto_time(self.hub, read_upto_time)
+        data = response["data"]
+        data_list.append(data)
+        reading_status = response["status"]
+        print("data list:", data_list)
+        while reading_status != "DONE":
+            response = self.requester.read_upto_time(self.hub, read_upto_time)
+            data = response["data"]
+            reading_status = response["status"]
+            data_list.append(data)
+        print(data_list[0][1])
 
 
 if __name__ == "__main__":

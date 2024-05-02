@@ -46,7 +46,7 @@ class SimulationTimeline(Timeline):
     #
     #     raise NotImplemented
 
-    # def create_adapters(self): # TODO: what is this?
+    # def create_adapters(self): # TODO: what is this???
     #     self._execution_system = ExecutionSystemTimelineAdapter(self.timeline_type)
     #     self._market_data_system = MarketDataSystemTimelineAdapter(self.timeline_type)
 
