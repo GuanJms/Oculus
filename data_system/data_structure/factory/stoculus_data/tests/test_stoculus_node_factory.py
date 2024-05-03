@@ -1,5 +1,5 @@
 import unittest
-from data_system.data_structure.factory.stoculus_data.stoculus_option_data_quote_node_factory import StoculusOptionQuoteNodeFactory
+from data_system.data_structure.factory.stoculus_data.stoculus_quote_node_factory import StoculusOptionQuoteNodeFactory
 import json
 
 class MyTestCase(unittest.TestCase):

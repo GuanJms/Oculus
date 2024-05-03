@@ -2,19 +2,15 @@ from abc import ABC, abstractmethod
 
 
 class DataInjector(ABC):
-
     def __init__(self):
-        self._container = None
+        self._container_manager = None
 
-    @property
-    def container(self):
-        return self._container
+    def get_container_manager(self):
+        return self._container_manager
 
-    def set_container(self, container):
-        self._container = container
+    def set_container(self, container_manager):
+        self._container_manager = container_manager
 
     @abstractmethod
     def inject(self, data: dict):
         pass
-
-

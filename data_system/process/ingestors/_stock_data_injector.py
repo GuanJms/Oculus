@@ -12,6 +12,10 @@ class StockDataInjector(DataInjector):
         _stock_meta = _data
         print(f"Inject stock meta data: {_stock_meta} into AssetDataHub")
         print(f"Inject stock data: {_stock_data} into AssetDataHub")
+
+        if self._container_manager:
+            self._container_manager.inject(meta=_stock_meta, data=_stock_data)
+
         """
         TODO: implement the injection logic
         There should a place to set a container for the injector to inject the data into the container.
@@ -22,4 +26,5 @@ class StockDataInjector(DataInjector):
         """
 
         return data, kwargs
+
 
