@@ -1,8 +1,8 @@
 from typing import Optional
 
 from data_system._enums import DomainEnum
-from ..utils._domain_matcher import DomainMatcher
-from ..utils._domain_operations import parse_domain
+from ..utils.domain_matcher import DomainMatcher
+from ..utils.domain_operations import parse_domain
 from ._asset import Asset
 
 

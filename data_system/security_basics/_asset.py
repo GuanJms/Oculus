@@ -78,7 +78,7 @@ class Asset:
         return all_params
 
     def get_domain_chain_str(self, price_domain: PriceDomain | None = None) -> str:
-        from ..utils._domain_operations import domain_to_chains
+        from ..utils.domain_operations import domain_to_chains
 
         domains = self._domains.copy()
         if price_domain is not None and not isinstance(price_domain, PriceDomain):

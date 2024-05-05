@@ -42,6 +42,14 @@ class DataPipeline:
                 return step
         raise ValueError(f"Step {step_name} not found")
 
+    def set_params(self, **kwargs):
+        params_keys = kwargs.keys()
+        # parse the parameters by the processor name follow by the parameter name
+        for key in params_keys:
+            processor_name, param_name = key.split("__", 1)
+            processor = self.find_step(processor_name)
+            processor.set_params(**{param_name: kwargs[key]})
+
     def _validate_steps(self):
         names, processors = zip(*self.steps)
 

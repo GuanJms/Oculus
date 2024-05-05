@@ -1,0 +1,1 @@
+from .static_max_time_reg import StaticMaxTimeRegulator

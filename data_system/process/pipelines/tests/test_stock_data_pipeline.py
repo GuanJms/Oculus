@@ -122,9 +122,11 @@ class TestProcessStockDataPipeline(unittest.TestCase):
         )
 
     def test_setup_data_pipeline(self):
+        multi_data = self.response["data"]
         data = self.response["data"][0]
         domains = data["domains"]
         self.dp.process(data, price_domain=domains[-1])
+        self.dp.multi_process(multi_data, price_domain=domains[-1])
 
 
 if __name__ == "__main__":

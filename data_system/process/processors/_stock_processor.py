@@ -1,7 +1,7 @@
 from decimal import Decimal
-
 from ._data_processor import DataProcessor
 from ...utils import value_to_decimal_class
+from ...utils.time_operations import get_timestamp
 
 conversion_map = {
     "ms_of_day": int,
@@ -43,6 +43,12 @@ class StockProcessor(DataProcessor):
         if header is None or date is None or ticker is None or price_domain is None:
             raise ValueError("Missing required data")
 
+        filtered_header = [
+            header[i]
+            for i in range(len(header))
+            if header[i] in conversion_map
+        ]
+
         # Creating a dictionary that maps headers to values
         converted_rows = []
         for row in content_rows:
@@ -52,5 +58,9 @@ class StockProcessor(DataProcessor):
                 if header[i] in conversion_map
             ]
             converted_rows.append(converted_row)
-        data.update({"data": converted_rows})
+        if 'timezone' not in data:
+            data.update({'timezone': 'US/Eastern'})
+        data.update({"data": converted_rows},
+                    header=filtered_header,
+                    date_timestamp=get_timestamp(date, data['timezone']))
         return data, kwargs

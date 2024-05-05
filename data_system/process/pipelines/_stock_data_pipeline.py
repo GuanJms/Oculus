@@ -30,19 +30,16 @@ class StockDataPipeline(DataPipeline):
     def __init__(
         self, steps, *, domains=None, verbose=False
     ):  # TODO: implement verbose feature
+        quote_injector = StockDataInjector(domains=[AssetDomain.EQUITY, EquityDomain.STOCK, PriceDomain.QUOTE])
         steps = [
             ("stock_data_processor", StockProcessor()),
-            ("stock_data_injector", StockDataInjector()),
+            ("stock_data_injector", quote_injector),
         ] + steps
 
         super().__init__(
             steps, domains=[AssetDomain.EQUITY, EquityDomain.STOCK], verbose=verbose
         )
 
-    def set_params(self, **kwargs):
-        params_keys = kwargs.keys()
-        # parse the parameters by the processor name follow by the parameter name
-        for key in params_keys:
-            processor_name, param_name = key.split("__")
-            processor = self.find_step(processor_name)
-            processor.set_params(**{param_name: kwargs[key]})
+    def multi_process(self, multi_data, price_domain):
+        for data in multi_data:
+            self.process(data, price_domain=price_domain)

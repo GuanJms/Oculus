@@ -6,7 +6,7 @@ from typing import Dict
 
 from ._domain_distributor import DomainDistributor
 from data_system.utils import DomainMatcher
-from data_system.utils._domain_operations import parse_domain
+from data_system.utils.domain_operations import parse_domain
 from ..pipelines import StockDataPipeline, DataPipeline
 
 

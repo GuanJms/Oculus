@@ -7,7 +7,7 @@ from typing import Optional
 
 from .middleware import HubTickerFactory
 from .middleware.opt_chain_handler import HubOptionChainHandler
-from ..utils._id_operations import generate_unique_uuid
+from ..utils.id_operations import generate_unique_uuid
 from .collections import OptionChainCollectionHub, StockCollectionHub
 from ..security_basics import Asset
 from ..time_basics import Timeline

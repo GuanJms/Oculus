@@ -2,7 +2,7 @@ import unittest
 
 from data_system.hub.middleware import HubTicker
 from data_system.hub.middleware.opt_chain_handler import HubOptionChainHandler
-from data_system.utils._domain_operations import parse_domain
+from data_system.utils.domain_operations import parse_domain
 
 
 class TestOptionChainHandler(unittest.TestCase):
