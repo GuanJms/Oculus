@@ -1,5 +1,5 @@
 import unittest
-from data_system.data_structure.factory.stoculus_data.stoculus_quote_node_factory import StoculusOptionQuoteNodeFactory
+from data_system.base_structure.factory.stoculus_data.stoculus_quote_node_factory import StoculusQuoteNodeFactory
 import json
 
 class MyTestCase(unittest.TestCase):
@@ -11,7 +11,7 @@ class MyTestCase(unittest.TestCase):
         prices = data["data"]
         date = data['date']
 
-        factory = StoculusOptionQuoteNodeFactory(header)
+        factory = StoculusQuoteNodeFactory(header)
         nodes = factory.create_nodes(prices)
         print(nodes)
 

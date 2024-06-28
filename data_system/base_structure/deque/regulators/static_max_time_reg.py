@@ -1,6 +1,6 @@
 from typing import Optional
 
-from data_system.base_structure._enums import TimeUnit
+from data_system._enums import TimeUnit
 from data_system.base_structure.deque.regulators._regulator import Regulator
 
 

@@ -1,1 +1,2 @@
-from .stoculus_quote_node_factory import StoculusOptionQuoteNodeFactory
+from .stoculus_quote_node_factory import StoculusQuoteNodeFactory
+from .stoculus_trade_node_factory import StoculusTradeNodeFactory

@@ -1,1 +1,1 @@
-from ._stock_processor import StockProcessor
+from .stock_processor import StockProcessor

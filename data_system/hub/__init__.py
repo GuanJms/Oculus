@@ -1,1 +1,1 @@
-from ._asset_data_hub import AssetDataHub
+from .asset_data_hub import AssetDataHub

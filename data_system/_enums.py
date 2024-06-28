@@ -45,7 +45,19 @@ class EquityDomain(DomainEnum):
 class PriceDomain(DomainEnum):
     TRADED = auto()
     QUOTE = auto()
-    TRADED_QUOTE = auto()
+    # TRADED_QUOTE = auto()
+
+
+class GreekDomain(DomainEnum):
+    DELTA = auto()
+    GAMMA = auto()
+    VEGA = auto()
+    THETA = auto()
+    RHO = auto()
+
+
+class VolatilityDomain(DomainEnum):
+    IMPLIED = auto()
 
 
 class AssetCollectionType(Enum):
@@ -69,11 +81,26 @@ class OptionDomain(Enum):
 
 class MultiAssetType(Enum):
     OPTION_CHAIN = auto()
+    OPTION_PAIR = auto()
+
+    def get_domains(self):
+        if self in [MultiAssetType.OPTION_CHAIN, MultiAssetType.OPTION_PAIR]:
+            return [AssetDomain.EQUITY, EquityDomain.OPTION]
+        else:
+            raise ValueError(f"{self} has not being signed into domains")
 
 
 class SingleAssetType(Enum):
     OPTION = auto()
     STOCK = auto()
+
+    def get_domains(self):
+        if self == SingleAssetType.OPTION:
+            return [AssetDomain.EQUITY, EquityDomain.OPTION]
+        elif self == SingleAssetType.STOCK:
+            return [AssetDomain.EQUITY, EquityDomain.STOCK]
+        else:
+            raise ValueError(f"{self} has not being signed into domains")
 
 
 class TimeType(Enum):
@@ -84,6 +111,46 @@ class TimeType(Enum):
 
     def is_time_of_day(self):
         return self == TimeType.TIME_OF_DAY or self == TimeType.MS_OF_DAY
+
+
+class TimeUnit(Enum):
+    MILLISECOND = auto()
+    SECOND = auto()
+    MINUTE = auto()
+    HOUR = auto()
+    DAY = auto()
+    WEEK = auto()
+    MONTH = auto()
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def get(cls, unit):
+        # if unit is str, then convert to TimeUnit
+        if isinstance(unit, str):
+            unit = unit.upper()
+            if unit == "MILLISECOND" or unit == "MS":
+                return cls.MILLISECOND
+            elif unit == "SECOND":
+                return cls.SECOND
+            elif unit == "MINUTE":
+                return cls.MINUTE
+            elif unit == "HOUR":
+                return cls.HOUR
+            elif unit == "DAY":
+                return cls.DAY
+            elif unit == "WEEK":
+                return cls.WEEK
+            elif unit == "MONTH":
+                return cls.MONTH
+            else:
+                raise ValueError("Invalid time unit")
+        elif isinstance(unit, TimeUnit):
+            # else if unit is TimeUnit, then return unit
+            return unit
+        else:
+            raise ValueError("Invalid time unit")
 
 
 __all__ = [
@@ -98,4 +165,8 @@ __all__ = [
     "AssetDomain",
     "EquityDomain",
     "PriceDomain",
+    "MultiAssetType",
+    "SingleAssetType",
+    "TimeUnit",
+    "VolatilityDomain",
 ]

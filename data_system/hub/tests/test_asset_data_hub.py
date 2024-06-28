@@ -1,7 +1,7 @@
 import unittest
 
 from data_system.security_basics import Stock
-from .._asset_data_hub import AssetDataHub
+from ..asset_data_hub import AssetDataHub
 from ...time_basics import Timeline
 
 

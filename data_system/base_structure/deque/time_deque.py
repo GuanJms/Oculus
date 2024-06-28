@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .auto_deque import AutoDeque
-from .._enums import TimeUnit
+from ..._enums import TimeUnit
 
 
 class TimeDeque(AutoDeque):

@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from data_system._enums import DomainEnum
-from data_system.tracker.cores.container_manager import ContainerManager
+from data_system.containers.container_managers._container_manager import ContainerManager
+
 from data_system.utils.domain_operations import domain_to_chains
 
 
@@ -42,6 +43,8 @@ class DataInjector(ABC):
         # check if the domains are correct
         data_domains = data.get("domains", None)
         if data_domains:
+            if isinstance(data_domains, list):
+                return data_domains == self._domains
             return data_domains == self._domains_chain
         return False
 

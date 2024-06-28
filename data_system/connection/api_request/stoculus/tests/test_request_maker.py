@@ -3,7 +3,7 @@ import unittest
 import urllib.request
 
 import requests
-from data_system.hub._asset_data_hub import AssetDataHub
+from data_system.hub.asset_data_hub import AssetDataHub
 from data_system.security_basics import Stock
 from data_system.time_basics import Timeline
 from data_system.connection.api_request.stoculus._request_maker import StoculusRequestMaker

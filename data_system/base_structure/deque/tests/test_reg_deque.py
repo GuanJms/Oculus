@@ -2,7 +2,7 @@ import unittest
 from data_system.base_structure.deque import RegulatorDeque
 from data_system.base_structure.deque.regulators import StaticMaxTimeRegulator
 from data_system.base_structure.deque.regulators.static_max_size_reg import StaticMaxSizeRegulator
-from data_system.tracker.cores.tests.test_time_node import TestTimeNode
+from data_system.containers.cores.tests.test_time_node import TestTimeNode
 
 
 class TestRegulatorDeque(unittest.TestCase):

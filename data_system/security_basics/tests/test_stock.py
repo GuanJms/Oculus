@@ -1,6 +1,6 @@
 import unittest
 
-from .._stock import Stock
+from ..stock import Stock
 from data_system._enums import *
 
 class TestCaseAssetStock(unittest.TestCase):

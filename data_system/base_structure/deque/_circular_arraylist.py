@@ -1,6 +1,3 @@
-from typing import Optional
-
-
 class CircularArrayList:
     def __init__(self):
         self._data = []
@@ -15,6 +12,9 @@ class CircularArrayList:
             return f"Sequential Data: {str([self.get(i) for i in range(self._count)])}"
         else:
             return f"{self._data}"
+
+    def __repr__(self):
+        return f"CircularArrayList-{self._count}"
 
     def __len__(self):
         return self._count
@@ -70,6 +70,7 @@ class CircularArrayList:
         if index < 0:
             raise Exception("Illegal index")
         if index >= self._count:
+            print(f"Index: {index}, Count: {self._count}, Data: {sum([1 for i in self._data if i is not None])}")
             raise Exception("Index out of bounds")
         return self._data[(self._start + index) & (len(self._data) - 1)]
 
@@ -77,3 +78,19 @@ class CircularArrayList:
         if not isinstance(value, bool):
             raise Exception("Value must be a boolean")
         self._display_sequential = value
+
+    def get_attribute_to_list(self, attr):
+        new_list = []
+        for i in range(self._count):
+            _curr_node = self.get(i)
+            new_list.append(_curr_node.get(attr))
+        return new_list
+
+    def get_nodes(self):
+        nodes = []
+        for i in range(self._count):
+            try:
+                nodes.append(self.get(i))
+            except Exception as e:
+                print(e)
+        return nodes
