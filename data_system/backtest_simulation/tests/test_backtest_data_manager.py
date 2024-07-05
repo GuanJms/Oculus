@@ -1,5 +1,6 @@
 import unittest
-from global_component_id_generator import GlobalComponentIDGenerator
+
+from utils.global_id import GlobalComponentIDGenerator
 
 
 class MyTestCaseBacktestDataManager(unittest.TestCase):

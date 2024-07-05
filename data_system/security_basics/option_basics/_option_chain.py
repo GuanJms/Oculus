@@ -21,7 +21,6 @@ class OptionChain(AssetCollection):
 
     def __create__(self, key: str | int | Any):  # key: strike
         from ..factory.option_pair_factory import OptionPairFactory
-
         return OptionPairFactory.create_option_pair(
             ticker=self.ticker,
             expiration=self.expiration,

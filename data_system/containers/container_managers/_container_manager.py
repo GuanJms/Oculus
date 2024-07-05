@@ -14,7 +14,7 @@ class ContainerManager(ABC):
         self._domains = kwargs.get("domains", None)
 
     @abstractmethod
-    def inject(self, data, meta=None):
+    def inject(self, data, domains, meta=None):
         raise Exception("Inject method should be implemented in the child class")
 
     @abstractmethod

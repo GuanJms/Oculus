@@ -11,7 +11,7 @@ from utils.global_id import GlobalTimeGenerator
 if TYPE_CHECKING:
     from execution_module.execution_time_controller import ExecutionTimeController
     from data_system.backtest_simulation._backtest_data_session import BacktestDataSession
-    from data_system.backtest_simulation._backtest_manager import HubAdaptor
+    from data_system.backtest_simulation.hub_adaptor import HubAdaptor
     from execution_system.execution_manager import ExecutionManager
     from execution_system.sessions._execution_session import ExecutionSession
     from quote_module.quote_board import QuoteBoard
@@ -37,7 +37,7 @@ class InitializationManager:
 
     @classmethod
     def _initialize_backtest_manager(cls, backtest_params: dict):
-        from data_system.backtest_simulation._backtest_manager import HubAdaptor
+        from data_system.backtest_simulation.hub_adaptor import HubAdaptor
         instance = HubAdaptor()
         instance.add_backtest_params(backtest_params)
         return instance

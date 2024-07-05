@@ -48,12 +48,38 @@ class PriceDomain(DomainEnum):
     # TRADED_QUOTE = auto()
 
 
+class ModelDomain(DomainEnum):
+    # TODO: gradually add more models
+    BLACK_SCHOLES = auto()
+    HESTON = auto()
+    # JUMP_DIFFUSION = auto()
+    # LOCAL_VOL = auto()
+
+
 class GreekDomain(DomainEnum):
     DELTA = auto()
     GAMMA = auto()
     VEGA = auto()
     THETA = auto()
     RHO = auto()
+    VOMMA = auto()
+
+    @classmethod
+    def get_greek(cls, greek):
+        if greek.upper() in ["DELTA", "D"]:
+            return cls.DELTA
+        elif greek.upper() in ["GAMMA", "G"]:
+            return cls.GAMMA
+        elif greek.upper() in ["VEGA", "V"]:
+            return cls.VEGA
+        elif greek.upper() in ["THETA", "T"]:
+            return cls.THETA
+        elif greek.upper() in ["RHO", "R"]:
+            return cls.RHO
+        elif greek.upper() in ["VOMMA", "VOM"]:
+            return cls.VOMMA
+        else:
+            raise ValueError("Invalid greek")
 
 
 class VolatilityDomain(DomainEnum):
@@ -65,7 +91,8 @@ class AssetCollectionType(Enum):
     AssetCollection = auto()
 
 
-class OptionDomain(Enum):
+class OptionDomain(DomainEnum):
+    GREEK = auto()
     CALL = auto()
     PUT = auto()
 
@@ -169,4 +196,5 @@ __all__ = [
     "SingleAssetType",
     "TimeUnit",
     "VolatilityDomain",
+    "ModelDomain",
 ]

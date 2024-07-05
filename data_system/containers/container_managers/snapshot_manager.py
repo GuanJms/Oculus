@@ -13,12 +13,14 @@ class SnapshotManager(ContainerManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def inject(self, data, meta=None):
+    def inject(self, data, domains, meta=None):
+        if domains is None:
+            print(f"Error in SnapshotManager - domains from injection is None -{meta}")
         # print(f"SnapshotManager inject - domains: {meta.get('domains')}")
         # print(f"SnapshotManager's own domains {self._domains}")
         # print(f"SnapshotManager data: {data}")
         for container in self._containers.values():
-            if container.get_domains() == meta.get("domains"):
+            if container.get_domains() == domains:
                 container.inject(data)
                 return
 

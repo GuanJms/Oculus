@@ -13,7 +13,7 @@ class Container(ABC):
     def set_domains(self, domains: List[DomainEnum]):
         self._domains = domains
 
-    def get_domains(self):
+    def get_domains(self) -> List[DomainEnum]:
         return self._domains
 
     @abstractmethod

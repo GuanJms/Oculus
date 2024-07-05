@@ -1,5 +1,7 @@
 import logging
 import threading
+
+from data_system._enums import ModelDomain
 from data_system.utils.time_operations import current_date_as_int
 from user_interfaces.dash_app.trade_flow.all_app import TradeFlowApp
 from user_interfaces.dash_app.oculus_setup_init import oculus_thread_setup
@@ -15,14 +17,18 @@ from user_interfaces.dash_app.oculus_setup_init import oculus_thread_setup
 
 def main():
     ticker = "TSLA"
-
     verbose = False
-    slow_mode = False
-    # offset_reset = "earliest"
-    offset_reset = "latest"
-    slow_factor = 0.05
+    # slow_mode = False
+    slow_mode = True
+    offset_reset = "earliest"
+    live_iv_mode = True
+    live_greek_mode = True
+    model_modes = {ModelDomain.BLACK_SCHOLES: True}
+    # offset_reset = "latest"
+    slow_factor = 1
     max_poll_records = 100
-    quote_date = current_date_as_int()
+    quote_date = 20240628
+    # quote_date = current_date_as_int()
 
     # Configure logging
     log = logging.getLogger("werkzeug")
@@ -30,20 +36,29 @@ def main():
 
     server_thread, data_hub, shared_lock = oculus_thread_setup(
         ticker,
-        verbose=verbose,
-        slow_mode=slow_mode,
-        offset_reset=offset_reset,
-        slow_factor=slow_factor,
-        max_poll_records=max_poll_records,
+        verbose,
+        slow_mode,
+        offset_reset,
+        slow_factor,
+        max_poll_records,
+        live_iv_mode,
+        live_greek_mode,
+        quote_date,
+        model_modes,
     )
 
     trade_flow_app = TradeFlowApp(
         asset_data_hub=data_hub,
         tickers=["TSLA"],
-        time_frames=[60, 600, 3600],
+        time_frames=[600],
         # time_frames=[600],
         lags=[0],
+        # expirations=[20240705],
         expirations=[20240628],
+        strikes=[200000, 197500],
+        rights=["C", "P"],
+        # strikes=[],
+        # rights=[],
         lock=shared_lock,
     )
 

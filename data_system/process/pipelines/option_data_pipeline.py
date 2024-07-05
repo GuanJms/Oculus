@@ -10,16 +10,12 @@ from ..processors.option_processor import OptionProcessor
 
 class OptionDataPipeline(DataPipeline):
     def __init__(
-        self,
-        steps,
-        *,
-        verbose=False,
-        price_domain=PriceDomain.TRADED,
-        hub_asset_injector=None
+        self, steps, *, verbose=False, hub_asset_injector=None
     ):  # TODO: implement verbose feature
         _domains = [AssetDomain.EQUITY, EquityDomain.OPTION]
         self.node_injector = NodeDataInjector(
-            domains=_domains + [price_domain],
+            domains=_domains
+            + [PriceDomain.TRADED],
             hub_asset_adapter=hub_asset_injector,
         )
         steps = [

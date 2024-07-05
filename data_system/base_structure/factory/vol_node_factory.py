@@ -14,5 +14,5 @@ class VolatilityNodeFactory(NodeFactory):
         )
 
     @staticmethod
-    def create_volatility_node(value, timestamp, params):
-        return VolNode(value=value, timestamp=timestamp, params=params)
+    def create_volatility_node(value, timestamp, domains, vol_domain):
+        return VolNode(value, timestamp, domains, vol_domain)

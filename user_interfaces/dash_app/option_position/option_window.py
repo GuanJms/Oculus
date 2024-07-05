@@ -1,5 +1,8 @@
+from dash import Dash
+
+
 class OptionWindow:
-    def __init__(self, app: dash.Dash, **kwargs):
+    def __init__(self, app: Dash, **kwargs):
         self.app = app
         self.window = self.create_window()
         self.layout = self.create_layout()

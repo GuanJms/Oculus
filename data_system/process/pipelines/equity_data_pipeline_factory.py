@@ -14,7 +14,10 @@ class EquityDataPipelineFactory:
         self.hub_asset_injector = HubAssetAdapter(asset_hub)
 
     def create_equity_data_pipeline(
-        self, equity_domain: EquityDomain, steps=None, verbose=False
+        self,
+        equity_domain: EquityDomain,
+        steps=None,
+        verbose=False,
     ):
         if steps is None:
             steps = []

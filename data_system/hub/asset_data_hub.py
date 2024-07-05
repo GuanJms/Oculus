@@ -38,8 +38,9 @@ class AssetDataHub:
         self._live_greek_mode: bool = kwargs.get("live_greek_mode", False)
         self._id: str = generate_unique_uuid()
         self._option_chain_collection_hub: OptionChainCollectionHub = (
-            OptionChainCollectionHub(live_iv_mode=self._live_iv_mode,
-                                     live_greek_mode=self._live_greek_mode)
+            OptionChainCollectionHub(
+                live_iv_mode=self._live_iv_mode, live_greek_mode=self._live_greek_mode
+            )
         )
         self._stock_collection_hub: StockCollectionHub = StockCollectionHub()
         self._timeline: Optional[Timeline] = None
@@ -188,9 +189,19 @@ class AssetDataHub:
     #         self._option_chain_collection_hub.add_asset(option_chain)
 
     def get_option_chain(self, ticker: str, expiration: int):
+        if expiration is None:
+            print(f"Expiration is not provided for {ticker}")
+            return None
         return self._option_chain_collection_hub.get_option_chain(
             ticker, expiration
         )  # type: OptionChainCollectionHub
+
+    def get_option(
+        self, ticker: str, expiration: int, strike: int, right: OptionDomain | str
+    ):
+        return self._option_chain_collection_hub.get_option(
+            ticker, expiration, strike, right
+        )
 
     def get_stock(self, ticker):
         return self._stock_collection_hub.get_stock(ticker)

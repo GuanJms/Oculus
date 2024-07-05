@@ -48,26 +48,29 @@ class PriceManager(DomainManager):
         )
         self._running_snapshot = True
 
-    def inject(self, node, meta: dict = None):
-        self._inject_time_lag_queue(node, meta)
+    def inject(self, node, domains: list = None, meta: dict = None):
+        self._inject_time_lag_queue(node, domains, meta)
         if self._running_snapshot:
-            self._inject_snapshot(node, meta)
+            self._inject_snapshot(node, domains, meta)
 
-    def _inject_time_lag_queue(self, node, meta: dict):
-        domains = parse_domain(meta.get("domains", []))
+    def _inject_time_lag_queue(self, node, domains: list, meta: dict):
+
+        if domains is None:
+            domains = parse_domain(meta.get("domains", []))
+            print("Error in PriceManager - domains from injection is None")
+
         if PriceDomain.QUOTE in domains:
-            self._quote_time_lag_queue_manager.inject(node, meta)
+            self._quote_time_lag_queue_manager.inject(node, domains, meta)
         elif PriceDomain.TRADED in domains:
-            self._traded_time_lag_queue_manager.inject(node, meta)
+            self._traded_time_lag_queue_manager.inject(node, domains, meta)
         else:
             print(f"Domain not found in PriceManager: {domains}")
 
-    def _inject_snapshot(self, node, meta: dict):
-        domains = parse_domain(meta.get("domains", []))
+    def _inject_snapshot(self, node, domains, meta: dict):
         if PriceDomain.QUOTE in domains:
-            self._quote_snapshot_manager.inject(node, meta)
+            self._quote_snapshot_manager.inject(node, domains, meta)
         if PriceDomain.TRADED in domains:
-            self._trade_snapshot_manager.inject(node, meta)
+            self._trade_snapshot_manager.inject(node, domains, meta)
 
     def add_lag_tracker(
         self,
@@ -87,8 +90,8 @@ class PriceManager(DomainManager):
         self,
         time_frame: int,
         domains: list,
-        lag: int = 0,
-        time_unit: TimeUnit | str = TimeUnit.SECOND,
+        lag: int,
+        time_unit: TimeUnit | str,
     ):
         time_unit = TimeUnit.get(time_unit)  # Convert string to enum if necessary
         if time_unit != TimeUnit.SECOND:

@@ -18,7 +18,7 @@ class TestStarter(unittest.TestCase):
                                                               short_term_DTE_range=(0, 7), long_term_DTE_range=(20, 40))
 
     def test_backtest_manager_init(self):
-        from data_system.backtest_simulation._backtest_manager import HubAdaptor
+        from data_system.backtest_simulation.hub_adaptor import HubAdaptor
         backtest_manager = HubAdaptor()
         backtest_manager.add_backtest_params(self.backtest_params)
         self.assertEqual(backtest_manager.start_date, 20230101)
@@ -26,7 +26,7 @@ class TestStarter(unittest.TestCase):
         self.assertEqual(backtest_manager.ticker_list, ['SPY'])
 
     def test_backtest_manager_runs_strategy_init(self):
-        from data_system.backtest_simulation._backtest_manager import HubAdaptor
+        from data_system.backtest_simulation.hub_adaptor import HubAdaptor
         backtest_manager = HubAdaptor()
         backtest_manager.add_backtest_params(self.backtest_params)
         backtest_manager.run_strategy(self.oil_short_vol_strategy)

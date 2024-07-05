@@ -10,30 +10,32 @@ from scipy.stats import gaussian_kde
 # from utils.numba_optimized.sorting import fast_argsort
 
 
-from data_system._enums import DomainEnum
+from data_system._enums import DomainEnum, EquityDomain
 from data_system.containers.cores import QueueManager
+from data_system.utils.domain_operations import domain_to_chains
 
 
-class TradeFlowWindow:
+class StockTradeFlowWindow:
     def __init__(
-            self,
-            app: dash.Dash,
-            queue_manager: QueueManager,
-            ticker: str,
-            domains: List[DomainEnum],
-            time_frame: int,
-            time_unit: str = "SECOND",
-            lag: int = 0,
-            lock=None,
+        self,
+        app: dash.Dash,
+        queue_manager: QueueManager,
+        ticker: str,
+        domains: List[DomainEnum],
+        time_frame: int,
+        time_unit: str = "SECOND",
+        lag: int = 0,
+        lock=None,
     ):
         self.app = app
+        self.asset_type = EquityDomain.STOCK
         self.queue = queue_manager
         self.ticker = ticker
         self.domains = domains
         self.time_frame = time_frame
         self.time_unit = time_unit
         self.lag = lag
-        self.__id__ = f"{self.ticker}-{self.time_frame}-{self.time_unit}-{self.lag}"
+        self.__id__ = f"{self.ticker}-{self.time_frame}-{self.time_unit}-{self.lag}-stock-trade-flow-window"
         self.graph_id = f"live-graph-{self.__id__}"
         self.update_id = f"graph-update-{self.__id__}"
         self.layout = self.create_layout()
@@ -98,18 +100,17 @@ class TradeFlowWindow:
             prevent_initial_call=True,
         )
         def update_trade_price_graph(n, checklist_value, size_threshold):
-
             size_plot = "size" in checklist_value
             time_volume_plot = "time_volume" in checklist_value
             price_volume_plot_kde = "price_volume_kde" in checklist_value
             price_volume_hist = "price_volume_hist" in checklist_value
             quartile_order_log_number = "quartile_order_log_number" in checklist_value
             size_required = (
-                    size_plot
-                    or time_volume_plot
-                    or price_volume_plot_kde
-                    or price_volume_hist
-                    or quartile_order_log_number
+                size_plot
+                or time_volume_plot
+                or price_volume_plot_kde
+                or price_volume_hist
+                or quartile_order_log_number
             )
 
             if size_threshold is None:
@@ -328,9 +329,9 @@ class TradeFlowWindow:
 
         quarters = [
             sorted_indices[:quarter_length],
-            sorted_indices[quarter_length: 2 * quarter_length],
-            sorted_indices[2 * quarter_length: 3 * quarter_length],
-            sorted_indices[3 * quarter_length:],
+            sorted_indices[quarter_length : 2 * quarter_length],
+            sorted_indices[2 * quarter_length : 3 * quarter_length],
+            sorted_indices[3 * quarter_length :],
         ]
 
         # print("Z_scaled", Z_scaled)
@@ -342,7 +343,7 @@ class TradeFlowWindow:
         for q, indices in enumerate(quarters):
             for i in range(1, len(bin_edges)):
                 if (
-                        len(Z_scaled[indices][bin_indices[indices] == i]) > 0
+                    len(Z_scaled[indices][bin_indices[indices] == i]) > 0
                 ):  # Avoid calculating mean of empty slices
                     bin_sums[q][i - 1] = len(
                         Z_scaled[indices][bin_indices[indices] == i]

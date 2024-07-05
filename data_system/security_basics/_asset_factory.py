@@ -13,7 +13,7 @@ class AssetFactory:
         if domain_chain_str is None and domains is None:
             raise ValueError('domain_chain_str or domains is required')
         if domain_chain_str is not None:
-            domains = parse_domain(domain_chain_str, asset_domina=True, equity_domina=True, price_domina=False)
+            domains = parse_domain(domain_chain_str, asset_domain=True, equity_domain=True, price_domain=False)
             if len(domains) == 0:
                 raise ValueError('domains cannot be empty')
         AssetClass = DomainMatcher.match_domain_asset(domains)

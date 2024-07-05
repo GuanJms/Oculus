@@ -1,6 +1,14 @@
-from typing import Optional, Any
+from typing import Optional, Any, Type, List
 
-from ...._enums import AssetDomain, EquityDomain, OptionDomain
+from ...._enums import (
+    AssetDomain,
+    EquityDomain,
+    OptionDomain,
+    GreekDomain,
+    ModelDomain,
+    TimeUnit,
+    DomainEnum,
+)
 from ..._asset import Asset
 from ....domain_managers.greek_manager import GreekManager
 
@@ -31,6 +39,38 @@ class Option(Asset):
             + f"{self._option_type.name} {self._strike} {self._expiration}"
         )
 
+    def add_lag_tracker(
+        self,
+        time_frame: int,
+        time_unit: TimeUnit | str,
+        domain_type: Any,
+        lag=0,
+        has_lag=False,
+        **kwargs,
+    ):
+        super().add_lag_tracker(time_frame, time_unit, domain_type, lag, has_lag)
+        if domain_type == OptionDomain.GREEK:
+            model_domain = kwargs.get("model_domain")
+            self._greek_manager.add_lag_tracker(
+                time_frame, time_unit, model_domain, lag, has_lag
+            )
+
+    def get_lag_tracker(
+        self,
+        time_frame: int,
+        lag: int = 0,
+        time_unit: TimeUnit | str = TimeUnit.SECOND,
+        domains: List[DomainEnum] = None,
+        domain_type=None,
+    ):
+        t = super().get_lag_tracker(time_frame, lag, time_unit, domains, domain_type)
+        if t:
+            return t
+        if domain_type == OptionDomain.GREEK:
+            return self._greek_manager.get_lag_tracker(time_frame, domains, lag, time_unit)
+        else:
+            return None
+
     @property
     def greek_manager(self) -> GreekManager:
         return self._greek_manager
@@ -55,20 +95,32 @@ class Option(Asset):
             # TODO: construct a time deque to store historical ivs for searching for historical ivs that needed for calculating the greeks
             if self._volatility_manager is None:
                 self.set_volatility_manager()
+
+            greek_setting = {
+                GreekDomain.DELTA: True,
+                GreekDomain.GAMMA: True,
+                GreekDomain.THETA: True,
+                GreekDomain.VEGA: True,
+                GreekDomain.RHO: False,
+                GreekDomain.VOMMA: True,
+            }  # TODO: change this to a more dynamic setting
+
+            model_modes = {
+                ModelDomain.BLACK_SCHOLES: True,
+            }
+
             self._greek_manager = GreekManager(
                 domains=self._domains,
+                option_type=self._option_type,
                 underlying_asset=self._underlying_asset,
                 live_iv_mode=self._live_iv_mode,
+                live_greek_mode=self._live_greek_mode,
+                volatility_manager=self._volatility_manager,
+                greek_modes=greek_setting,
+                model_modes=model_modes,
             )
+
             self._greek_manager.set_volatility_manager(self._volatility_manager)
-            greek_mode = {
-                "delta": True,
-                "gamma": True,
-                "theta": True,
-                "vega": True,
-                "rho": False,
-            }
-            self._greek_manager.set_greek_mode(**greek_mode)  # TODO: implement function
             self.add_domain_manager(self._greek_manager)
 
     @property

@@ -2,6 +2,7 @@ from typing import Optional
 
 from data_system.base_structure._enums import NodeType, QuoteType
 from data_system.base_structure.nodes._node import Node
+from data_system.utils.time_operations import convert_timestamp_to_datetime
 
 
 class QuoteNode(Node):
@@ -10,6 +11,9 @@ class QuoteNode(Node):
         print(f"QuoteNode: {quote}, {timestamp}, {quote_type}, {kwargs}")
         self.quote = quote
         self.timestamp = timestamp
+        self.datetime: np.datetime64 = convert_timestamp_to_datetime(
+            timestamp
+        )  # timestamp is in ms
         self.node_type = NodeType.QUOTE
         self.quote_type = quote_type
         self.size = kwargs.get("size", None)

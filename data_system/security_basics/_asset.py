@@ -1,11 +1,11 @@
-from typing import Optional, List, Any, Dict
+from typing import Optional, List, Any, Dict, Type
 from abc import ABC
 
 from data_system.domain_managers.price_manager import PriceManager
-from .._enums import DomainEnum, PriceDomain, TimeUnit, VolatilityDomain
+from .._enums import DomainEnum, PriceDomain, TimeUnit, VolatilityDomain, OptionDomain
 from utils.global_id import GlobalComponentIDGenerator
-from ..domain_managers.domain_manager import DomainManager
-from ..domain_managers.volatility_manager import VolatilityManager
+from ..domain_managers import DomainManager, VolatilityManager
+from ..utils.domain_operations import parse_domain
 
 
 # TODO: each asset collection should have one container manager
@@ -111,13 +111,13 @@ class Asset(ABC):
         return domain_to_chains(domains=domains)
 
     def inject(self, data, meta: Dict[str, Any] | None = None):
-        self._price_manager.inject(data, meta)
-        # print(f"Asset inject - domains: {meta.get('domains')}")
+        domains = parse_domain(meta.get("domains", []))
+        self._price_manager.inject(data, domains=domains, meta=meta)
         if self._volatility_manager:
-            self._volatility_manager.inject(data, meta)
+            self._volatility_manager.inject(data, domains=domains, meta=meta)
 
         for manager in self._domain_managers:
-            manager.inject(data, meta)
+            manager.inject(data, domains=domains, meta=meta)
 
     def add_domain_manager(self, manager: DomainManager):
         self._domain_managers.append(manager)
@@ -126,10 +126,13 @@ class Asset(ABC):
         self,
         time_frame: int,
         time_unit: TimeUnit | str,
+        domain_type: Type[DomainEnum],
         lag=0,
         has_lag=False,
+        **kwargs,
     ):
-        self._price_manager.add_lag_tracker(time_frame, time_unit, lag, has_lag)
+        if domain_type == PriceDomain:
+            self._price_manager.add_lag_tracker(time_frame, time_unit, lag, has_lag)
 
     def get_lag_tracker(
         self,
@@ -137,12 +140,17 @@ class Asset(ABC):
         lag: int = 0,
         time_unit: TimeUnit | str = TimeUnit.SECOND,
         domains: List[DomainEnum] = None,
+        domain_type=None,
     ):
         if domains is None:
             return None
-        if VolatilityDomain.IMPLIED in domains:
+        if domain_type == PriceDomain:
+            return self._price_manager.get_lag_tracker(time_frame, domains, lag, time_unit)
+        elif domain_type == VolatilityDomain:
             raise NotImplementedError("Implied volatility lag tracker not implemented")
-        return self._price_manager.get_lag_tracker(time_frame, domains, lag, time_unit)
+        return None
+
+
 
     def get_last_traded_price(self):
         return self._price_manager.get_last_traded_price()

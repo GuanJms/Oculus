@@ -7,5 +7,5 @@ class DomainManager(ABC):
         self._domains = kwargs.get("domains", [])
 
     @abstractmethod
-    def inject(self, node, meta: dict = None):
+    def inject(self, node, domains: list = None, meta: dict = None):
         pass

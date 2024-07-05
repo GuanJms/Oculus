@@ -13,11 +13,7 @@ class OptionFactory:
         **kwargs,
     ) -> Call:
         c = Call(ticker, expiration, strike, **kwargs)
-        c.set_underlying_asset(underlying_asset)
-        c.set_price_manager(kwargs.get("price_manager", None))
-        c.set_volatility_manager(kwargs.get("volatility_manager", None))
-        if c.live_greek_mode:
-            c.set_greek_manager(kwargs.get("greek_manager", None))
+        c = OptionFactory.configure_option(c, underlying_asset, **kwargs)
         return c
 
     @staticmethod
@@ -29,10 +25,17 @@ class OptionFactory:
         **kwargs,
     ) -> Put:
         p = Put(ticker, expiration, strike, **kwargs)
-        p.set_underlying_asset(underlying_asset)
-        p.set_price_manager(kwargs.get("price_manager", None))
-        p.set_volatility_manager(kwargs.get("volatility_manager", None))
+        p = OptionFactory.configure_option(p, underlying_asset, **kwargs)
         return p
+
+    @staticmethod
+    def configure_option(option, underlying_asset, **kwargs):
+        option.set_underlying_asset(underlying_asset)
+        option.set_price_manager(kwargs.get("price_manager", None))
+        option.set_volatility_manager(kwargs.get("volatility_manager", None))
+        if option.live_greek_mode:
+            option.set_greek_manager(kwargs.get("greek_manager", None))
+        return option
 
     @staticmethod
     def create_option(
@@ -43,28 +46,27 @@ class OptionFactory:
         underlying_asset=None,
         **kwargs,
     ) -> Call | Put:
-
         if isinstance(right, str):
             right = OptionDomain.get_option_type(right)
+
+        option_params = {
+            "underlying_asset": underlying_asset,
+            "price_manager": kwargs.get("price_manager", None),
+            "live_iv_mode": kwargs.get("live_iv_mode", False),
+            "live_greek_mode": kwargs.get("live_greek_mode", False),
+        }
 
         match right:
             case OptionDomain.CALL:
                 return OptionFactory.create_call(
-                    ticker,
-                    expiration,
-                    strike,
-                    underlying_asset=underlying_asset,
-                    price_manager=kwargs.get("price_manager", None),
-                    live_iv_mode=kwargs.get("live_iv_mode", False),
+                    ticker, expiration, strike, **option_params
                 )
             case OptionDomain.PUT:
                 return OptionFactory.create_put(
                     ticker,
                     expiration,
                     strike,
-                    underlying_asset=underlying_asset,
-                    price_manager=kwargs.get("price_manager", None),
-                    live_iv_mode=kwargs.get("live_iv_mode", False),
+                    **option_params,
                 )
             case _:
                 raise Exception(f"Right {right} not supported.")

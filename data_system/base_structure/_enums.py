@@ -5,6 +5,7 @@ class NodeType(Enum):
     QUOTE = auto()
     TRADE = auto()
     VOLATILITY = auto()
+    GREEK = auto()
 
 
 class VolType(Enum):

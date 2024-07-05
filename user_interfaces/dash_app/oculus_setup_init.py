@@ -1,8 +1,8 @@
 import json
 import threading
-from typing import Tuple
+from typing import Tuple, Dict
 
-from data_system._enums import EquityDomain
+from data_system._enums import EquityDomain, ModelDomain
 from data_system.connection.live_stream.kafka_consumer import StreamReceiverConsumer
 from data_system.connection.live_stream.kafka_handler import KafkaHandler
 from data_system.hub import AssetDataHub
@@ -23,6 +23,7 @@ def oculus_thread_setup(
     live_iv_mode=True,
     live_greek_mode=True,
     quote_date=current_date_as_int(),
+    model_modes: Dict[ModelDomain, bool] = None,
 ):
     lock = threading.Lock()
     server = StreamReceiverConsumer(
@@ -31,14 +32,16 @@ def oculus_thread_setup(
         max_poll_records=max_poll_records,
         value_deserializer=lambda m: json.loads(m.decode("ascii")),
         auto_offset_reset=offset_reset,
-        # auto_offset_reset="earliest",  # ,'smallest'
-        # auto_offset_reset="latest",  # ,'smallest'
         slow_mode=slow_mode,
         slow_factor=slow_factor,
         verbose=verbose,
     )
 
-    data_hub = AssetDataHub(live_iv_mode=live_iv_mode, live_greek_mode=live_greek_mode)
+    data_hub = AssetDataHub(
+        live_iv_mode=live_iv_mode,
+        live_greek_mode=live_greek_mode,
+        model_modes=model_modes,
+    )
     equity_data_pipeline_factory = EquityDataPipelineFactory(data_hub)
     asset_distributor = AssetDistributor()
     traded_stock_pipe = equity_data_pipeline_factory.create_equity_data_pipeline(

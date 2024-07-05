@@ -18,6 +18,7 @@ class OptionPositionApp:
     def create_layout(self):
         option_pair_windows = []
         for ticker in self.tickers:
+            pass
 
 
 

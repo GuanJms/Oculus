@@ -34,13 +34,17 @@ class TimeLagQueueManager(ContainerManager):
         )
         print("Not recommended if extensively construct lag chain.")
 
-    def inject(self, data, meta=None):
+    def inject(self, data, domains, meta=None):
         for container in self._containers.values():
-            if container.get_domains() == meta.get("domains"):
-                container.inject(data)
+            if (
+                container.get_domains() == domains
+            ):  # TODO: Redundant please check in the future
+                container.inject(data)  # skipping meta for now
             else:
                 print("Error in TimeLagQueueManager - FUNC inject")
-                print(f"Container domains: {container.get_domains()} not equal to {meta.get('domains')}")
+                print(
+                    f"Container domains: {container.get_domains()} not equal to {meta.get('domains')}"
+                )
 
     def create_container(self, key, **kwargs):
         queue_pipeline = QueuePipeline(**kwargs)

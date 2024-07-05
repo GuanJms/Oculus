@@ -6,13 +6,13 @@ from data_system.base_structure._enums import NodeType
 
 
 class VolNode(Node):
-    def __init__(self, value, timestamp, params):
+    def __init__(self, value, timestamp, domains, vol_domain):
         super().__init__()
         self.value = value
         self.node_type = NodeType.VOLATILITY
+        self.domains = domains
+        self.vol_domain = vol_domain
         self.timestamp = timestamp
-        self.vol_domain: Optional[VolatilityDomain] = params.get("vol_domain", None)
-        self.ms_of_day = params.get("ms_of_day", None)
 
     def set_value(self, value):
         self.value = value

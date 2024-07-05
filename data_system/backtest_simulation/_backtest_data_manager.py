@@ -7,7 +7,7 @@ from data_system.backtest_simulation._backtest_data_session_factory import (
 from utils.global_id import GlobalComponentIDGenerator
 
 if TYPE_CHECKING:
-    from data_system.backtest_simulation._backtest_manager import HubAdaptor
+    from data_system.backtest_simulation.hub_adaptor import HubAdaptor
 
 
 class BacktestDataManager:

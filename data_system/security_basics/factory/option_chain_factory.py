@@ -12,7 +12,6 @@ class OptionChainFactory:
         live_greek_mode: bool = False,
     ) -> OptionChain:
         from data_system.security_basics.factory.option_facotry import OptionFactory
-
         opt_chain = OptionChain(ticker, expiration, live_iv_mode=live_iv_mode, live_greek_mode=live_greek_mode)
         opt_chain.set_underlying_asset(underlying_asset)
         for strike in strikes:
@@ -22,6 +21,7 @@ class OptionChainFactory:
                 strike,
                 underlying_asset=underlying_asset,
                 live_iv_mode=live_iv_mode,
+                live_greek_mode=live_greek_mode,
             )
             call = OptionFactory.create_call(
                 ticker,
@@ -29,6 +29,7 @@ class OptionChainFactory:
                 strike,
                 underlying_asset=underlying_asset,
                 live_iv_mode=live_iv_mode,
+                live_greek_mode=live_greek_mode,
             )
             opt_chain.add_asset(put)
             opt_chain.add_asset(call)

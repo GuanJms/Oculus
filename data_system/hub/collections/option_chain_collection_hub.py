@@ -32,8 +32,11 @@ class OptionChainCollectionHub(AssetCollectionHub):
         super().inject(data, meta)
 
     def __create__(self, key: str):
-        e = OptionChainCollection(ticker=key, live_iv_mode=self._live_iv_mode,
-                                  live_greek_mode=self._live_greek_mode)
+        e = OptionChainCollection(
+            ticker=key,
+            live_iv_mode=self._live_iv_mode,
+            live_greek_mode=self._live_greek_mode,
+        )
         # get underlying for option chain collection
         finder = InstrumentFinder()
         underlying = finder.find_asset(ticker=key, asset_type=SingleAssetType.STOCK)

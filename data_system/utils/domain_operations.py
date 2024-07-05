@@ -3,7 +3,7 @@ from typing import List
 from data_system._enums import *
 
 
-def parse_domain(domain_str, asset_domina=True, equity_domina=True, price_domina=True, volatility_domina=False):
+def parse_domain(domain_str, asset_domain=True, equity_domain=True, price_domain=True, option_domain=False, volatility_domain=False, model_domain=False):
     if isinstance(domain_str, list):
         return domain_str # already parsed
     # Split the domain string into parts
@@ -12,14 +12,18 @@ def parse_domain(domain_str, asset_domina=True, equity_domina=True, price_domina
     # Define the sequence of enums for lookup, reflecting the hierarchical structure
 
     enum_sequence = []
-    if asset_domina:
+    if asset_domain:
         enum_sequence.append(AssetDomain)
-    if equity_domina:
+    if equity_domain:
         enum_sequence.append(EquityDomain)
-    if price_domina:
+    if price_domain:
         enum_sequence.append(PriceDomain)
-    if volatility_domina:
+    if option_domain:
+        enum_sequence.append(OptionDomain)
+    if volatility_domain:
         enum_sequence.append(VolatilityDomain)
+    if model_domain:
+        enum_sequence.append(ModelDomain)
 
     # Check if the parts list length matches the enum sequence length
     if len(parts) != len(enum_sequence):
@@ -45,10 +49,12 @@ def domain_to_chains(domains: List[DomainEnum]) -> str:
     return ".".join([domain.to_string() for domain in domains])
 
 
-def fetch_domain(domain_type, domains: list):
+def fetch_domain(domain_type, domains: list, return_none=False):
     for domain in domains:
         if isinstance(domain, domain_type):
             return domain
+    if return_none:
+        return None
     raise ValueError(f"Domain Type {domain_type} is not found in {domains}")
 
 

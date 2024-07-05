@@ -32,6 +32,7 @@ class TradeNode(Node):
         self.theta = kwargs.get("theta", None)
         self.vega = kwargs.get("vega", None)
         self.rho = kwargs.get("rho", None)
+        self.vomma = kwargs.get("vomma", None)
 
     def get_price(self):
         return self.price
@@ -54,8 +55,24 @@ class TradeNode(Node):
     def set_rho(self, rho):
         self.rho = rho
 
+    def set_vomma(self, vomma):
+        self.vomma = vomma
+
     def __str__(self):
-        return f"TradeNode(P: {round(self.price, 2)}, timestamp: {self.timestamp}, size: {self.size}, Exg:{self.exchange}, Cond:{self.condition}, IV: {self.iv})"
+        return (
+            f"TradeNode(P: {round(self.price, 2)}, "
+            f"timestamp: {self.timestamp}, "
+            f"size: {self.size}, "
+            f"Exg:{self.exchange}, "
+            f"Cond:{self.condition}, "
+            f"IV: {self.iv},"
+            f"Delta: {round(self.delta, 2) if self.delta else None}, "
+            f"Gamma: {round(self.gamma, 2) if self.gamma else None}, "
+            f"Theta: {round(self.theta, 2) if self.theta else None},"
+            f"Vega: {round(self.vega, 2) if self.vega else None},"
+            f"Rho: {round(self.rho, 2) if self.rho else None},"
+            f"Vomma: {round(self.vomma, 2) if self.vomma else None}"
+        )
 
     def __repr__(self):
         return self.__str__()

@@ -63,6 +63,8 @@ class TradeImpliedVolCurve:
                 )
             if self.option_chain is not None:
                 self.update_strike_implied_vols()
+            if self.option_chain is None:
+                return None
             underlying_asset = self.option_chain.get_underlying_asset()
             if self.strike_vols is None:
                 return None

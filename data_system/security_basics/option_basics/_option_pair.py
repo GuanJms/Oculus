@@ -15,9 +15,9 @@ class OptionPair(AssetCollection):
 
         # validate strike and expiration
         if not isinstance(strike, int):
-            raise ValueError("Strike must be an integer")
+            raise ValueError(f"Strike must be an integer - received {strike} of type {type(strike)}")
         if not isinstance(expiration, int):
-            raise ValueError("Expiration must be an integer")
+            raise ValueError(f"Expiration must be an integer - received {expiration} of type {type(expiration)}")
 
         self._strike = strike
         self._expiration = expiration

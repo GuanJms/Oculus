@@ -5,7 +5,7 @@ from dash import html, dcc, callback, Output, Input, State
 from dash.exceptions import PreventUpdate
 
 from data_system.hub import AssetDataHub
-from user_interfaces.dash_app.trade_flow.window import TradeFlowWindow
+from user_interfaces.dash_app.trade_flow.option_window import OptionTradeFlowWindow
 from user_interfaces.dash_app.trade_flow.data import TradeFlowData
 from user_interfaces.dash_app.trade_flow.selection import TradeFlowSelection
 
@@ -50,9 +50,9 @@ class TradeFlowApp:
                 domain_chain = f"{asset}.{equity}.{price}"
                 domains = parse_domain(
                     domain_chain,
-                    asset_domina=True,
-                    equity_domina=True,
-                    price_domina=True,
+                    asset_domain=True,
+                    equity_domain=True,
+                    price_domain=True,
                 )
                 key = f"{ticker}_{domain_chain}_{time_frame}_{time_unit}_{lag}"
                 if key in self.existed_window_keys:
@@ -63,7 +63,7 @@ class TradeFlowApp:
                 queue_manager = self.app_data.get_lag_tracker(
                     ticker, domains, time_frame, time_unit, lag
                 )
-                new_window = TradeFlowWindow(
+                new_window = OptionTradeFlowWindow(
                     self.app,
                     queue_manager,
                     ticker,

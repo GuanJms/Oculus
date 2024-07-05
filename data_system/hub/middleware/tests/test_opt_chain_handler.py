@@ -8,11 +8,11 @@ from data_system.utils.domain_operations import parse_domain
 class TestOptionChainHandler(unittest.TestCase):
 
     def test_get_expirations(self):
-        hubticker = HubTicker(ticker='TSLA', domains=parse_domain('EQUITY.OPTION', price_domina=False))
+        hubticker = HubTicker(ticker='TSLA', domains=parse_domain('EQUITY.OPTION', price_domain=False))
         expirations = HubOptionChainHandler.get_expirations(hubticker)
         self.assertIsNotNone(expirations)
 
-        hubticker = HubTicker(ticker='TSLASLS', domains=parse_domain('EQUITY.OPTION', price_domina=False))
+        hubticker = HubTicker(ticker='TSLASLS', domains=parse_domain('EQUITY.OPTION', price_domain=False))
         exirations = HubOptionChainHandler.get_expirations(hubticker)
         self.assertEqual(exirations, [])
 

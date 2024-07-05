@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Any, Type
 
 from data_system._enums import *
 from data_system.security_basics import Stock, Asset
@@ -35,7 +35,9 @@ class DomainMatcher:
     ):
         if domain_map is None:
             domain_map = DOMAIN_MAP
-        if isinstance(domain_map, str):
+        if (
+            isinstance(domain_map, str) or len(domains) == 0
+        ):  # TODO: check if "len(domains) == 0" changes anything
             return domain_map
         domains = domains.copy()
         if domains[0] in domain_map:
@@ -46,7 +48,7 @@ class DomainMatcher:
 
     @staticmethod
     def match_domain_asset(
-        domains: List[DomainEnum | AssetDomain], domain_map: dict = None, **kwargs
+        domains: List[DomainEnum | AssetDomain], domain_map=None, **kwargs
     ):
         if domain_map is None:
             domain_map = DOMAIN_ASSET_MAP
@@ -55,7 +57,7 @@ class DomainMatcher:
                 return domain_map
             else:
                 raise ValueError(f"Invalid Asset Domain")
-        domains = domains.copy()
+        domains = domains.copy()  # protect the original list
         if domains[0] in domain_map:
             domain_map = domain_map[domains[0]]
             return DomainMatcher.match_domain_asset(domains[1:], domain_map, **kwargs)
